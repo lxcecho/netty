@@ -29,5 +29,5 @@
  * @deprecated This package has been deprecated with no replacement,
  * because serialization can be a security liability
  */
-@Deprecated
+//@Deprecated 已经被弃用，但是由于这个编译不通过，所以注释掉这个注解
 package io.netty.handler.codec.serialization;
