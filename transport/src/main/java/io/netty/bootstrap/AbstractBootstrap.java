@@ -97,6 +97,7 @@ public abstract class AbstractBootstrap<B extends AbstractBootstrap<B, C>, C ext
 
     @SuppressWarnings("unchecked")
     private B self() {
+        // 强制转成使用的类型
         return (B) this;
     }
 

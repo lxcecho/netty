@@ -25,6 +25,7 @@ public class NewIoServer {
         ByteBuffer byteBuffer = ByteBuffer.allocate(4096);
         while (true) {
             SocketChannel socketChannel = serverSocketChannel.accept();
+            socketChannel.configureBlocking(true);
             int read = 0;
             while (-1 != read) {
                 try {
