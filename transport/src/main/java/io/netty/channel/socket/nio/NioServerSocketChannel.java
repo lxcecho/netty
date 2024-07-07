@@ -250,7 +250,7 @@ public class NioServerSocketChannel extends AbstractNioMessageChannel
         }
     }
 
-    // Override just to to be able to call directly via unit tests.
+    // Override just to be able to call directly via unit tests.
     @Override
     protected boolean closeOnReadError(Throwable cause) {
         return super.closeOnReadError(cause);

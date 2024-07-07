@@ -32,6 +32,12 @@ import java.util.List;
  * byte values for multibyte codepoint representations therefore fully supported by this implementation.
  * <p>
  * For a more general delimiter-based decoder, see {@link DelimiterBasedFrameDecoder}.
+ * <p>
+ * Users should be aware that used as is, the lenient approach on lone {@code '\n} might result on a parser
+ * diffenrencial on line based protocols requiring the use of {@code "\r\n"} delimiters like SMTP and can
+ * result in attacks similar to
+ * <a href="https://sec-consult.com/blog/detail/smtp-smuggling-spoofing-e-mails-worldwide/">SMTP smuggling</a>.
+ * Validating afterward the end of line pattern can be a possible mitigation.
  *
  * 回车换行解码器，以 \r\n 或者 \n 结尾的消息，通常和 StringDecoder 使用
  */
@@ -187,7 +193,8 @@ public class LineBasedFrameDecoder extends ByteToMessageDecoder {
      */
     private int findEndOfLine(final ByteBuf buffer) {
         int totalLength = buffer.readableBytes();
-        int i = buffer.forEachByte(buffer.readerIndex() + offset, totalLength - offset, ByteProcessor.FIND_LF);
+        int i = buffer.indexOf(buffer.readerIndex() + offset,
+                               buffer.readerIndex() + totalLength, (byte) '\n');
         if (i >= 0) {
             offset = 0;
             if (i > 0 && buffer.getByte(i - 1) == '\r') {

@@ -28,7 +28,6 @@ import io.netty.util.AsciiString;
 import io.netty.util.CharsetUtil;
 import io.netty.util.NetUtil;
 import io.netty.util.internal.ObjectUtil;
-import io.netty.util.internal.UnstableApi;
 
 import static io.netty.util.internal.StringUtil.COMMA;
 import static io.netty.util.internal.ObjectUtil.checkPositiveOrZero;
@@ -220,7 +219,7 @@ public final class HttpUtil {
      * Returns the content length of the specified web socket message. If the
      * specified message is not a web socket message, {@code -1} is returned.
      */
-    private static int getWebSocketContentLength(HttpMessage message) {
+    static int getWebSocketContentLength(HttpMessage message) {
         // WebSocket messages have constant content-lengths.
         HttpHeaders h = message.headers();
         if (message instanceof HttpRequest) {
@@ -548,7 +547,11 @@ public final class HttpUtil {
         if (NetUtil.isValidIpV6Address(hostString)) {
             if (!addr.isUnresolved()) {
                 hostString = NetUtil.toAddressString(addr.getAddress());
+            } else if (hostString.charAt(0) == '[' && hostString.charAt(hostString.length() - 1) == ']') {
+                // If IPv6 address already contains brackets, let's return as is.
+                return hostString;
             }
+
             return '[' + hostString + ']';
         }
         return hostString;
@@ -564,7 +567,6 @@ public final class HttpUtil {
      * @return the normalized content length from the headers or {@code -1} if the fields were empty.
      * @throws IllegalArgumentException if the content-length fields are not valid
      */
-    @UnstableApi
     public static long normalizeAndGetContentLength(
             List<? extends CharSequence> contentLengthFields, boolean isHttp10OrEarlier,
             boolean allowDuplicateContentLengths) {
