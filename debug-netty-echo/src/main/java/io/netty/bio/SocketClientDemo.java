@@ -17,13 +17,11 @@ public class SocketClientDemo {
             BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
             bufferedWriter.write("我是客户端，发送了一个消息\n");
             bufferedWriter.flush();
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));//输入流
-            String serverLine = bufferedReader.readLine(); //读取服务端返回的数据（被阻塞了）
-            System.out.println("服务端返回的数据:" + serverLine);
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream())); // 输入流
+            String serverLine = bufferedReader.readLine(); // 读取服务端返回的数据（被阻塞了）
+            System.out.println("服务端返回的数据: " + serverLine);
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 

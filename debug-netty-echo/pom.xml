@@ -23,6 +23,7 @@
             <groupId>io.netty</groupId>
             <artifactId>netty-all</artifactId>
             <version>${project.parent.version}</version>
+            <scope>compile</scope>
         </dependency>
 
         <dependency>
