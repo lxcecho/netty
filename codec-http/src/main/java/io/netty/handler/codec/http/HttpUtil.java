@@ -40,12 +40,13 @@ public final class HttpUtil {
     private static final AsciiString CHARSET_EQUALS = AsciiString.of(HttpHeaderValues.CHARSET + "=");
     private static final AsciiString SEMICOLON = AsciiString.cached(";");
     private static final String COMMA_STRING = String.valueOf(COMMA);
+    private static final long ILLEGAL_REQUEST_LINE_TOKEN_OCTET_MASK = 1L << '\n' | 1L << '\r' | 1L << ' ';
 
     private HttpUtil() { }
 
     /**
      * Determine if a uri is in origin-form according to
-     * <a href="https://tools.ietf.org/html/rfc7230#section-5.3">rfc7230, 5.3</a>.
+     * <a href="https://datatracker.ietf.org/doc/html/rfc9112#section-3.2.1">RFC 9112, 3.2.1</a>.
      */
     public static boolean isOriginForm(URI uri) {
         return isOriginForm(uri.toString());
@@ -53,7 +54,7 @@ public final class HttpUtil {
 
     /**
      * Determine if a string uri is in origin-form according to
-     * <a href="https://tools.ietf.org/html/rfc7230#section-5.3">rfc7230, 5.3</a>.
+     * <a href="https://datatracker.ietf.org/doc/html/rfc9112#section-3.2.1">RFC 9112, 3.2.1</a>.
      */
     public static boolean isOriginForm(String uri) {
         return uri.startsWith("/");
@@ -61,7 +62,7 @@ public final class HttpUtil {
 
     /**
      * Determine if a uri is in asterisk-form according to
-     * <a href="https://tools.ietf.org/html/rfc7230#section-5.3">rfc7230, 5.3</a>.
+     * <a href="https://datatracker.ietf.org/doc/html/rfc9112#section-3.2.4">RFC 9112, 3.2.4</a>.
      */
     public static boolean isAsteriskForm(URI uri) {
         return isAsteriskForm(uri.toString());
@@ -69,16 +70,70 @@ public final class HttpUtil {
 
     /**
      * Determine if a string uri is in asterisk-form according to
-     * <a href="https://tools.ietf.org/html/rfc7230#section-5.3">rfc7230, 5.3</a>.
+     * <a href="https://datatracker.ietf.org/doc/html/rfc9112#section-3.2.4">RFC 9112, 3.2.4</a>.
      */
     public static boolean isAsteriskForm(String uri) {
         return "*".equals(uri);
     }
 
+    static void validateRequestLineTokens(HttpVersion httpVersion, HttpMethod method, String uri) {
+        // The HttpVersion class does its own validation, and it's not possible for subclasses to circumvent it.
+        // The HttpMethod class does its own validation, but subclasses might circumvent it.
+        if (method.getClass() != HttpMethod.class) {
+            if (!isEncodingSafeStartLineToken(method.asciiName())) {
+                throw new IllegalArgumentException(
+                        "The HTTP method name contain illegal characters: " + method.asciiName());
+            }
+        }
+
+        if (!isEncodingSafeStartLineToken(uri)) {
+            throw new IllegalArgumentException("The URI contain illegal characters: " + uri);
+        }
+    }
+
+    /**
+     * Validate that the given request line token is safe for verbatim encoding to the network.
+     * This does not fully check that the token – HTTP method, version, or URI – is valid and formatted correctly.
+     * Only that the token does not contain characters that would break or
+     * desynchronize HTTP message parsing of the start line wherein the token would be included.
+     * <p>
+     * See <a href="https://datatracker.ietf.org/doc/html/rfc9112#name-request-line">RFC 9112, 3.</a>
+     *
+     * @param token The token to check.
+     * @return {@code true} if the token is safe to encode verbatim into the HTTP message output stream,
+     * otherwise {@code false}.
+     */
+    public static boolean isEncodingSafeStartLineToken(CharSequence token) {
+        int i = 0;
+        int lenBytes = token.length();
+        int modulo = lenBytes % 4;
+        int lenInts = modulo == 0 ? lenBytes : lenBytes - modulo;
+        for (; i < lenInts; i += 4) {
+            long chars = charMask(token, i) |
+                    charMask(token, i + 1) |
+                    charMask(token, i + 2) |
+                    charMask(token, i + 3);
+            if ((chars & ILLEGAL_REQUEST_LINE_TOKEN_OCTET_MASK) != 0) {
+                return false;
+            }
+        }
+        for (; i < lenBytes; i++) {
+            long ch = charMask(token, i);
+            if ((ch & ILLEGAL_REQUEST_LINE_TOKEN_OCTET_MASK) != 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private static long charMask(CharSequence token, int i) {
+        char c = token.charAt(i);
+        return c < 64 ? 1L << c : 0;
+    }
+
     /**
      * Returns {@code true} if and only if the connection can remain open and
-     * thus 'kept alive'.  This methods respects the value of the.
-     *
+     * thus 'kept alive'. This method respects the value of the
      * {@code "Connection"} header first and then the return value of
      * {@link HttpVersion#isKeepAliveDefault()}.
      */
@@ -630,5 +685,148 @@ public final class HttpUtil {
             throw new IllegalArgumentException(
                     "Content-Length value is not a number: " + firstField, e);
         }
+    }
+
+    /**
+     * Validate a <a href="https://tools.ietf.org/html/rfc7230#section-3.2.6">token</a> contains only allowed
+     * characters.
+     * <p>
+     * The <a href="https://tools.ietf.org/html/rfc2616#section-2.2">token</a> format is used for variety of HTTP
+     * components, like  <a href="https://tools.ietf.org/html/rfc6265#section-4.1.1">cookie-name</a>,
+     * <a href="https://tools.ietf.org/html/rfc7230#section-3.2.6">field-name</a> of a
+     * <a href="https://tools.ietf.org/html/rfc7230#section-3.2">header-field</a>, or
+     * <a href="https://tools.ietf.org/html/rfc7231#section-4">request method</a>.
+     *
+     * @param token the token to validate.
+     * @return the index of the first invalid token character found, or {@code -1} if there are none.
+     */
+    static int validateToken(CharSequence token) {
+        if (token instanceof AsciiString) {
+            return validateAsciiStringToken((AsciiString) token);
+        }
+        return validateCharSequenceToken(token);
+    }
+
+    /**
+     * Validate that an {@link AsciiString} contain onlu valid
+     * <a href="https://tools.ietf.org/html/rfc7230#section-3.2.6">token</a> characters.
+     *
+     * @param token the ascii string to validate.
+     */
+    private static int validateAsciiStringToken(AsciiString token) {
+        byte[] array = token.array();
+        for (int i = token.arrayOffset(), len = token.arrayOffset() + token.length(); i < len; i++) {
+            if (!isValidTokenChar(array[i])) {
+                return i - token.arrayOffset();
+            }
+        }
+        return -1;
+    }
+
+    /**
+     * Validate that a {@link CharSequence} contain onlu valid
+     * <a href="https://tools.ietf.org/html/rfc7230#section-3.2.6">token</a> characters.
+     *
+     * @param token the character sequence to validate.
+     */
+    private static int validateCharSequenceToken(CharSequence token) {
+        for (int i = 0, len = token.length(); i < len; i++) {
+            byte value = (byte) token.charAt(i);
+            if (!isValidTokenChar(value)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    // HEADER
+    // header-field   = field-name ":" OWS field-value OWS
+    //
+    // field-name     = token
+    // token          = 1*tchar
+    //
+    // tchar          = "!" / "#" / "$" / "%" / "&" / "'" / "*"
+    //                    / "+" / "-" / "." / "^" / "_" / "`" / "|" / "~"
+    //                    / DIGIT / ALPHA
+    //                    ; any VCHAR, except delimiters.
+    //  Delimiters are chosen
+    //   from the set of US-ASCII visual characters not allowed in a token
+    //   (DQUOTE and "(),/:;<=>?@[\]{}")
+    //
+    // COOKIE
+    // cookie-pair       = cookie-name "=" cookie-value
+    // cookie-name       = token
+    // token          = 1*<any CHAR except CTLs or separators>
+    // CTL = <any US-ASCII control character
+    //       (octets 0 - 31) and DEL (127)>
+    // separators     = "(" | ")" | "<" | ">" | "@"
+    //                      | "," | ";" | ":" | "\" | <">
+    //                      | "/" | "[" | "]" | "?" | "="
+    //                      | "{" | "}" | SP | HT
+    //
+    // field-name's token is equivalent to cookie-name's token, we can reuse the tchar mask for both:
+
+    //    private static final class BitSet128 {
+    //        private long high;
+    //        private long low;
+    //
+    //        BitSet128 range(char fromInc, char toInc) {
+    //            for (int bit = fromInc; bit <= toInc; bit++) {
+    //                if (bit < 64) {
+    //                    low |= 1L << bit;
+    //                } else {
+    //                    high |= 1L << bit - 64;
+    //                }
+    //            }
+    //            return this;
+    //        }
+    //
+    //        BitSet128 bits(char... bits) {
+    //            for (char bit : bits) {
+    //                if (bit < 64) {
+    //                    low |= 1L << bit;
+    //                } else {
+    //                    high |= 1L << bit - 64;
+    //                }
+    //            }
+    //            return this;
+    //        }
+    //
+    //        long high() {
+    //            return high;
+    //        }
+    //
+    //        long low() {
+    //            return low;
+    //        }
+    //
+    //        static boolean contains(byte bit, long high, long low) {
+    //            if (bit < 0) {
+    //                return false;
+    //            }
+    //            if (bit < 64) {
+    //                return 0 != (low & 1L << bit);
+    //            }
+    //            return 0 != (high & 1L << bit - 64);
+    //        }
+    //    }
+
+    // BitSet128 tokenChars = new BitSet128()
+    //        .range('0', '9').range('a', 'z').range('A', 'Z') // Alphanumeric.
+    //        .bits('-', '.', '_', '~') // Unreserved characters.
+    //        .bits('!', '#', '$', '%', '&', '\'', '*', '+', '^', '`', '|'); // Token special characters.
+
+    // This constants calculated by the above code
+    private static final long TOKEN_CHARS_HIGH = 0x57ffffffc7fffffeL;
+    private static final long TOKEN_CHARS_LOW = 0x3ff6cfa00000000L;
+
+    private static boolean isValidTokenChar(byte bit) {
+        if (bit < 0) {
+            return false;
+        }
+        if (bit < 64) {
+            return 0 != (TOKEN_CHARS_LOW & 1L << bit);
+        }
+        return 0 != (TOKEN_CHARS_HIGH & 1L << bit - 64);
     }
 }

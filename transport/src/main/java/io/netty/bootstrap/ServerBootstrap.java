@@ -82,6 +82,9 @@ public class ServerBootstrap extends AbstractBootstrap<ServerBootstrap, ServerCh
      * Set the {@link EventLoopGroup} for the parent (acceptor) and the child (client). These
      * {@link EventLoopGroup}'s are used to handle all the events and IO for {@link ServerChannel} and
      * {@link Channel}'s.
+     * <p>
+     * <strong>Important:</strong> Usually this is only useful for advanced use-cases and usually
+     * {@link #group(EventLoopGroup)} is the preferred way to configure the group.
      */
     public ServerBootstrap group(EventLoopGroup parentGroup, EventLoopGroup childGroup) {
         super.group(parentGroup);
@@ -132,8 +135,8 @@ public class ServerBootstrap extends AbstractBootstrap<ServerBootstrap, ServerCh
     }
 
     @Override
-    void init(Channel channel) {
-        // 设置 NioServerSocketChannel 的 TCP 参数
+    void init(Channel channel) throws Throwable {
+	    // 设置 NioServerSocketChannel 的 TCP 参数
         setChannelOptions(channel, newOptionsArray(), logger);
         // 保存用户自定义属性
         setAttributes(channel, newAttributesArray());
@@ -235,8 +238,13 @@ public class ServerBootstrap extends AbstractBootstrap<ServerBootstrap, ServerCh
             // 2. 添加 NioSocketChannel 的 pipeline 的 handler，就是 main 方法中设置的 childHandler 方法里的
             child.pipeline().addLast(childHandler);
 
-            // 3. 设置 NioSocketChannel 的各种属性
-            setChannelOptions(child, childOptions, logger);
+            try {
+	            // 3. 设置 NioSocketChannel 的各种属性
+                setChannelOptions(child, childOptions, logger);
+            } catch (Throwable cause) {
+                forceClose(child, cause);
+                return;
+            }
             setAttributes(child, childAttrs);
 
             if (!extensions.isEmpty()) {

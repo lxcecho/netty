@@ -91,7 +91,7 @@ public class DefaultChannelPipeline implements ChannelPipeline {
     protected DefaultChannelPipeline(Channel channel) {
         this.channel = ObjectUtil.checkNotNull(channel, "channel");
         succeededFuture = new SucceededChannelFuture(channel, null);
-        voidPromise =  new VoidChannelPromise(channel, true);
+        voidPromise = new VoidChannelPromise(channel, true);
 
         tail = new TailContext(this);
         head = new HeadContext(this);
@@ -151,8 +151,16 @@ public class DefaultChannelPipeline implements ChannelPipeline {
         return addFirst(null, name, handler);
     }
 
-    @Override
-    public final ChannelPipeline addFirst(EventExecutorGroup group, String name, ChannelHandler handler) {
+    private enum AddStrategy {
+        ADD_FIRST,
+        ADD_LAST,
+        ADD_BEFORE,
+        ADD_AFTER;
+    }
+
+    private ChannelPipeline internalAdd(EventExecutorGroup group, String name,
+                                        ChannelHandler handler, String baseName,
+                                        AddStrategy addStrategy) {
         final AbstractChannelHandlerContext newCtx;
         synchronized (this) {
             checkMultiplicity(handler);
@@ -160,7 +168,22 @@ public class DefaultChannelPipeline implements ChannelPipeline {
 
             newCtx = newContext(group, name, handler);
 
-            addFirst0(newCtx);
+            switch (addStrategy) {
+                case ADD_FIRST:
+                    addFirst0(newCtx);
+                    break;
+                case ADD_LAST:
+                    addLast0(newCtx);
+                    break;
+                case ADD_BEFORE:
+                    addBefore0(getContextOrDie(baseName), newCtx);
+                    break;
+                case ADD_AFTER:
+                    addAfter0(getContextOrDie(baseName), newCtx);
+                    break;
+                default:
+                    throw new IllegalArgumentException("unknown add strategy: " + addStrategy);
+            }
 
             // If the registered is false it means that the channel was not registered on an eventLoop yet.
             // In this case we add the context to the pipeline and add a task that will call
@@ -179,6 +202,11 @@ public class DefaultChannelPipeline implements ChannelPipeline {
         }
         callHandlerAdded0(newCtx);
         return this;
+    }
+
+    @Override
+    public final ChannelPipeline addFirst(EventExecutorGroup group, String name, ChannelHandler handler) {
+        return internalAdd(group, name, handler, null, AddStrategy.ADD_FIRST);
     }
 
     private void addFirst0(AbstractChannelHandlerContext newCtx) {
@@ -206,46 +234,9 @@ public class DefaultChannelPipeline implements ChannelPipeline {
      */
     @Override
     public final ChannelPipeline addLast(EventExecutorGroup group, String name, ChannelHandler handler) {
-        final AbstractChannelHandlerContext newCtx;
-        synchronized (this) {
-            // 检查是否重复添加 Handler
-            checkMultiplicity(handler);
-
-            /**
-             * 创建新的 DefaultChannelHandlerContext【AbstractChannelHandlerContext】 节点，
-             * ChannelHandlerContext 对象是 ChannelHandler 和 ChannelPipeline 之间的关联，每当有 ChannelHandler 添加到 Pipeline 中时，都会创建 Context，
-             * Context 主要功能是管理他所关联的 Handler 和同一个 Pipeline 中的其他 Handler 之间的交互。
-             */
-            newCtx = newContext(group, filterName(name, handler), handler);
-
-            // 添加新的 DefaultChannelHandler 节点到 ChannelPipeline，即追加到 tail 节点前面
-            addLast0(newCtx);
-
-            // If the registered is false it means that the channel was not registered on an eventLoop yet.
-            // In this case we add the context to the pipeline and add a task that will call
-            // ChannelHandler.handlerAdded(...) once the channel is registered.
-            if (!registered) {
-                newCtx.setAddPending();
-                callHandlerCallbackLater(newCtx, true);
-                return this;
-            }
-
-            EventExecutor executor = newCtx.executor();
-            if (!executor.inEventLoop()) {
-                callHandlerAddedInEventLoop(newCtx, executor);
-                return this;
-            }
-        }
-        // 同步或异步或者晚点异步的调用 callHandlerAdded0，即回调用户方法
-        callHandlerAdded0(newCtx);
-        return this;
+        return internalAdd(group, name, handler, null, AddStrategy.ADD_LAST);
     }
 
-    /**
-     * 向 ChannelPipeline 中双向链表的尾部插入新的节点，其中 HeadContext 和 TailContext 一直是链表的头和尾，新的节点被插入到 HeadContext 和 TailContext 之间。
-     *
-     * @param newCtx
-     */
     private void addLast0(AbstractChannelHandlerContext newCtx) {
         AbstractChannelHandlerContext prev = tail.prev;
         newCtx.prev = prev;
@@ -262,34 +253,7 @@ public class DefaultChannelPipeline implements ChannelPipeline {
     @Override
     public final ChannelPipeline addBefore(
             EventExecutorGroup group, String baseName, String name, ChannelHandler handler) {
-        final AbstractChannelHandlerContext newCtx;
-        final AbstractChannelHandlerContext ctx;
-        synchronized (this) {
-            checkMultiplicity(handler);
-            name = filterName(name, handler);
-            ctx = getContextOrDie(baseName);
-
-            newCtx = newContext(group, name, handler);
-
-            addBefore0(ctx, newCtx);
-
-            // If the registered is false it means that the channel was not registered on an eventLoop yet.
-            // In this case we add the context to the pipeline and add a task that will call
-            // ChannelHandler.handlerAdded(...) once the channel is registered.
-            if (!registered) {
-                newCtx.setAddPending();
-                callHandlerCallbackLater(newCtx, true);
-                return this;
-            }
-
-            EventExecutor executor = newCtx.executor();
-            if (!executor.inEventLoop()) {
-                callHandlerAddedInEventLoop(newCtx, executor);
-                return this;
-            }
-        }
-        callHandlerAdded0(newCtx);
-        return this;
+        return internalAdd(group, name, handler, baseName, AddStrategy.ADD_BEFORE);
     }
 
     private static void addBefore0(AbstractChannelHandlerContext ctx, AbstractChannelHandlerContext newCtx) {
@@ -315,34 +279,7 @@ public class DefaultChannelPipeline implements ChannelPipeline {
     @Override
     public final ChannelPipeline addAfter(
             EventExecutorGroup group, String baseName, String name, ChannelHandler handler) {
-        final AbstractChannelHandlerContext newCtx;
-        final AbstractChannelHandlerContext ctx;
-
-        synchronized (this) {
-            checkMultiplicity(handler);
-            name = filterName(name, handler);
-            ctx = getContextOrDie(baseName);
-
-            newCtx = newContext(group, name, handler);
-
-            addAfter0(ctx, newCtx);
-
-            // If the registered is false it means that the channel was not registered on an eventLoop yet.
-            // In this case we remove the context from the pipeline and add a task that will call
-            // ChannelHandler.handlerRemoved(...) once the channel is registered.
-            if (!registered) {
-                newCtx.setAddPending();
-                callHandlerCallbackLater(newCtx, true);
-                return this;
-            }
-            EventExecutor executor = newCtx.executor();
-            if (!executor.inEventLoop()) {
-                callHandlerAddedInEventLoop(newCtx, executor);
-                return this;
-            }
-        }
-        callHandlerAdded0(newCtx);
-        return this;
+        return internalAdd(group, name, handler, baseName, AddStrategy.ADD_AFTER);
     }
 
     private static void addAfter0(AbstractChannelHandlerContext ctx, AbstractChannelHandlerContext newCtx) {

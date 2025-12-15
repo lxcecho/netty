@@ -269,6 +269,9 @@ public abstract class SingleThreadEventExecutor extends AbstractScheduledEventEx
                 }
 
                 if (task != null) {
+                    if (task == WAKEUP_TASK) {
+                        return null;
+                    }
                     return task;
                 }
             }
@@ -992,11 +995,13 @@ public abstract class SingleThreadEventExecutor extends AbstractScheduledEventEx
                 }
 
                 boolean success = false;
+                Throwable unexpectedException = null;
                 updateLastExecutionTime();
                 try {
                     SingleThreadEventExecutor.this.run();
                     success = true;
                 } catch (Throwable t) {
+                    unexpectedException = t;
                     logger.warn("Unexpected exception from an event executor: ", t);
                 } finally {
                     for (;;) {
@@ -1056,7 +1061,11 @@ public abstract class SingleThreadEventExecutor extends AbstractScheduledEventEx
                                 logger.warn("An event executor terminated with " +
                                         "non-empty task queue (" + numUserTasks + ')');
                             }
-                            terminationFuture.setSuccess(null);
+                            if (unexpectedException == null) {
+                                terminationFuture.setSuccess(null);
+                            } else {
+                                terminationFuture.setFailure(unexpectedException);
+                            }
                         }
                     }
                 }
