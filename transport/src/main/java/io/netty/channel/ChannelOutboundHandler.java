@@ -46,7 +46,6 @@ public interface ChannelOutboundHandler extends ChannelHandler {
             ChannelHandlerContext ctx, SocketAddress remoteAddress,
             SocketAddress localAddress, ChannelPromise promise) throws Exception;
 
-
     /**
      * Called once a disconnect operation is made. 当请求将 Channel 从远程节点断开时被调用
      *

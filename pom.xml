@@ -1799,10 +1799,6 @@
               <goal>check-format</goal>
             </goals>
             <phase>validate</phase>
-            <!--跳过代码风格检查-->
-            <configuration>
-              <skip>true</skip>
-            </configuration>
           </execution>
         </executions>
         <configuration>
