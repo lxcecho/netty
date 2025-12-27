@@ -69,12 +69,6 @@
       <artifactId>slf4j-simple</artifactId>
       <version>2.0.17</version>
     </dependency>
-<!--    <dependency>
-      <groupId>ch.qos.logback</groupId>
-      <artifactId>logback-classic</artifactId>
-      <version>1.5.23</version>
-      <scope>compile</scope>
-    </dependency>-->
     <dependency>
       <groupId>com.google.protobuf</groupId>
       <artifactId>protobuf-java</artifactId>
@@ -96,27 +90,4 @@
       <version>4.12</version>
     </dependency>
   </dependencies>
-
-  <!--<build>
-    <plugins>
-      &lt;!&ndash; Override the parent plugin configuration &ndash;&gt;
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>xml-maven-plugin</artifactId>
-        <version>1.0.1</version>
-        <executions>
-          <execution>
-            <id>check-style</id>
-            <goals>
-              <goal>check-format</goal>
-            </goals>
-            <phase>validate</phase>
-            <configuration>
-              <skip>true</skip>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-    </plugins>
-  </build>-->
 </project>
