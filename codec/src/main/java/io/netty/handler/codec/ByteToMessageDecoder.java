@@ -166,7 +166,7 @@ public abstract class ByteToMessageDecoder extends ChannelInboundHandlerAdapter 
     private static final byte STATE_CALLING_CHILD_DECODE = 1;
     private static final byte STATE_HANDLER_REMOVED_PENDING = 2;
 
-	// Used to guard the inputs for reentrant channelRead calls
+    // Used to guard the inputs for reentrant channelRead calls
 	private Queue<Object> inputMessages;
     /**
      * 有关半包处理的关键属性，Netty 会将不完整的数据包进行缓存在这个属性中
