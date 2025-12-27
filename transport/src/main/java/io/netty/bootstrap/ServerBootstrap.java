@@ -136,7 +136,7 @@ public class ServerBootstrap extends AbstractBootstrap<ServerBootstrap, ServerCh
 
     @Override
     void init(Channel channel) throws Throwable {
-	    // 设置 NioServerSocketChannel 的 TCP 参数
+        // 设置 NioServerSocketChannel 的 TCP 参数
         setChannelOptions(channel, newOptionsArray(), logger);
         // 保存用户自定义属性
         setAttributes(channel, newAttributesArray());
@@ -163,8 +163,9 @@ public class ServerBootstrap extends AbstractBootstrap<ServerBootstrap, ServerCh
                 ch.eventLoop().execute(new Runnable() {
                     @Override
                     public void run() {
-                        // 添加 ServerBootstrapAcceptor 是一个异步过程，需要 EventLoop 线程负责执行。而当前 EventLoop 线程正在执行 register0() 的注册流程，
-                        // 所以等到 register0() 执行完之后才能被添加到 Pipeline 当中。完成 initChannel() 这一步之后，ServerBootstrapAcceptor 并没有被添加到 Pipeline 中
+                        // 添加 ServerBootstrapAcceptor 是一个异步过程，需要 EventLoop 线程负责执行。而当前 EventLoop 线程正在执行 register0() 的注册流程
+                        // 所以等到 register0() 执行完之后才能被添加到 Pipeline 当中。
+                        // 完成 initChannel() 这一步之后，ServerBootstrapAcceptor 并没有被添加到 Pipeline 中
                         pipeline.addLast(new ServerBootstrapAcceptor(
                                 ch, currentChildGroup, currentChildHandler, currentChildOptions, currentChildAttrs,
                                 extensions));
@@ -239,7 +240,7 @@ public class ServerBootstrap extends AbstractBootstrap<ServerBootstrap, ServerCh
             child.pipeline().addLast(childHandler);
 
             try {
-	            // 3. 设置 NioSocketChannel 的各种属性
+                // 3. 设置 NioSocketChannel 的各种属性
                 setChannelOptions(child, childOptions, logger);
             } catch (Throwable cause) {
                 forceClose(child, cause);
@@ -259,7 +260,7 @@ public class ServerBootstrap extends AbstractBootstrap<ServerBootstrap, ServerCh
 
             try {
                 // 将客户端连接注册到 worker 线程池
-                // 将 该 NioSocketChannel 注册到 childGroup 中的一个 EventLoop 上，并添加一个监听器，这个 childGroup 就是 main 方法中创建的 workerGroup
+                // 将 NioSocketChannel 注册到 childGroup 中的一个 EventLoop 上，并添加一个监听器，这个 childGroup 就是 main 方法中创建的 workerGroup
                 childGroup.register(child).addListener(new ChannelFutureListener() {
                     @Override
                     public void operationComplete(ChannelFuture future) throws Exception {

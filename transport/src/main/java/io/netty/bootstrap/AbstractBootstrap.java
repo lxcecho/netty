@@ -419,7 +419,8 @@ public abstract class AbstractBootstrap<B extends AbstractBootstrap<B, C>, C ext
             public void run() {
                 if (regFuture.isSuccess()) {
                     // 这里下断点，来玩
-                    // 将调用 LoggingHandler 的 invokeBind 方法，最后会追到 DefaultChannelPipeline 类的 bind，然后进入到 unsafe.bind 方法 debug，
+                    // 将调用 LoggingHandler 的 invokeBind 方法，最后会追到 DefaultChannelPipeline 类的 bind，
+                    // 然后进入到 unsafe.bind 方法 debug，
                     // 注意要追踪到 unsafe.bind，要 debug 第二圈的时候，才能看到
                     channel.bind(localAddress, promise).addListener(ChannelFutureListener.CLOSE_ON_FAILURE);
                 } else {

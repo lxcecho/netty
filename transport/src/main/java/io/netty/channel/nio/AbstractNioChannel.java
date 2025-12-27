@@ -384,8 +384,10 @@ public abstract class AbstractNioChannel extends AbstractChannel {
         for (;;) {
             try {
                 /**
-                 * javaChannel().register() 负责调用 JDK 底层，将 Channel 注册到 Selector 上，register() 的第三个入参传入的是 Netty 自己实现的 Channel 对象，
-                 * 调用 register() 方法会将它绑定在 JDK 底层 Channel 的 attachment 上。这样在每次 Selector 对象进行事件循环时，Netty 都可以从返回的 JDK 底层 Channel 中获得自己的 Channel 对象。
+                 * javaChannel().register() 负责调用 JDK 底层，将 Channel 注册到 Selector 上，register()
+                 * 的第三个入参传入的是 Netty 自己实现的 Channel 对象，调用 register() 方法会将它绑定在 JDK 底
+                 * 层 Channel 的 attachment 上。这样在每次 Selector 对象进行事件循环时，Netty 都可以从返回
+                 * 的 JDK 底层 Channel 中获得自己的 Channel 对象。
                  */
                 selectionKey = javaChannel().register(eventLoop().unwrappedSelector(), 0, this);
                 return;

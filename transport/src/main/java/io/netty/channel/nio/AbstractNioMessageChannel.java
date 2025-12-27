@@ -99,7 +99,8 @@ public abstract class AbstractNioMessageChannel extends AbstractNioChannel {
                 for (int i = 0; i < size; i ++) {
                     readPending = false;
                     // 循环调用 ServerSocket 的 pipeline 的 fireChannelRead 方法，开始执行管道中 handler 的 ChannelRead 方法
-                    // 经过多次 debug，可以看到会反复执行多个 handler 的 ChannelRead，pipeline 里面有四个handler：Head、LoggingHandler、ServerBootstrapAcceptor，Tail
+                    // 经过多次 debug，可以看到会反复执行多个 handler 的 ChannelRead，pipeline 里面有四个 handler：
+                    // Head、LoggingHandler、ServerBootstrapAcceptor，Tail
                     pipeline.fireChannelRead(readBuf.get(i));
                 }
                 readBuf.clear();
