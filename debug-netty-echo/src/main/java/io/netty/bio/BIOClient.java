@@ -1,5 +1,7 @@
 package io.netty.bio;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.OutputStream;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
@@ -9,6 +11,7 @@ import java.util.UUID;
  * @author lxcecho lxcecho@gmail.com
  * @since 9:41 29-10-2022
  */
+@Slf4j
 public class BIOClient {
 
     public static void main(String[] args) throws Exception {
@@ -22,7 +25,7 @@ public class BIOClient {
 
         String name = UUID.randomUUID().toString();
 
-        System.out.println("Client sent msg: " + name);
+        log.info("Client sent msg: {}", name);
 
         os.write(name.getBytes(StandardCharsets.UTF_8));
         os.close();

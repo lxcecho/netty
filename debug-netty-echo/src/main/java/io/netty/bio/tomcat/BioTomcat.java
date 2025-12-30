@@ -1,8 +1,9 @@
 package io.netty.bio.tomcat;
 
-import io.netty.bio.tomcat.http.BIORequest;
-import io.netty.bio.tomcat.http.BIOResponse;
-import io.netty.bio.tomcat.http.BIOServlet;
+import io.netty.bio.tomcat.http.BioRequest;
+import io.netty.bio.tomcat.http.BioResponse;
+import io.netty.bio.tomcat.servlet.BioServlet;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -11,19 +12,21 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Properties;
 
 /**
  * @author lxcecho lxcecho@gmail.com
  * @since 9:46 29-10-2022
  */
-public class BIOTomcat {
+@Slf4j
+public class BioTomcat {
 
     private int port = 8090;
 
     private ServerSocket serverSocket;
 
-    private Map<String, BIOServlet> servletMaps = new HashMap<>();
+    private Map<String, BioServlet> servletMaps = new HashMap<>();
 
     private Properties webXml = new Properties();
 
@@ -44,7 +47,8 @@ public class BIOTomcat {
     private void init() {
         // 加载 web.xml 文件,同时初始化 ServletMaps 对象
         try {
-            String WEB_INF = this.getClass().getResource("/").getPath();
+            String WEB_INF = Objects.requireNonNull(this.getClass().getResource("/")).getPath();
+            log.info("web-file: {}", WEB_INF);
             FileInputStream fis = new FileInputStream(WEB_INF + "web_bio.properties");
 
             webXml.load(fis);
@@ -57,7 +61,7 @@ public class BIOTomcat {
                     String url = webXml.getProperty(key);
                     String className = webXml.getProperty(servletName + ".className");
                     // 单实例，多线程
-                    BIOServlet obj = (BIOServlet) Class.forName(className).newInstance();
+                    BioServlet obj = (BioServlet) Class.forName(className).newInstance();
                     servletMaps.put(url, obj);
                 }
             }
@@ -67,15 +71,15 @@ public class BIOTomcat {
     }
 
     public void start() {
-        // 1、加载配置文件，初始化 ServeltMaps
+        // 1、加载配置文件，初始化 ServletMaps
         init();
 
         try {
             serverSocket = new ServerSocket(this.port);
 
-            System.out.println("Echo Tomcat 已启动，监听的端口是：" + this.port);
+            log.info("Echo Tomcat 已启动，监听的端口是：{}", this.port);
 
-            // 2、等待用户请求,用一个死循环来等待用户请求
+            // 2、等待用户请求，用一个死循环来等待用户请求
             while (true) {
                 Socket socket = serverSocket.accept();
                 // 4、HTTP 请求，发送的数据就是字符串，有规律的字符串（HTTP 协议）
@@ -91,10 +95,10 @@ public class BIOTomcat {
         OutputStream os = socket.getOutputStream();
 
         // 7、Request(InputStream) / Response(OutputStream)
-        BIORequest request = new BIORequest(is);
-        BIOResponse response = new BIOResponse(os);
+        BioRequest request = new BioRequest(is);
+        BioResponse response = new BioResponse(os);
 
-        // 5、从协议内容中拿到URL，把相应的 Servlet 用反射进行实例化
+        // 5、从协议内容中拿到 URL，把相应的 Servlet 用反射进行实例化
         String url = request.getUrl();
 
         if (servletMaps.containsKey(url)) {
@@ -112,7 +116,8 @@ public class BIOTomcat {
     }
 
     public static void main(String[] args) {
-        new BIOTomcat().start();
+        // 启动之后，使用浏览器访问：http://localhost:8090/firstServlet.do
+        new BioTomcat().start();
     }
 
 }

@@ -1,5 +1,7 @@
 package io.netty.bio;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.InputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -10,6 +12,7 @@ import java.net.Socket;
  * @author lxcecho lxcecho@gmail.com
  * @since 9:35 29-10-2022
  */
+@Slf4j
 public class BioServer {
 
     ServerSocket serverSocket;
@@ -18,7 +21,7 @@ public class BioServer {
         try {
             // 创建一个新的 ServerSocket， 用以监听指定端口上的连接请求
             serverSocket = new ServerSocket(port);
-            System.out.println("BIO Server is completing on " + port);
+            log.info("BIO Server is completing on {}", port);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -35,7 +38,7 @@ public class BioServer {
             // 等待客户端连接，阻塞方法，直到一个连接建立
             // Socket 数据发送者在服务端的引用
             Socket socket = serverSocket.accept();
-            System.out.println(socket.getPort());
+            log.info("port: {}", socket.getPort());
 
             // 对方法数据给我了，读 Input
             InputStream is = socket.getInputStream();
@@ -45,7 +48,7 @@ public class BioServer {
             int len = is.read(buff);
             if (len > 0) {
                 String msg = new String(buff, 0, len);
-                System.out.println("receive:" + msg);
+                log.info("receive: {}", msg);
             }
         }
     }
