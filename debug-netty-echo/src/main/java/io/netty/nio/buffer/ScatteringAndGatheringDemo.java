@@ -12,7 +12,7 @@ import java.util.Arrays;
  *  Scattering：将数据写入到 Buffer 时，可以采用 Buffer 数组，依次写入【分散】；
  *  Gathering：从 Buffer 读取数据时，可以采用 Buffer 数组，依次读。
  *
- * @author lxcecho 909231497@qq.com
+ * @author lxcecho lxcecho@gmail.com
  * @since 2021/2/20
  */
 public class ScatteringAndGatheringDemo {

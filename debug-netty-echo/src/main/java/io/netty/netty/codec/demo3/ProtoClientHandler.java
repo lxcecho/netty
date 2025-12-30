@@ -6,7 +6,7 @@ import io.netty.channel.SimpleChannelInboundHandler;
 import java.util.Random;
 
 /**
- * @author lxcecho 909231497@qq.com
+ * @author lxcecho lxcecho@gmail.com
  * @since 23:06 10-11-2022
  */
 public class ProtoClientHandler extends SimpleChannelInboundHandler<DataInfo.MyMessage> {

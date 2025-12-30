@@ -1,7 +1,7 @@
 package io.netty.netty.rpc.api;
 
 /**
- * @author lxcecho 909231497@qq.com
+ * @author lxcecho lxcecho@gmail.com
  * @since 16:23 29-10-2022
  */
 public interface IRpcService {

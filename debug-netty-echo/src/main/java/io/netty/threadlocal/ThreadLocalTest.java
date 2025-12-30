@@ -1,7 +1,7 @@
 package io.netty.threadlocal;
 
 /**
- * @author lxcecho 909231497@qq.com
+ * @author lxcecho lxcecho@gmail.com
  * @since 22:01 06-08-2022
  */
 public class ThreadLocalTest {

@@ -9,7 +9,7 @@ import io.netty.handler.codec.http.websocketx.WebSocketServerProtocolHandler;
 import io.netty.handler.stream.ChunkedWriteHandler;
 
 /**
- * @author lxcecho 909231497@qq.com
+ * @author lxcecho lxcecho@gmail.com
  * @since 12.12.2021
  */
 public class MyServerInitializer extends ChannelInitializer<SocketChannel> {

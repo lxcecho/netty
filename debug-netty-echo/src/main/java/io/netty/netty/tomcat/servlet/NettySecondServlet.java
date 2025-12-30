@@ -5,7 +5,7 @@ import io.netty.netty.tomcat.http.NettyResponse;
 import io.netty.netty.tomcat.http.NettyServlet;
 
 /**
- * @author lxcecho 909231497@qq.com
+ * @author lxcecho lxcecho@gmail.com
  * @since 10:28 29-10-2022
  */
 public class NettySecondServlet extends NettyServlet {

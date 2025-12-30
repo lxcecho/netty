@@ -8,10 +8,10 @@ import java.nio.charset.Charset;
 import java.util.Scanner;
 
 /**
- * @author lxcecho 909231497@qq.com
- * @since 17.09.2021
- *
  * 客户端
+ *
+ * @author lxcecho lxcecho@gmail.com
+ * @since 17.09.2021
  */
 public class ChatClient {
 

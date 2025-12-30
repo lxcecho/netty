@@ -7,7 +7,7 @@ import io.netty.util.CharsetUtil;
 import java.nio.charset.Charset;
 
 /**
- * @author lxcecho 909231497@qq.com
+ * @author lxcecho lxcecho@gmail.com
  * @since 10.10.2021
  */
 public class NettyBufDemo02 {

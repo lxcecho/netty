@@ -10,10 +10,10 @@ import io.netty.util.CharsetUtil;
 import java.net.URI;
 
 /**
- * @author lxcecho 909231497@qq.com
- * @since 28.02.2022
- * <p>
  * 自定义处理器（ChannelHandler）
+ *
+ * @author lxcecho lxcecho@gmail.com
+ * @since 28.02.2022
  */
 public class TestServerHandler extends SimpleChannelInboundHandler<HttpObject> {
     @Override

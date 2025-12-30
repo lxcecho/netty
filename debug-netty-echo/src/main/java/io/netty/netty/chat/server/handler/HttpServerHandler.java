@@ -11,7 +11,7 @@ import java.net.URL;
 /**
  * 对 HTTP 的支持，处理服务端分发请求的逻辑
  *
- * @author lxcecho 909231497@qq.com
+ * @author lxcecho lxcecho@gmail.com
  * @since 20:16 29-10-2022
  */
 @Slf4j

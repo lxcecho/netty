@@ -6,7 +6,7 @@ import io.netty.channel.SimpleChannelInboundHandler;
 import java.time.LocalDateTime;
 
 /**
- * @author lxcecho 909231497@qq.com
+ * @author lxcecho lxcecho@gmail.com
  * @since 23:15 09-11-2022
  */
 public class MyChatClientHandler extends SimpleChannelInboundHandler<String> {

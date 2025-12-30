@@ -7,7 +7,7 @@ import java.nio.channels.FileLock;
 /**
  * 文件共享锁和排他锁
  *
- * @author lxcecho 909231497@qq.com
+ * @author lxcecho lxcecho@gmail.com
  * @since 22:30 13-11-2022
  */
 public class FileLockDemo {

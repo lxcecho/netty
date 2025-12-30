@@ -9,7 +9,7 @@ import lombok.experimental.Accessors;
 /**
  * 自定义传输协议
  *
- * @author lxcecho 909231497@qq.com
+ * @author lxcecho lxcecho@gmail.com
  * @since 16:27 29-10-2022
  */
 @Getter

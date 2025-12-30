@@ -12,7 +12,7 @@ import java.nio.file.StandardOpenOption;
 import java.util.concurrent.Future;
 
 /**
- * @author lxcecho 909231497@qq.com
+ * @author lxcecho lxcecho@gmail.com
  * @since 15.09.2021
  */
 public class AsynchronousFileChannelTest {

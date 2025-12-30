@@ -6,7 +6,7 @@ import java.nio.ByteBuffer;
  * 只读缓冲区：只可以把常规缓冲区转换为只读缓冲区，而不能将只读缓冲区转换为可写的缓冲区——不可逆
  * 即：只读 Buffer，我们可以随时将一个普通 Buffer 调用 asReadOnlyBuffer() 方法返回一个只读 Buffer，但不能将一个只读 Buffer 转换为读写 Buffer。
  *
- * @author lxcecho 909231497@qq.com
+ * @author lxcecho lxcecho@gmail.com
  * @since 22:45 28-10-2022
  */
 public class ReadOnlyBuffer {

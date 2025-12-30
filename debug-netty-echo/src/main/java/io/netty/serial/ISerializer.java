@@ -1,7 +1,7 @@
 package io.netty.serial;
 
 /**
- * @author lxcecho 909231497@qq.com
+ * @author lxcecho lxcecho@gmail.com
  * @since 14:29 23-10-2022
  */
 public interface ISerializer {

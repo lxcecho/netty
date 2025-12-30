@@ -27,7 +27,7 @@ import java.nio.charset.StandardCharsets;
  * 与 Stream 不同的是，Channel 是双向的，一个流只可能是 InputStream 或是 OutputStream，Channel 打开后则可以进行读取、写入或是读写。
  * 由于 Channel 是双向的，因此它能更好的反映出底层操作系统的真实情况：在 Linux 系统中，底层操作系统的通道就是双向的。
  *
- * @author lxcecho 909231497@qq.com
+ * @author lxcecho lxcecho@gmail.com
  * @since 23:39 27-10-2022
  */
 public class BufferTest {

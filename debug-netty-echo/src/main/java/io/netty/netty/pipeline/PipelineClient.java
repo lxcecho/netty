@@ -10,7 +10,7 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 import java.nio.charset.StandardCharsets;
 
 /**
- * @author lxcecho 909231497@qq.com
+ * @author lxcecho lxcecho@gmail.com
  * @since 22:54 30-10-2022
  */
 public class PipelineClient {

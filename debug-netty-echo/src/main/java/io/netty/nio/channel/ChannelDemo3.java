@@ -7,10 +7,10 @@ import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 
 /**
- * @author lxcecho 909231497@qq.com
- * @since 2021/2/20
- * <p>
  * 使用 FileChannel(通道) 和 方法  read , write，完成文件的拷贝。
+ *
+ * @author lxcecho lxcecho@gmail.com
+ * @since 2021/2/20
  */
 public class ChannelDemo3 {
     public static void main(String[] args) {

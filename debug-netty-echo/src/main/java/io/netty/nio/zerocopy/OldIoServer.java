@@ -6,7 +6,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 /**
- * @author lxcecho 909231497@qq.com
+ * @author lxcecho 9lxcecho@gmail.com
  * @since 29.05.2021
  */
 public class OldIoServer {

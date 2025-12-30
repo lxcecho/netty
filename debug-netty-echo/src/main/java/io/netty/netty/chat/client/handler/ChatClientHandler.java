@@ -14,7 +14,7 @@ import java.util.regex.Pattern;
 /**
  * 聊天客户端逻辑实现
  *
- * @author lxcecho 909231497@qq.com
+ * @author lxcecho lxcecho@gmail.com
  * @since 20:18 29-10-2022
  */
 @Slf4j

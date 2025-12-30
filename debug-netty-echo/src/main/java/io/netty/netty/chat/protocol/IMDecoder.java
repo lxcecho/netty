@@ -14,7 +14,7 @@ import org.msgpack.MessageTypeException;
 /**
  * 自定义 IM 解码器：接收消息后对自定义协议内容进行解码
  *
- * @author lxcecho 909231497@qq.com
+ * @author lxcecho lxcecho@gmail.com
  * @since 20:17 29-10-2022
  */
 public class IMDecoder extends ByteToMessageDecoder {

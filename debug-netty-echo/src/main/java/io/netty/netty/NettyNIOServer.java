@@ -14,7 +14,7 @@ import java.nio.charset.StandardCharsets;
 /**
  * 非阻塞的 Netty 版本
  *
- * @author lxcecho 909231497@qq.com
+ * @author lxcecho lxcecho@gmail.com
  * @since 19:23 19-11-2022
  */
 public class NettyNIOServer {

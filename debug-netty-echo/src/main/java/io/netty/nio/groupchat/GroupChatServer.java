@@ -7,11 +7,11 @@ import java.nio.channels.*;
 import java.util.Iterator;
 
 /**
- * @author lxcecho 909231497@qq.com
- * @since 29.05.2021
- *
  * 1 服务器启动并监听6667
  * 2 服务器接收客户端信息，并实现转发【处理上线和离线】
+ *
+ * @author lxcecho lxcecho@gmail.com
+ * @since 29.05.2021
  */
 public class GroupChatServer {
 

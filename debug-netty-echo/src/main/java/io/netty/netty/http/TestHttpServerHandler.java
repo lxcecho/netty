@@ -15,7 +15,7 @@ import java.net.URI;
  * 1. SimpleChannelInboundHandler 是 ChannelInboundHandlerAdapter
  * 2. HttpObject 客户端和服务端相互通讯的数据被封装成 HttpObject
  *
- * @author lxcecho 909231497@qq.com
+ * @author lxcecho lxcecho@gmail.com
  * @since 08.10.2021
  */
 public class TestHttpServerHandler extends SimpleChannelInboundHandler<HttpObject> {

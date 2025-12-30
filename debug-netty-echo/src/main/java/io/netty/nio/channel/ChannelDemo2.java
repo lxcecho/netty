@@ -7,10 +7,10 @@ import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 
 /**
- * @author lxcecho 909231497@qq.com
- * @since 2021/2/20
- *
  * 使用 ByteBuffer(缓冲) 和 FileChannel(通道)， 将 file01.txt 中的数据读入到程序，并显示在控制台屏幕。
+ *
+ * @author lxcecho lxcecho@gmail.com
+ * @since 2021/2/20
  */
 public class ChannelDemo2 {
     public static void main(String[] args) {

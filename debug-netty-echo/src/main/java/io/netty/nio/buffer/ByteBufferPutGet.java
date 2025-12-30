@@ -3,11 +3,11 @@ package io.netty.nio.buffer;
 import java.nio.ByteBuffer;
 
 /**
- * @author lxcecho 909231497@qq.com
- * @since 2021/2/20
- *
  * ByteBuffer 支持类型化的 put 和 get, put 放入的是什么数据类型，get 就应该使用相应的数据类型来取出，
  * 否则可能有 BufferUnderflowException 异常。
+ *
+ * @author lxcecho lxcecho@gmail.com
+ * @since 2021/2/20
  */
 public class ByteBufferPutGet {
     public static void main(String[] args) {

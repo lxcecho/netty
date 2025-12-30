@@ -11,11 +11,11 @@ import io.netty.util.CharsetUtil;
 import java.util.concurrent.TimeUnit;
 
 /**
- * @author lxcecho 909231497@qq.com
- * @since 03.10.2021
- * <p>
  * 1.自定义一个 Handler 需要继承 netty 规定好的某个 HandlerAdapter（规范）
  * 2.这时自定义的 Handler，才能称为一个 Handler
+ *
+ * @author lxcecho lxcecho@gmail.com
+ * @since 03.10.2021
  */
 public class NettyServerHandler extends ChannelInboundHandlerAdapter {
 

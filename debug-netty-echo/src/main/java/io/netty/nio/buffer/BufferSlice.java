@@ -5,7 +5,7 @@ import java.nio.ByteBuffer;
 /**
  * 缓冲区分片：Slice Buffer 与原有的 Buffer 共享相同的底层数组
  *
- * @author lxcecho 909231497@qq.com
+ * @author lxcecho lxcecho@gmail.com
  * @since 22:29 28-10-2022
  */
 public class BufferSlice {

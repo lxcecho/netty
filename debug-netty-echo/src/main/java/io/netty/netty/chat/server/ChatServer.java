@@ -22,7 +22,7 @@ import java.io.IOException;
  * 处理思路：
  * 所有客户端的消息全部发送到服务端的消息容器，每一条消息都携带了客户端的标识信息，然后由服务端转发给所有在线的客户端。
  *
- * @author lxcecho 909231497@qq.com
+ * @author lxcecho lxcecho@gmail.com
  * @since 20:16 29-10-2022
  */
 @Slf4j

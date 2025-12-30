@@ -3,7 +3,7 @@ package io.netty.decorator;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * @author lxcecho 909231497@qq.com
+ * @author lxcecho lxcecho@gmail.com
  * @since 03.04.2022
  */
 @Slf4j

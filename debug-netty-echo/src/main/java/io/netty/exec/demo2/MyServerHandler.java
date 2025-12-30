@@ -7,7 +7,7 @@ import io.netty.handler.codec.http.HttpObject;
 import java.util.UUID;
 
 /**
- * @author lxcecho 909231497@qq.com
+ * @author lxcecho lxcecho@gmail.com
  * @since 28.02.2022
  */
 public class MyServerHandler extends SimpleChannelInboundHandler<HttpObject> {

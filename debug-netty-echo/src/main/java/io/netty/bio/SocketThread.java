@@ -7,7 +7,7 @@ import java.io.OutputStreamWriter;
 import java.net.Socket;
 
 /**
- * @author lxcecho 909231497@qq.com
+ * @author lxcecho lxcecho@gmail.com
  * @since 23:30 20-10-2022
  */
 public class SocketThread implements Runnable {

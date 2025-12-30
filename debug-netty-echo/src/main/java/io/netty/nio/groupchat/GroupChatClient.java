@@ -14,7 +14,7 @@ import java.util.Scanner;
  * 2 发送消息
  * 3 接受服务器消息
  *
- * @author lxcecho 909231497@qq.com
+ * @author lxcecho lxcecho@gmail.com
  * @since 29.05.2021
  */
 public class GroupChatClient {

@@ -8,7 +8,7 @@ import io.netty.channel.group.DefaultChannelGroup;
 import io.netty.util.concurrent.GlobalEventExecutor;
 
 /**
- * @author lxcecho 909231497@qq.com
+ * @author lxcecho lxcecho@gmail.com
  * @since 23:08 09-11-2022
  */
 public class MyChatServerHandler extends SimpleChannelInboundHandler<String> {

@@ -7,7 +7,7 @@ import java.net.Socket;
 /**
  * 同步阻塞 IO 模型
  *
- * @author lxcecho 909231497@qq.com
+ * @author lxcecho lxcecho@gmail.com
  * @since 9:35 29-10-2022
  */
 public class BioServer {

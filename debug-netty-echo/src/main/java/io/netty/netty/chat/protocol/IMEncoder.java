@@ -8,7 +8,7 @@ import org.msgpack.MessagePack;
 /**
  * 自定义 IM 协议的编码器：发送消息前对自定义协议内容进行编码处理
  *
- * @author lxcecho 909231497@qq.com
+ * @author lxcecho lxcecho@gmail.com
  * @since 20:17 29-10-2022
  */
 public class IMEncoder extends MessageToByteEncoder<IMMessage> {

@@ -18,7 +18,7 @@ import java.io.IOException;
 /**
  * 客户端：完成 Java 控制台输入与服务端交互逻辑
  *
- * @author lxcecho 909231497@qq.com
+ * @author lxcecho lxcecho@gmail.com
  * @since 20:15 29-10-2022
  */
 @Slf4j

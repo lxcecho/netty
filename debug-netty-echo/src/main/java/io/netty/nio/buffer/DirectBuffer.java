@@ -8,7 +8,7 @@ import java.nio.channels.FileChannel;
 /**
  * 直接缓冲区
  *
- * @author lxcecho 909231497@qq.com
+ * @author lxcecho lxcecho@gmail.com
  * @since 22:57 28-10-2022
  */
 public class DirectBuffer {

@@ -10,7 +10,7 @@ import io.netty.util.CharsetUtil;
 /**
  * ChannelInboundHandler 入站类型处理器，负责接收解码后的 HTTP 请求数据，并将请求处理结果写回客户端
  *
- * @author lxcecho 909231497@qq.com
+ * @author lxcecho lxcecho@gmail.com
  * @since 21:56 05-08-2022
  */
 public class HttpServerHandler extends SimpleChannelInboundHandler<FullHttpRequest> {

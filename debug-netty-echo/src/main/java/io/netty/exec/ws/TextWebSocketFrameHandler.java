@@ -8,10 +8,10 @@ import lombok.extern.slf4j.Slf4j;
 import java.time.LocalDateTime;
 
 /**
- * @author lxcecho 909231497@qq.com
- * @since 31.03.2022
- *
  * TextWebSocketFrame: Web Socket text frame
+ *
+ * @author lxcecho lxcecho@gmail.com
+ * @since 31.03.2022
  */
 @Slf4j
 public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextWebSocketFrame> {

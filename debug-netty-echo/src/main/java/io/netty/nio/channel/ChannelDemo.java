@@ -6,10 +6,10 @@ import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 
 /**
- * @author lxcecho 909231497@qq.com
- * @since 2021/2/20
- *
  * 使用 ByteBuffer(缓冲) 和 FileChannel(通道)， 将 "hello,Netty" 写入到file01.txt 中。
+ *
+ * @author lxcecho lxcecho@gmail.com
+ * @since 2021/2/20
  */
 public class ChannelDemo {
     public static void main(String[] args){

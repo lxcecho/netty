@@ -20,7 +20,7 @@ import java.util.Properties;
 /**
  * Netty 就是一个同时支持多协议的网络通信框架
  *
- * @author lxcecho 909231497@qq.com
+ * @author lxcecho lxcecho@gmail.com
  * @since 10:24 29-10-2022
  */
 public class NettyTomcat {

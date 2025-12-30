@@ -5,12 +5,12 @@ import io.netty.util.concurrent.FastThreadLocal;
 import java.util.concurrent.TimeUnit;
 
 /**
- * @author lxcecho 909231497@qq.com
+ * @author lxcecho lxcecho@gmail.com
  * @since 21:58 01-11-2022
  */
 public class FastThreadLocalDemo {
 
-    final class FastThreadLocalTest extends FastThreadLocal<Object> {
+    static final class FastThreadLocalTest extends FastThreadLocal<Object> {
         @Override
         protected Object initialValue() throws Exception {
             return new Object();

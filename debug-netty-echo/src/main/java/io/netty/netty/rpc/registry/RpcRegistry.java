@@ -15,7 +15,7 @@ import io.netty.handler.codec.serialization.ObjectEncoder;
  * 负责将所有 Provider 的服务名称和服务引用地址注册到一个容器中，并对外发布
  * Registry 要启动一个对外的服务，很显然应该作为服务端，并提供一个对外可以访问的端口
  *
- * @author lxcecho 909231497@qq.com
+ * @author lxcecho lxcecho@gmail.com
  * @since 16:30 29-10-2022
  */
 public class RpcRegistry {

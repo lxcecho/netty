@@ -1,7 +1,7 @@
 package io.netty.nio.chat;
 
 /**
- * @author lxcecho 909231497@qq.com
+ * @author lxcecho lxcecho@gmail.com
  * @since 17.09.2021
  */
 public class AClient {

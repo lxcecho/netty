@@ -14,7 +14,7 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * 实现注册具体逻辑
  *
- * @author lxcecho 909231497@qq.com
+ * @author lxcecho lxcecho@gmail.com
  * @since 16:29 29-10-2022
  */
 public class RegistryHandler extends ChannelInboundHandlerAdapter {

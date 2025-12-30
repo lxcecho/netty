@@ -9,7 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 /**
  * 自定义协议的支持：用于处理 Java 控制台发过来的 JavaObject 消息体
  *
- * @author lxcecho 909231497@qq.com
+ * @author lxcecho lxcecho@gmail.com
  * @since 20:16 29-10-2022
  */
 @Slf4j

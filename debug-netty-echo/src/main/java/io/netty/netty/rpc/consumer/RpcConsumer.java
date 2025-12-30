@@ -5,7 +5,7 @@ import io.netty.netty.rpc.api.IRpcService;
 import io.netty.netty.rpc.consumer.proxy.RpcProxy;
 
 /**
- * @author lxcecho 909231497@qq.com
+ * @author lxcecho lxcecho@gmail.com
  * @since 16:26 29-10-2022
  */
 public class RpcConsumer {

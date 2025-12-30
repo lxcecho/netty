@@ -15,7 +15,7 @@ import io.netty.util.concurrent.GlobalEventExecutor;
 /**
  * 用于自定义协议内容的逻辑处理：处理用户的登录、退出、上下线、发送消息等行为
  *
- * @author lxcecho 909231497@qq.com
+ * @author lxcecho lxcecho@gmail.com
  * @since 20:18 29-10-2022
  */
 public class MsgProcessor {

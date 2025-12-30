@@ -6,10 +6,10 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.handler.codec.http.HttpServerCodec;
 
 /**
- * @author lxcecho 909231497@qq.com
- * @since 28.02.2022
- * <p>
  * 自定义初始化
+ *
+ * @author lxcecho lxcecho@gmail.com
+ * @since 28.02.2022
  */
 public class TestServerInitializerHandler extends ChannelInitializer<SocketChannel> {
     @Override

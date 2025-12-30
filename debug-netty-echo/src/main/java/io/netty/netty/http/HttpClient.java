@@ -12,7 +12,7 @@ import java.net.URI;
 import java.nio.charset.StandardCharsets;
 
 /**
- * @author lxcecho 909231497@qq.com
+ * @author lxcecho lxcecho@gmail.com
  * @since 22:19 05-08-2022
  */
 public class HttpClient {

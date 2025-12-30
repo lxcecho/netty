@@ -1,7 +1,7 @@
 package io.netty.decorator;
 
 /**
- * @author lxcecho 909231497@qq.com
+ * @author lxcecho lxcecho@gmail.com
  * @since 03.04.2022
  */
 public interface Component {

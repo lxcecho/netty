@@ -10,10 +10,10 @@ import java.util.Iterator;
 import java.util.Set;
 
 /**
- * @author lxcecho 909231497@qq.com
- * @since 2021/2/21
- * <p>
  * 实现服务器端和客户端之间的数据简单通讯（非阻塞）
+ *
+ * @author lxcecho lxcecho@gmail.com
+ * @since 2021/2/21
  */
 public class NIOServer {
     public static void main(String[] args) throws Exception {

@@ -7,7 +7,7 @@ import io.netty.channel.ChannelPromise;
 import java.util.concurrent.TimeUnit;
 
 /**
- * @author lxcecho 909231497@qq.com
+ * @author lxcecho lxcecho@gmail.com
  * @since 22:46 30-10-2022
  */
 public class OutboundHandlerB extends ChannelOutboundHandlerAdapter {

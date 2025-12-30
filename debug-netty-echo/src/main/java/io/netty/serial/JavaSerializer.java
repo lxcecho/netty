@@ -3,7 +3,7 @@ package io.netty.serial;
 import java.io.*;
 
 /**
- * @author lxcecho 909231497@qq.com
+ * @author lxcecho lxcecho@gmail.com
  * @since 14:46 23-10-2022
  */
 public class JavaSerializer implements ISerializer {

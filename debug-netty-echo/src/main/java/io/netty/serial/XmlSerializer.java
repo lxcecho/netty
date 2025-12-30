@@ -6,7 +6,7 @@ import com.thoughtworks.xstream.io.xml.DomDriver;
 import java.nio.charset.StandardCharsets;
 
 /**
- * @author lxcecho 909231497@qq.com
+ * @author lxcecho lxcecho@gmail.com
  * @since 15:38 23-10-2022
  */
 public class XmlSerializer implements ISerializer {

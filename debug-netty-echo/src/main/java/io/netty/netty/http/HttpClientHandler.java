@@ -9,7 +9,7 @@ import io.netty.handler.codec.http.HttpContent;
 import java.nio.charset.StandardCharsets;
 
 /**
- * @author lxcecho 909231497@qq.com
+ * @author lxcecho lxcecho@gmail.com
  * @since 22:28 05-08-2022
  */
 public class HttpClientHandler extends ChannelInboundHandlerAdapter {

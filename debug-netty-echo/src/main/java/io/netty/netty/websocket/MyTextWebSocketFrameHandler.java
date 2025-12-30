@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 /**
  * 这里 TextWebSocketFrame 类型，表示一个文本帧(frame)
  *
- * @author lxcecho 909231497@qq.com
+ * @author lxcecho lxcecho@gmail.com
  * @since 12.12.2021
  */
 public class MyTextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextWebSocketFrame> {

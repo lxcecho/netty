@@ -12,7 +12,7 @@ import io.netty.handler.codec.DelimiterBasedFrameDecoder;
 import java.nio.charset.StandardCharsets;
 
 /**
- * @author lxcecho 909231497@qq.com
+ * @author lxcecho lxcecho@gmail.com
  * @since 10:49 06-08-2022
  */
 public class DecoderTest {

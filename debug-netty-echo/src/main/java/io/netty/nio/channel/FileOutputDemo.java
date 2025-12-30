@@ -10,7 +10,7 @@ import java.nio.channels.FileChannel;
  * 2. 创建 Buffer，并初始化
  * 3. 将数据从 Buffer 写入到 Channel 中
  *
- * @author lxcecho 909231497@qq.com
+ * @author lxcecho lxcecho@gmail.com
  * @since 23:52 28-10-2022
  */
 public class FileOutputDemo {

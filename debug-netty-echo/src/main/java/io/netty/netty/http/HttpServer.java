@@ -15,7 +15,7 @@ import io.netty.handler.codec.http.HttpServerCodec;
 import java.net.InetSocketAddress;
 
 /**
- * @author lxcecho 909231497@qq.com
+ * @author lxcecho lxcecho@gmail.com
  * @since 21:48 05-08-2022
  */
 public class HttpServer {
