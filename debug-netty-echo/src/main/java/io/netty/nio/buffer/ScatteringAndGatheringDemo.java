@@ -45,7 +45,7 @@ public class ScatteringAndGatheringDemo {
             }
 
             // 将所有的 buffer 进行 flip
-            Arrays.asList(byteBuffers).forEach(byteBuffer -> byteBuffer.flip());
+            Arrays.asList(byteBuffers).forEach(ByteBuffer::flip);
 
             // 将数据读出显示到客户端
             long byteWrite = 0;
@@ -55,7 +55,7 @@ public class ScatteringAndGatheringDemo {
             }
 
             // 将所有的 buffer 进行 clear
-            Arrays.asList(byteBuffers).forEach(byteBuffer -> byteBuffer.clear());
+            Arrays.asList(byteBuffers).forEach(ByteBuffer::clear);
             System.out.println("byteRead=" + byteRead + " byteWrite="
                     + byteWrite + " messageLength=" + messageLength);
         }

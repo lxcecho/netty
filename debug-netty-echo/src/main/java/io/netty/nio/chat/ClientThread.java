@@ -5,6 +5,7 @@ import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -74,14 +75,14 @@ public class ClientThread implements Runnable {
             // 切换读模式
             buffer.flip();
             // 读取内容
-            message += Charset.forName("UTF-8").decode(buffer);
+            message += StandardCharsets.UTF_8.decode(buffer);
         }
 
         // 4 将 channel 再次注册到选择器上，监听可读状态
         socketChannel.register(selector, SelectionKey.OP_READ);
 
         // 5 把客户端发送的消息，广播到其他客户端
-        if (message.length() > 0) {
+        if (!message.isEmpty()) {
             // 广播给其他客户端
             System.out.println(message);
         }

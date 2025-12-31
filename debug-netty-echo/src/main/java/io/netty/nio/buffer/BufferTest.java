@@ -1,5 +1,6 @@
 package io.netty.nio.buffer;
 
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 
 import java.io.FileInputStream;
@@ -30,6 +31,7 @@ import java.nio.charset.StandardCharsets;
  * @author lxcecho lxcecho@gmail.com
  * @since 23:39 27-10-2022
  */
+@Slf4j
 public class BufferTest {
 
     @Test
@@ -91,12 +93,11 @@ public class BufferTest {
         output("flip", buffer);
 
         // 判断有没有可读数据
-        System.out.print("content: ");
+        log.info("content: ");
         while (buffer.remaining() > 0) {
             byte b = buffer.get();
-            System.out.print((char) b);
+            log.info("{}", (char) b);
         }
-        System.out.println();
 
         // 调用 get
         output("get", buffer);
@@ -146,14 +147,13 @@ public class BufferTest {
      * @param buffer
      */
     private void output(String step, Buffer buffer) {
-        System.out.println("step: " + step);
+        log.info("step: {}", step);
         // 容量，数组大小
-        System.out.print("capacity: " + buffer.capacity() + ", ");
+        log.info("capacity: {}", buffer.capacity() + ", ");
         // 当前操作数据所在的为止，也可以叫做游标
-        System.out.print("position: " + buffer.position() + ", ");
+        log.info("position: {}", buffer.position() + ", ");
         // 锁定值，flip，数据操作范围索引只能在 position-limit 之间
-        System.out.print("limit: " + buffer.limit());
-        System.out.println();
+        log.info("limit: {}", buffer.limit());
     }
 
     @Test
@@ -193,7 +193,7 @@ public class BufferTest {
 
         while (intBuffer.hasRemaining()) {
             int value = intBuffer.get();
-            System.out.println(value);
+            log.info("{}", value);
         }
     }
 
@@ -207,15 +207,15 @@ public class BufferTest {
 
         // 向 buffer 存放数据
         for (int i = 0; i < intBuffer.capacity(); i++) {
-            intBuffer.put(i*2);
+            intBuffer.put(i * 2);
         }
 
         // 从 buffer 读取数据
         // 将 buffer 转换，读写切换
         intBuffer.flip();
 
-        while (intBuffer.hasRemaining()){
-            System.out.println(intBuffer.get());
+        while (intBuffer.hasRemaining()) {
+            log.info("{}", intBuffer.get());
         }
     }
 
@@ -239,7 +239,7 @@ public class BufferTest {
             // 如果注释掉该行代码，会发生什么？
             buffer.clear();
             int read = fisChannel.read(buffer);
-            System.out.println("read: " + read);
+            log.info("read: {}", read);
             if (-1 == read) {
                 break;
             }

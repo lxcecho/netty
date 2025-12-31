@@ -5,6 +5,7 @@ import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 
 /**
@@ -37,14 +38,10 @@ public class ChatClient {
         Scanner scanner = new Scanner(System.in);
         while (scanner.hasNextLine()) {
             String msg = scanner.nextLine();
-            if(msg.length() > 0) {
-                socketChannel.write(Charset.forName("UTF-8").encode(name +" : " +msg));
+            if(!msg.isEmpty()) {
+                socketChannel.write(StandardCharsets.UTF_8.encode(name +" : " +msg));
             }
         }
-    }
-
-    public static void main(String[] args) {
-
     }
 
 }

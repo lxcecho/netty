@@ -164,17 +164,17 @@ public class GroupChatServer {
         groupChatServer.listen();
     }
 
-}
+    /**
+     * 可以写一个 Handler 处理
+     */
+    class MyHandler {
+        public void readData() {
 
-/**
- * 可以写一个 Handler 处理
- */
-class MyHandler {
-    public void readData() {
+        }
 
+        public void sendInfoToOtherClients() {
+
+        }
     }
 
-    public void sendInfoToOtherClients() {
-
-    }
 }

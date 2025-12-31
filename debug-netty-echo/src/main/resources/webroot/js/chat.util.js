@@ -24,11 +24,11 @@ Date.prototype.format = function (format) {
 $(document).ready(function () {
     var host = location.href.replace(/http:\/\//i, "");
     window.CHAT = {
-        // 保存服务器端WebSocket的请求地址
+        // 保存服务器端 WebSocket 的请求地址
         serverAddr: "ws://" + host + "im",
         // 保存用户输入的昵称
         nickname: null,
-        // 保存浏览器socket对象
+        // 保存浏览器 socket 对象
         socket: null,
         // 将滚动条设置到最顶部，以便能看到最新的消息
         scrollToBottom: function () {

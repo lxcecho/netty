@@ -75,7 +75,7 @@ public class DatagramChannelTest {
             SocketAddress sendAddress = receiveChannel.receive(receiveBuffer);
             receiveBuffer.flip();
             System.out.println(sendAddress.toString());
-            System.out.println(Charset.forName("UTF-8").decode(receiveBuffer));
+            System.out.println(StandardCharsets.UTF_8.decode(receiveBuffer));
         }
     }
 
@@ -99,7 +99,7 @@ public class DatagramChannelTest {
                 readBuffer.clear();
                 connChannel.read(readBuffer);
                 readBuffer.flip();
-                System.out.println(Charset.forName("UTF-8").decode(readBuffer));
+                System.out.println(StandardCharsets.UTF_8.decode(readBuffer));
             } catch (IOException e) {
                 e.printStackTrace();
             }

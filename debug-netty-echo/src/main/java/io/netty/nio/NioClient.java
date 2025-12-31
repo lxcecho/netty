@@ -1,5 +1,7 @@
 package io.netty.nio;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
@@ -14,6 +16,7 @@ import java.util.Set;
  * @author lxcecho lxcecho@gmail.com
  * @since 23:30 20-10-2022
  */
+@Slf4j
 public class NioClient {
 
     static Selector selector;
@@ -56,7 +59,7 @@ public class NioClient {
         SocketChannel socketChannel = (SocketChannel) key.channel();
         ByteBuffer byteBuffer = ByteBuffer.allocate(1024);
         socketChannel.read(byteBuffer);
-        System.out.println("Client receive: " + new String(byteBuffer.array(), StandardCharsets.UTF_8));
+        log.info("Client receive: {}", new String(byteBuffer.array(), StandardCharsets.UTF_8));
     }
 
     private static void handleConnect(SelectionKey key) throws IOException {

@@ -1,5 +1,7 @@
 package io.netty.nio;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
@@ -15,6 +17,7 @@ import java.util.Set;
  * @author lxcecho lxcecho@gmail.com
  * @since 23:08 20-10-2022
  */
+@Slf4j
 public class NioServer {
 
     static Selector selector;
@@ -87,7 +90,7 @@ public class NioServer {
             ByteBuffer byteBuffer = ByteBuffer.allocate(1024);
             // 将通道的数据读到缓冲区
             socketChannel.read(byteBuffer); // 这里一定有值
-            System.out.println("Server recive msg: " + new String(byteBuffer.array()));
+            log.info("Server receive msg: {}", new String(byteBuffer.array()));
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -1,9 +1,12 @@
 package io.netty.nio.chat;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.*;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -13,6 +16,7 @@ import java.util.Set;
  * @author lxcecho lxcecho@gmail.com
  * @since 17.09.2021
  */
+@Slf4j
 public class ChatServer {
 
     /**
@@ -36,7 +40,7 @@ public class ChatServer {
         // 4 把 channel 通道注册到 selector 选择器上
         serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT);
 
-        System.out.println("服务器已经启动成功了...");
+        log.info("服务器已经启动成功了...");
 
         // 5 循环，等待有新链接接入
         // for (;;) {
@@ -94,14 +98,14 @@ public class ChatServer {
             // 切换读模式
             buffer.flip();
             // 读取内容
-            message += Charset.forName("UTF-8").decode(buffer);
+            message += StandardCharsets.UTF_8.decode(buffer);
         }
 
         // 4 将 channel 再次注册到选择器上，监听可读状态
         socketChannel.register(selector, SelectionKey.OP_READ);
 
         // 5 把客户端发送的消息，广播到其他客户端
-        if (message.length() > 0) {
+        if (!message.isEmpty()) {
             // 广播其他客户端
             System.out.println(message);
             castOtherClient(message, selector, socketChannel);
@@ -127,7 +131,7 @@ public class ChatServer {
             Channel tarChannel = selectionKey.channel();
             // 不需要给自己发送
             if (tarChannel instanceof SocketChannel && tarChannel != socketChannel) {
-                ((SocketChannel) tarChannel).write(Charset.forName("UTF-8").encode(message));
+                ((SocketChannel) tarChannel).write(StandardCharsets.UTF_8.encode(message));
             }
         }
     }
@@ -150,7 +154,7 @@ public class ChatServer {
         socketChannel.register(selector, SelectionKey.OP_READ);
 
         // 4 客户端回复信息
-        socketChannel.write(Charset.forName("UTF-8").encode("欢迎进入聊天室"));
+        socketChannel.write(StandardCharsets.UTF_8.encode("欢迎进入聊天室"));
     }
 
     public static void main(String[] args) {

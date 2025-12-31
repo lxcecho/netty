@@ -11,6 +11,7 @@ import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
 import java.nio.charset.CharsetEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.Set;
 
@@ -23,7 +24,7 @@ public class CharsetTest {
     @Test
     public void testCharset() throws Exception {
         // 通过编码类型获取charset 对象
-        Charset charset = Charset.forName("UTF-8");
+        Charset charset = StandardCharsets.UTF_8;
 
         // 获取编码器对象
         CharsetEncoder encoder = charset.newEncoder();
@@ -93,7 +94,7 @@ public class CharsetTest {
         });
         System.out.println("=======================");*/
 
-        Charset charset = Charset.forName("utf-8");
+        Charset charset = StandardCharsets.UTF_8;
         CharsetDecoder charsetDecoder = charset.newDecoder();
         CharsetEncoder charsetEncoder = charset.newEncoder();
 

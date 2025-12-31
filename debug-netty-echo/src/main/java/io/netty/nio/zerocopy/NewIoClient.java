@@ -1,5 +1,7 @@
 package io.netty.nio.zerocopy;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.FileInputStream;
 import java.net.InetSocketAddress;
 import java.nio.channels.FileChannel;
@@ -9,6 +11,7 @@ import java.nio.channels.SocketChannel;
  * @author lxcecho lxcecho@gmail.com
  * @since 29.05.2021
  */
+@Slf4j
 public class NewIoClient {
 
     public static void main(String[] args) throws Exception {
