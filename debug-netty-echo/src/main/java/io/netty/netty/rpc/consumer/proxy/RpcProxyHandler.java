@@ -2,11 +2,13 @@ package io.netty.netty.rpc.consumer.proxy;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author lxcecho lxcecho@gmail.com
  * @since 16:27 29-10-2022
  */
+@Slf4j
 public class RpcProxyHandler extends ChannelInboundHandlerAdapter {
 
     private Object response;
@@ -22,6 +24,6 @@ public class RpcProxyHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-        System.out.println("Client exception is general...");
+        log.error("Client exception is general...");
     }
 }

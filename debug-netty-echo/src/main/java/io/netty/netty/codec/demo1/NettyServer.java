@@ -6,7 +6,9 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.protobuf.ProtobufDecoder;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class NettyServer {
     public static void main(String[] args) throws Exception {
 
@@ -43,7 +45,7 @@ public class NettyServer {
                         }
                     }); // 给我们的workerGroup 的 EventLoop 对应的管道设置处理器
 
-            System.out.println(".....服务器 is ready...");
+            log.info(".....服务器 is ready...");
 
             // 绑定一个端口并且同步, 生成了一个 ChannelFuture 对象
             // 启动服务器(并绑定端口)
@@ -55,9 +57,9 @@ public class NettyServer {
                 @Override
                 public void operationComplete(ChannelFuture future) throws Exception {
                     if (cf.isSuccess()) {
-                        System.out.println("监听端口 6668 成功");
+                        log.info("监听端口 6668 成功");
                     } else {
-                        System.out.println("监听端口 6668 失败");
+                        log.info("监听端口 6668 失败");
                     }
                 }
             });

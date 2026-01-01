@@ -77,7 +77,7 @@ public class HttpServerHandler extends SimpleChannelInboundHandler<FullHttpReque
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
         Channel channel = ctx.channel();
-        log.info("Client: " + channel.remoteAddress() + " 异常");
+        log.info("Client: {} 异常", channel.remoteAddress());
         // 当出现异常就关闭连接
         cause.printStackTrace();
         ctx.close();

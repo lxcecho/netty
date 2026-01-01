@@ -2,6 +2,7 @@ package io.netty.netty.groupchat.case1;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
+import lombok.extern.slf4j.Slf4j;
 
 import java.time.LocalDateTime;
 
@@ -9,11 +10,12 @@ import java.time.LocalDateTime;
  * @author lxcecho lxcecho@gmail.com
  * @since 23:15 09-11-2022
  */
+@Slf4j
 public class MyChatClientHandler extends SimpleChannelInboundHandler<String> {
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, String msg) throws Exception {
-        System.out.println(ctx.channel().remoteAddress() + " client output: " + msg);
+        log.info("{} client output: {}", ctx.channel().remoteAddress(), msg);
         ctx.channel().writeAndFlush("From Client: " + LocalDateTime.now());
     }
 

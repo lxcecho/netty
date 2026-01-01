@@ -11,6 +11,7 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.http.HttpContentCompressor;
 import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpServerCodec;
+import lombok.extern.slf4j.Slf4j;
 
 import java.net.InetSocketAddress;
 
@@ -18,6 +19,7 @@ import java.net.InetSocketAddress;
  * @author lxcecho lxcecho@gmail.com
  * @since 21:48 05-08-2022
  */
+@Slf4j
 public class HttpServer {
     public void start(int port) throws Exception {
 
@@ -60,7 +62,7 @@ public class HttpServer {
                     .childOption(ChannelOption.SO_KEEPALIVE, true);
             // 3 端口绑定
             ChannelFuture channelFuture = serverBootstrap.bind().sync();
-            System.out.println("Http Server started, Listening on " + port);
+            log.info("Http Server started, Listening on {}", port);
             channelFuture.channel().closeFuture().sync();
         } finally {
             workerGroup.shutdownGracefully();

@@ -20,7 +20,7 @@ import org.msgpack.MessageTypeException;
 public class IMDecoder extends ByteToMessageDecoder {
 
     /**
-     * 解析IM写一下请求内容的正则
+     * 解析 IM 写一下请求内容的正则
      */
     private Pattern pattern = Pattern.compile("^\\[(.*)\\](\\s\\-\\s(.*))?");
 
@@ -73,7 +73,7 @@ public class IMDecoder extends ByteToMessageDecoder {
             } catch (Exception e) {
             }
             String nickName = heards[2];
-            //昵称最多十个字
+            // 昵称最多十个字
             nickName = nickName.length() < 10 ? nickName : nickName.substring(0, 9);
 
             if (msg.startsWith("[" + IMP.LOGIN.getName() + "]")) {

@@ -3,6 +3,7 @@ package io.netty.netty.protocaltcp;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ReplayingDecoder;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
 
@@ -10,10 +11,11 @@ import java.util.List;
  * @author lxcecho lxcecho@gmail.com
  * @since 12.12.2021
  */
+@Slf4j
 public class MyMessageDecoder extends ReplayingDecoder<Void> {
     @Override
     protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
-        System.out.println("MyMessageDecoder decode 被调用");
+        log.info("MyMessageDecoder decode 被调用");
         // 需要将得到二进制字节码-> MessageProtocol 数据包(对象)
         int length = in.readInt();
 

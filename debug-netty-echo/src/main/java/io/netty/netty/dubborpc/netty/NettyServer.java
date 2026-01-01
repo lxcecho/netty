@@ -11,7 +11,9 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class NettyServer {
 
 
@@ -46,7 +48,7 @@ public class NettyServer {
                     );
 
             ChannelFuture channelFuture = serverBootstrap.bind(hostname, port).sync();
-            System.out.println("服务提供方开始提供服务~~");
+            log.info("服务提供方开始提供服务~~");
             channelFuture.channel().closeFuture().sync();
 
         } catch (Exception e) {

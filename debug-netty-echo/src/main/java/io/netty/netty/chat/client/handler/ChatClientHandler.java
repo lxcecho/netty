@@ -33,7 +33,7 @@ public class ChatClientHandler extends SimpleChannelInboundHandler<IMMessage> {
     private void session() throws IOException {
         new Thread() {
             public void run() {
-                System.out.println(nickName + ",你好，请在控制台输入对话内容");
+                log.info("{},你好，请在控制台输入对话内容", nickName);
                 IMMessage message = null;
                 Scanner scanner = new Scanner(System.in);
                 do {
@@ -73,7 +73,7 @@ public class ChatClientHandler extends SimpleChannelInboundHandler<IMMessage> {
      */
     private boolean sendMsg(IMMessage msg) {
         ctx.channel().writeAndFlush(msg);
-        System.out.println("继续输入开始对话...");
+        log.info("继续输入开始对话...");
         return msg.getCmd().equals(IMP.LOGOUT) ? false : true;
     }
 
@@ -85,28 +85,28 @@ public class ChatClientHandler extends SimpleChannelInboundHandler<IMMessage> {
     @Override
     public void channelRead0(ChannelHandlerContext ctx, IMMessage msg) throws IOException {
         IMMessage m = (IMMessage) msg;
-        System.out.println((null == m.getSender() ? "" : (m.getSender() + ":")) + removeHtmlTag(m.getContent()));
+        log.info("{}", (null == m.getSender() ? "" : (m.getSender() + ":")) + removeHtmlTag(m.getContent()));
     }
 
 
     public static String removeHtmlTag(String htmlStr) {
-        String regEx_script = "<script[^>]*?>[\\s\\S]*?<\\/script>"; //定义script的正则表达式
-        String regEx_style = "<style[^>]*?>[\\s\\S]*?<\\/style>"; //定义style的正则表达式
-        String regEx_html = "<[^>]+>"; //定义HTML标签的正则表达式
+        String regEx_script = "<script[^>]*?>[\\s\\S]*?<\\/script>"; // 定义 script 的正则表达式
+        String regEx_style = "<style[^>]*?>[\\s\\S]*?<\\/style>"; // 定义 style 的正则表达式
+        String regEx_html = "<[^>]+>"; // 定义 HTML 标签的正则表达式
 
         Pattern p_script = Pattern.compile(regEx_script, Pattern.CASE_INSENSITIVE);
         Matcher m_script = p_script.matcher(htmlStr);
-        htmlStr = m_script.replaceAll(""); //过滤script标签
+        htmlStr = m_script.replaceAll(""); //过滤 script 标签
 
         Pattern p_style = Pattern.compile(regEx_style, Pattern.CASE_INSENSITIVE);
         Matcher m_style = p_style.matcher(htmlStr);
-        htmlStr = m_style.replaceAll(""); //过滤style标签
+        htmlStr = m_style.replaceAll(""); //过滤 style 标签
 
         Pattern p_html = Pattern.compile(regEx_html, Pattern.CASE_INSENSITIVE);
         Matcher m_html = p_html.matcher(htmlStr);
-        htmlStr = m_html.replaceAll(""); //过滤html标签
+        htmlStr = m_html.replaceAll(""); // 过滤 html 标签
 
-        return htmlStr.trim(); //返回文本字符串
+        return htmlStr.trim(); // 返回文本字符串
     }
 
     /**
@@ -114,7 +114,7 @@ public class ChatClientHandler extends SimpleChannelInboundHandler<IMMessage> {
      */
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
-        log.info("与服务器断开连接:" + cause.getMessage());
+        log.info("与服务器断开连接:{}", cause.getMessage());
         ctx.close();
     }
 }

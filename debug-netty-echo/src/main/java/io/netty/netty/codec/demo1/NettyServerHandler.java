@@ -3,17 +3,20 @@ package io.netty.netty.codec.demo1;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.*;
 import io.netty.util.CharsetUtil;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 说明
- * 1. 我们自定义一个Handler 需要继续netty 规定好的某个HandlerAdapter(规范)
- * 2. 这时我们自定义一个Handler , 才能称为一个handler
+ * 1. 我们自定义一个 Handler 需要继续 netty 规定好的某个 HandlerAdapter(规范)
+ * 2. 这时我们自定义一个 Handler , 才能称为一个 handler
  */
+@Slf4j
 //public class NettyServerHandler extends ChannelInboundHandlerAdapter {
 public class NettyServerHandler extends SimpleChannelInboundHandler<StudentPOJO.Student> {
 
 
     // 读取数据实际(这里我们可以读取客户端发送的消息)
+
     /**
      * 1. ChannelHandlerContext ctx:上下文对象, 含有 管道 pipeline , 通道 channel, 地址
      * 2. Object msg: 就是客户端发送的数据 默认 Object
@@ -22,7 +25,7 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<StudentPOJO.
     public void channelRead0(ChannelHandlerContext ctx, StudentPOJO.Student msg) throws Exception {
 
         // 读取从客户端发送的StudentPojo.Student
-        System.out.println("客户端发送的数据 id=" + msg.getId() + " 名字=" + msg.getName());
+        log.info("客户端发送的数据 id={} 名字={}", msg.getId(), msg.getName());
     }
 
 
@@ -38,7 +41,7 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<StudentPOJO.
 //
 //        StudentPOJO.Student student = (StudentPOJO.Student) msg;
 //
-//        System.out.println("客户端发送的数据 id=" + student.getId() + " 名字=" + student.getName());
+//        log.info("客户端发送的数据 id={} 名字={}", student.getId(), student.getName());
 //    }
 
     // 数据读取完毕

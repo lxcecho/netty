@@ -9,7 +9,9 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.protobuf.ProtobufEncoder;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class NettyClient {
     public static void main(String[] args) throws Exception {
 
@@ -34,7 +36,7 @@ public class NettyClient {
                         }
                     });
 
-            System.out.println("客户端 ok..");
+            log.info("客户端 ok..");
 
             // 启动客户端去连接服务器端
             // 关于 ChannelFuture 要分析，涉及到 netty 的异步模型

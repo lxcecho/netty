@@ -2,7 +2,9 @@ package io.netty.netty.dubborpc.customer;
 
 import io.netty.netty.dubborpc.netty.NettyClient;
 import io.netty.netty.dubborpc.publicinterface.HelloService;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class ClientBootstrap {
 
 
@@ -21,7 +23,7 @@ public class ClientBootstrap {
             Thread.sleep(2 * 1000);
             // 通过代理对象调用服务提供者的方法(服务)
             String res = service.hello("你好 dubbo~");
-            System.out.println("调用的结果 res= " + res);
+            log.info("调用的结果 res= {}", res);
         }
     }
 }

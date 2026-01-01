@@ -16,8 +16,12 @@ import io.netty.util.CharsetUtil;
 public class HttpServerHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, FullHttpRequest msg) throws Exception {
-        String content = String.format("Receive http request, uri: %s, method: %s, content: %s%n", msg.uri(), msg.method(), msg.content().toString(CharsetUtil.UTF_8));
-        DefaultFullHttpResponse response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK, Unpooled.wrappedBuffer(content.getBytes()));
+        String content = String.format("Receive http request, uri: %s, method: %s, content: %s%n",
+                msg.uri(), msg.method(), msg.content().toString(CharsetUtil.UTF_8));
+        DefaultFullHttpResponse response = new DefaultFullHttpResponse(
+                HttpVersion.HTTP_1_1,
+                HttpResponseStatus.OK,
+                Unpooled.wrappedBuffer(content.getBytes()));
         ctx.writeAndFlush(response).addListener(ChannelFutureListener.CLOSE);
 
     }

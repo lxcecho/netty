@@ -3,6 +3,7 @@ package io.netty.netty.pipeline;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelOutboundHandlerAdapter;
 import io.netty.channel.ChannelPromise;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.concurrent.TimeUnit;
 
@@ -10,10 +11,11 @@ import java.util.concurrent.TimeUnit;
  * @author lxcecho lxcecho@gmail.com
  * @since 22:46 30-10-2022
  */
+@Slf4j
 public class OutboundHandlerB extends ChannelOutboundHandlerAdapter {
     @Override
     public void write(ChannelHandlerContext ctx, Object msg, ChannelPromise promise) throws Exception {
-        System.out.println("OutboundHandler B");
+        log.info("OutboundHandler B");
         ctx.write(msg, promise);
     }
 

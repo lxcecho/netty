@@ -3,6 +3,7 @@ package io.netty.netty.inoroutboundhandler;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
 
@@ -10,6 +11,7 @@ import java.util.List;
  * @author lxcecho lxcecho@gmail.com
  * @since 12.12.2021
  */
+@Slf4j
 public class MyByteToLongDecoder extends ByteToMessageDecoder {
     /**
      * decode 会根据接收的数据，被调用多次，直到确定没有新的元素被添加到 list，
@@ -23,7 +25,7 @@ public class MyByteToLongDecoder extends ByteToMessageDecoder {
      */
     @Override
     protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
-        System.out.println("MyByteToLongDecoder 被调用");
+        log.info("MyByteToLongDecoder 被调用");
         if(in.readableBytes() >= 8) {
             // 因为 long 8个字节，需要判断有8个字节，才能读取一个long
             out.add(in.readLong());

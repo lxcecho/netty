@@ -2,14 +2,17 @@ package io.netty.netty.protocaltcp;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
+import lombok.extern.slf4j.Slf4j;
 
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
 /**
  * @author lxcecho lxcecho@gmail.com
  * @since 11.12.2021
  */
+@Slf4j
 public class MyServerHandler extends SimpleChannelInboundHandler<MessageProtocol> {
     private int count;
 
@@ -26,20 +29,14 @@ public class MyServerHandler extends SimpleChannelInboundHandler<MessageProtocol
         int len = msg.getLen();
         byte[] content = msg.getContent();
 
-        System.out.println();
-        System.out.println();
-        System.out.println();
-        System.out.println("服务器接收到信息如下");
-        System.out.println("长度=" + len);
-        System.out.println("内容=" + new String(content, Charset.forName("utf-8")));
-
-        System.out.println("服务器接收到消息包数量=" + (++this.count));
+        log.info("服务器接收到信息如下: 长度={}, 内容={}, 服务器接收到消息包数量={}",
+                len, new String(content, StandardCharsets.UTF_8), (++this.count));
 
         // 回复消息
 
         String responseContent = UUID.randomUUID().toString();
-        int responseLen = responseContent.getBytes("utf-8").length;
-        byte[] responseContent2 = responseContent.getBytes("utf-8");
+        int responseLen = responseContent.getBytes(StandardCharsets.UTF_8).length;
+        byte[] responseContent2 = responseContent.getBytes(StandardCharsets.UTF_8);
         // 构建一个协议包
         MessageProtocol messageProtocol = new MessageProtocol();
         messageProtocol.setLen(responseLen);

@@ -6,11 +6,13 @@ import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author lxcecho lxcecho@gmail.com
  * @since 11.12.2021
  */
+@Slf4j
 public class GroupChatServer {
 
     /**
@@ -39,7 +41,7 @@ public class GroupChatServer {
                     .childOption(ChannelOption.SO_KEEPALIVE, true)
                     .childHandler(new GroupChatServerInitializer());
 
-            System.out.println("netty 服务器启动");
+            log.info("Netty 服务器启动");
 
             ChannelFuture channelFuture = bootstrap.bind(port).sync();
             channelFuture.channel().closeFuture().sync();

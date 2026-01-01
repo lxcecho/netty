@@ -7,10 +7,11 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.Scanner;
 
-
+@Slf4j
 public class GroupChatClient {
 
     // 属性
@@ -49,7 +50,7 @@ public class GroupChatClient {
             ChannelFuture channelFuture = bootstrap.connect(host, port).sync();
             // 得到 channel
             Channel channel = channelFuture.channel();
-            System.out.println("-------" + channel.localAddress() + "--------");
+            log.info("-------{}--------", channel.localAddress());
             // 客户端需要输入信息，创建一个扫描器
             Scanner scanner = new Scanner(System.in);
             while (scanner.hasNextLine()) {

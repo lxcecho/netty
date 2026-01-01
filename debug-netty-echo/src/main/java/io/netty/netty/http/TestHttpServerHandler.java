@@ -7,6 +7,7 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.*;
 import io.netty.util.CharsetUtil;
+import lombok.extern.slf4j.Slf4j;
 
 import java.net.URI;
 
@@ -18,13 +19,14 @@ import java.net.URI;
  * @author lxcecho lxcecho@gmail.com
  * @since 08.10.2021
  */
+@Slf4j
 public class TestHttpServerHandler extends SimpleChannelInboundHandler<HttpObject> {
     /*@Override
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, HttpObject httpObject) throws Exception {
         // 判断 msg 是不是 httpRequest 请求
         if(httpObject instanceof HttpRequest){
-            System.out.println("msg类型："+httpObject.getClass());
-            System.out.println("客户端地址："+channelHandlerContext.channel().remoteAddress());
+            log.info("msg类型：{}", httpObject.getClass());
+            log.info("客户端地址：{}", channelHandlerContext.channel().remoteAddress());
             
             // 回复信息给浏览器【http 协议】
             ByteBuf content = Unpooled.copiedBuffer("你好 我是服务器", CharsetUtil.UTF_8);
@@ -48,32 +50,34 @@ public class TestHttpServerHandler extends SimpleChannelInboundHandler<HttpObjec
      */
     @Override
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, HttpObject httpObject) throws Exception {
-        System.out.println("对应的 channel = " + channelHandlerContext.channel()
-                + "\npipeline = " + channelHandlerContext.pipeline()
-                + "\n通过pipeline获取channel = " + channelHandlerContext.pipeline().channel());
+        log.info("对应的 channel = {}, \npipeline = {}, \n通过pipeline获取channel = {}",
+                channelHandlerContext.channel(),
+                channelHandlerContext.pipeline(),
+                channelHandlerContext.pipeline().channel());
 
-        System.out.println("当前ctx的handler = " + channelHandlerContext.handler());
+        log.info("当前ctx的handler = {}", channelHandlerContext.handler());
 
-        System.out.println("httpObject 类型：" + httpObject.getClass());
+        log.info("httpObject 类型：{}", httpObject.getClass());
 
         // 判断 msg 是不是 httpRequest 请求
         if (httpObject instanceof HttpRequest) {
-            System.out.println("ctx 类型：" + channelHandlerContext.getClass());
-            System.out.println("pipeline hashCode：" + channelHandlerContext.pipeline().hashCode()
-                    + "\nTestHttpServerHandler hash:" + this.hashCode());
-            System.out.println("客户端地址：" + channelHandlerContext.channel().remoteAddress());
+            log.info("ctx 类型：{}", channelHandlerContext.getClass());
+            log.info("pipeline hashCode：{}, \nTestHttpServerHandler hash: {}",
+                    channelHandlerContext.pipeline().hashCode(), this.hashCode());
+            log.info("客户端地址：{}", channelHandlerContext.channel().remoteAddress());
 
             HttpRequest httpRequest = (HttpRequest) httpObject;
             // 获取到 uri，过滤掉指定资源
             URI uri = new URI(httpRequest.uri());
             if ("/favicon.ico".equals(uri.getPath())) {
-                System.out.println("请求了 favicon.ico，不做响应");
+                log.info("请求了 favicon.ico，不做响应");
                 return;
             }
             // 回复信息给浏览器，【http协议】
             ByteBuf context = Unpooled.copiedBuffer("Hello, I'm Server.", CharsetUtil.UTF_8);
             // 构建一个 http 的响应，即 httpResponse
-            DefaultFullHttpResponse response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK, context);
+            DefaultFullHttpResponse response = new DefaultFullHttpResponse(
+                    HttpVersion.HTTP_1_1, HttpResponseStatus.OK, context);
 
             response.headers().set(HttpHeaderNames.CONTENT_TYPE, "text/plain");
             response.headers().set(HttpHeaderNames.CONTENT_LENGTH, context.readableBytes());
@@ -92,7 +96,7 @@ public class TestHttpServerHandler extends SimpleChannelInboundHandler<HttpObjec
      */
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        System.out.println("channelActive");
+        log.info("channelActive");
         super.channelActive(ctx);
     }
 
@@ -104,7 +108,7 @@ public class TestHttpServerHandler extends SimpleChannelInboundHandler<HttpObjec
      */
     @Override
     public void channelRegistered(ChannelHandlerContext ctx) throws Exception {
-        System.out.println("channelRegistered");
+        log.info("channelRegistered");
         super.channelRegistered(ctx);
     }
 
@@ -116,7 +120,7 @@ public class TestHttpServerHandler extends SimpleChannelInboundHandler<HttpObjec
      */
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
-        System.out.println("channelInactive");
+        log.info("channelInactive");
         super.channelInactive(ctx);
     }
 
@@ -128,7 +132,7 @@ public class TestHttpServerHandler extends SimpleChannelInboundHandler<HttpObjec
      */
     @Override
     public void channelUnregistered(ChannelHandlerContext ctx) throws Exception {
-        System.out.println("channelUnregistered");
+        log.info("channelUnregistered");
         super.channelUnregistered(ctx);
     }
 
@@ -140,7 +144,7 @@ public class TestHttpServerHandler extends SimpleChannelInboundHandler<HttpObjec
      */
     @Override
     public void handlerAdded(ChannelHandlerContext ctx) throws Exception {
-        System.out.println("handlerAdded");
+        log.info("handlerAdded");
         super.handlerAdded(ctx);
     }
 
@@ -152,7 +156,7 @@ public class TestHttpServerHandler extends SimpleChannelInboundHandler<HttpObjec
      */
     @Override
     public void handlerRemoved(ChannelHandlerContext ctx) throws Exception {
-        System.out.println("handlerRemoved");
+        log.info("handlerRemoved");
         super.handlerRemoved(ctx);
     }
 }

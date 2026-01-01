@@ -3,11 +3,13 @@ package io.netty.netty.inoroutboundhandler;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author lxcecho lxcecho@gmail.com
  * @since 12.12.2021
  */
+@Slf4j
 public class MyServerInitializer extends ChannelInitializer<SocketChannel> {
     @Override
     protected void initChannel(SocketChannel ch) throws Exception {
@@ -22,6 +24,6 @@ public class MyServerInitializer extends ChannelInitializer<SocketChannel> {
         // 自定义的 handler 处理业务逻辑
         pipeline.addLast(new MyServerHandler());
 
-        System.out.println("cccccccccc");
+        log.info("cccccccccc");
     }
 }

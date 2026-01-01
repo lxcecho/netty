@@ -7,6 +7,7 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.channel.ChannelPipeline;
 import io.netty.util.CharsetUtil;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.concurrent.TimeUnit;
 
@@ -17,6 +18,7 @@ import java.util.concurrent.TimeUnit;
  * @author lxcecho lxcecho@gmail.com
  * @since 03.10.2021
  */
+@Slf4j
 public class NettyServerHandler extends ChannelInboundHandlerAdapter {
 
     /**
@@ -30,17 +32,17 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
      */
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        System.out.println("服务器读取线程" + Thread.currentThread().getName());
-        System.out.println("server ctx = " + ctx);
-        System.out.println("看看 channel 和 pipeline 的关系");
+        log.info("服务器读取线程 {}", Thread.currentThread().getName());
+        log.info("server ctx = {}", ctx);
+        log.info("看看 channel 和 pipeline 的关系");
         Channel channel = ctx.channel();
         ChannelPipeline pipeline = ctx.pipeline(); // 本质是一个双向链接，出站入站
 
         // 将 msg 转成一个 ByteBuffer
         // ByteBuffer 是 Netty 提供的，不是 NIO 的 ByteBuffer
         ByteBuf buf = (ByteBuf) msg;
-        System.out.println("客户端发送消息是：" + buf.toString(CharsetUtil.UTF_8));
-        System.out.println("客户端地址：" + channel.remoteAddress());
+        log.info("客户端发送消息是：{}", buf.toString(CharsetUtil.UTF_8));
+        log.info("客户端地址：{}", channel.remoteAddress());
 
         // 比如这里有一个非常耗时的业务-->异步执行-->提交该 channel 对应的 NioEventLoop 的 taskQueue 中
         // todo 方案一：用户程序自定义普通任务
@@ -48,10 +50,10 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
             try {
                 Thread.sleep(5 * 1000);
                 ctx.writeAndFlush(Unpooled.copiedBuffer("hello, client.", CharsetUtil.UTF_8));
-                System.out.println("channel code = " + ctx.channel().hashCode());
-                System.out.println("go on...");
+                log.info("channel code = {}", ctx.channel().hashCode());
+                log.info("go on...");
             } catch (Exception e) {
-                System.out.println("发生异常：" + e.getMessage());
+                log.error("发生异常：{}", e.getMessage());
             }
         });*/
 
@@ -60,13 +62,13 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
             try {
                 Thread.sleep(5 * 1000);
                 ctx.writeAndFlush(Unpooled.copiedBuffer("hello, client.", CharsetUtil.UTF_8));
-                System.out.println("channel code = " + ctx.channel().hashCode());
+                log.info("channel code = {}", ctx.channel().hashCode());
             } catch (Exception e) {
-                System.out.println("发生异常：" + e.getMessage());
+                log.error("发生异常：{}", e.getMessage());
             }
         }, 5, TimeUnit.SECONDS);
 
-        System.out.println("go on ...");*/
+        log.info("go on ...");*/
 
     }
 

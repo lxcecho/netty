@@ -7,7 +7,9 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class GroupChatServer {
 
     private int port; // 监听端口
@@ -48,7 +50,7 @@ public class GroupChatServer {
                         }
                     });
 
-            System.out.println("netty 服务器启动");
+            log.info("Netty 服务器启动");
             ChannelFuture channelFuture = b.bind(port).sync();
 
             // 监听关闭

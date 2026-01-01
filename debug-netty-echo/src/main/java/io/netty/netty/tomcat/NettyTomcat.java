@@ -11,6 +11,7 @@ import io.netty.handler.codec.http.HttpResponseEncoder;
 import io.netty.netty.tomcat.http.NettyRequest;
 import io.netty.netty.tomcat.http.NettyResponse;
 import io.netty.netty.tomcat.http.NettyServlet;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.FileInputStream;
 import java.util.HashMap;
@@ -23,6 +24,7 @@ import java.util.Properties;
  * @author lxcecho lxcecho@gmail.com
  * @since 10:24 29-10-2022
  */
+@Slf4j
 public class NettyTomcat {
     // 打开 Tomcat 远么，全局搜索 ServerSocket
 
@@ -104,7 +106,7 @@ public class NettyTomcat {
 
             // 3 启动服务器
             ChannelFuture cf = serverBootstrap.bind(port).sync();
-            System.out.println("Netty Tomcat is completed on " + port);
+            log.info("Netty Tomcat is completed on {}", port);
             cf.channel().closeFuture().sync();
         } catch (Exception e) {
             e.printStackTrace();
@@ -119,7 +121,7 @@ public class NettyTomcat {
         @Override
         public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
             if (msg instanceof HttpRequest) {
-                System.out.println("hello ~~~");
+                log.info("hello ~~~");
                 HttpRequest req = (HttpRequest) msg;
 
                 // 转交给我们自己的 request 实现

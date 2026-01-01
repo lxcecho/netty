@@ -27,7 +27,7 @@ public class WebSocketServerHandler extends SimpleChannelInboundHandler<TextWebS
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
         Channel channel = ctx.channel();
         String addr = processor.getAddress(channel);
-        log.info("WebSocketClient: " + addr + " 异常");
+        log.info("WebSocketClient: {} 异常", addr);
         cause.printStackTrace();
         ctx.close();
     }

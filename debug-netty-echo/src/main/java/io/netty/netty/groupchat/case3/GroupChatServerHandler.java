@@ -6,6 +6,7 @@ import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.group.ChannelGroup;
 import io.netty.channel.group.DefaultChannelGroup;
 import io.netty.util.concurrent.GlobalEventExecutor;
+import lombok.extern.slf4j.Slf4j;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 public class GroupChatServerHandler extends SimpleChannelInboundHandler<String> {
 
     //public static List<Channel> channels = new ArrayList<Channel>();
@@ -47,7 +49,7 @@ public class GroupChatServerHandler extends SimpleChannelInboundHandler<String> 
 
         Channel channel = ctx.channel();
         channelGroup.writeAndFlush("[客户端]" + channel.remoteAddress() + " 离开了\n");
-        System.out.println("channelGroup size" + channelGroup.size());
+        log.info("channelGroup size {}", channelGroup.size());
 
     }
 
@@ -55,14 +57,14 @@ public class GroupChatServerHandler extends SimpleChannelInboundHandler<String> 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
 
-        System.out.println(ctx.channel().remoteAddress() + " 上线了~");
+        log.info("{} 上线了~", ctx.channel().remoteAddress());
     }
 
     // 表示 channel 处于不活动状态, 提示 xx离线了
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
 
-        System.out.println(ctx.channel().remoteAddress() + " 离线了~");
+        log.info("{} 离线了~", ctx.channel().remoteAddress());
     }
 
     // 读取数据

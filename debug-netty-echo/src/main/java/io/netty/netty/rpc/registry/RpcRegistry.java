@@ -10,6 +10,7 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.serialization.ClassResolvers;
 import io.netty.handler.codec.serialization.ObjectDecoder;
 import io.netty.handler.codec.serialization.ObjectEncoder;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 负责将所有 Provider 的服务名称和服务引用地址注册到一个容器中，并对外发布
@@ -18,6 +19,7 @@ import io.netty.handler.codec.serialization.ObjectEncoder;
  * @author lxcecho lxcecho@gmail.com
  * @since 16:30 29-10-2022
  */
+@Slf4j
 public class RpcRegistry {
 
     private int port;
@@ -59,7 +61,7 @@ public class RpcRegistry {
                     .childOption(ChannelOption.SO_KEEPALIVE, true);
 
             ChannelFuture future = serverBootstrap.bind(port).sync();
-            System.out.println("Netty RPC Registry start listen at " + port);
+            log.info("Netty RPC Registry start listen at {}", port);
             future.channel().closeFuture().sync();
         } catch (Exception e) {
             e.printStackTrace();

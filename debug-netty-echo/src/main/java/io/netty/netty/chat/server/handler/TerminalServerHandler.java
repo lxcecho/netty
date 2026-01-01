@@ -24,7 +24,7 @@ public class TerminalServerHandler extends SimpleChannelInboundHandler<IMMessage
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-        log.info("SocketClient: 与客户端断开连接，" + cause.getMessage());
+        log.info("SocketClient: 与客户端断开连接，{}", cause.getMessage());
         cause.printStackTrace();
         ctx.close();
     }

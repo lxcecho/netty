@@ -4,12 +4,14 @@ import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.util.CharsetUtil;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 说明
  * 1. 我们自定义一个Handler 需要继续netty 规定好的某个HandlerAdapter(规范)
  * 2. 这时我们自定义一个Handler , 才能称为一个handler
  */
+@Slf4j
 //public class NettyServerHandler extends ChannelInboundHandlerAdapter {
 public class NettyServerHandler extends SimpleChannelInboundHandler<MyDataInfo.MyMessage> {
 
@@ -27,13 +29,13 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<MyDataInfo.M
         if (dataType == MyDataInfo.MyMessage.DataType.StudentType) {
 
             MyDataInfo.Student student = msg.getStudent();
-            System.out.println("学生id=" + student.getId() + " 学生名字=" + student.getName());
+            log.info("学生id={} 学生名字={}", student.getId(), student.getName());
 
         } else if (dataType == MyDataInfo.MyMessage.DataType.WorkerType) {
             MyDataInfo.Worker worker = msg.getWorker();
-            System.out.println("工人的名字=" + worker.getName() + " 年龄=" + worker.getAge());
+            log.info("工人的名字={} 年龄={}", worker.getName(), worker.getAge());
         } else {
-            System.out.println("传输的类型不正确");
+            log.error("传输的类型不正确");
         }
     }
 
@@ -50,7 +52,7 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<MyDataInfo.M
 //
 //        StudentPOJO.Student student = (StudentPOJO.Student) msg;
 //
-//        System.out.println("客户端发送的数据 id=" + student.getId() + " 名字=" + student.getName());
+//        log.info("客户端发送的数据 id={} 名字=", student.getId(), student.getName());
 //    }
 
     // 数据读取完毕

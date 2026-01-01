@@ -6,11 +6,13 @@ import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.group.ChannelGroup;
 import io.netty.channel.group.DefaultChannelGroup;
 import io.netty.util.concurrent.GlobalEventExecutor;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author lxcecho lxcecho@gmail.com
  * @since 23:08 09-11-2022
  */
+@Slf4j
 public class MyChatServerHandler extends SimpleChannelInboundHandler<String> {
 
     private static final ChannelGroup channelGroup = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
@@ -63,7 +65,7 @@ public class MyChatServerHandler extends SimpleChannelInboundHandler<String> {
          * netty 会自动调用，可不写
          */
 //        channelGroup.remove(channel);
-        System.out.println(channelGroup.size());
+        log.info("{}", channelGroup.size());
     }
 
     /**

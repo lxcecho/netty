@@ -20,18 +20,18 @@ import io.netty.util.concurrent.GlobalEventExecutor;
  */
 public class MsgProcessor {
 
-    //记录在线用户
+    // 记录在线用户
     private static ChannelGroup onlineUsers = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
 
-    //定义一些扩展属性
+    // 定义一些扩展属性
     public static final AttributeKey<String> NICK_NAME = AttributeKey.valueOf("nickName");
     public static final AttributeKey<String> IP_ADDR = AttributeKey.valueOf("ipAddr");
     public static final AttributeKey<JSONObject> ATTRS = AttributeKey.valueOf("attrs");
     public static final AttributeKey<String> FROM = AttributeKey.valueOf("from");
 
-    //自定义解码器
+    // 自定义解码器
     private IMDecoder decoder = new IMDecoder();
-    //自定义编码器
+    // 自定义编码器
     private IMEncoder encoder = new IMEncoder();
 
     /**
@@ -92,7 +92,7 @@ public class MsgProcessor {
      * @param client
      */
     public void logout(Channel client) {
-        //如果nickName为null，没有遵从聊天协议的连接，表示未非法登录
+        // 如果 nickName 为 null，没有遵从聊天协议的连接，表示未非法登录
         if (getNickName(client) == null) {
             return;
         }
@@ -134,7 +134,7 @@ public class MsgProcessor {
             client.attr(NICK_NAME).getAndSet(request.getSender());
             client.attr(IP_ADDR).getAndSet(addr);
             client.attr(FROM).getAndSet(request.getTerminal());
-//			System.out.println(client.attr(FROM).get());
+//			log.info("{}", client.attr(FROM).get());
             onlineUsers.add(client);
 
             for (Channel channel : onlineUsers) {
@@ -174,7 +174,7 @@ public class MsgProcessor {
             long currTime = sysTime();
             if (null != attrs) {
                 long lastTime = attrs.getLongValue("lastFlowerTime");
-                //60秒之内不允许重复刷鲜花
+                // 60 秒之内不允许重复刷鲜花
                 int secends = 10;
                 long sub = currTime - lastTime;
                 if (sub < 1000 * secends) {
@@ -188,7 +188,7 @@ public class MsgProcessor {
                 }
             }
 
-            //正常送花
+            // 正常送花
             for (Channel channel : onlineUsers) {
                 if (channel == client) {
                     request.setSender("you");

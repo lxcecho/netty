@@ -7,11 +7,13 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author lxcecho lxcecho@gmail.com
  * @since 03.10.2021
  */
+@Slf4j
 public class NettyClient {
 
     public static void main(String[] args) {
@@ -32,7 +34,7 @@ public class NettyClient {
                         }
                     });
 
-            System.out.println("client is ok...");
+            log.info("client is ok...");
 
             // 启动客户端去连接服务器端，关于 ChannelFuture 要分析，涉及到 Netty 的异步模型
             ChannelFuture channelFuture = bootstrap.connect("127.0.0.1", 6668).sync();

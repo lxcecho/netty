@@ -2,22 +2,24 @@ package io.netty.netty.inoroutboundhandler;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author lxcecho lxcecho@gmail.com
  * @since 12.12.2021
  */
+@Slf4j
 public class MyClientHandler extends SimpleChannelInboundHandler<Long> {
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, Long msg) throws Exception {
-        System.out.println("服务器的ip=" + ctx.channel().remoteAddress());
-        System.out.println("收到服务器消息=" + msg);
+        log.info("服务器的ip={}", ctx.channel().remoteAddress());
+        log.info("收到服务器消息={}", msg);
     }
 
     // 重写channelActive 发送数据
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        System.out.println("MyClientHandler 发送数据");
+        log.info("MyClientHandler 发送数据");
         // ctx.writeAndFlush(Unpooled.copiedBuffer(""))
         ctx.writeAndFlush(123456L); //发送的是一个long
 

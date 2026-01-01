@@ -6,6 +6,7 @@ import io.netty.channel.ChannelFuture;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.Scanner;
 
@@ -13,6 +14,7 @@ import java.util.Scanner;
  * @author lxcecho lxcecho@gmail.com
  * @since 11.12.2021
  */
+@Slf4j
 public class GroupChatClient {
 
     private final String host;
@@ -38,7 +40,7 @@ public class GroupChatClient {
 
             // 得到 channel
             Channel channel = channelFuture.channel();
-            System.out.println("=======" + channel.localAddress() + "=======");
+            log.info("======={}=======", channel.localAddress());
 
             // 客户端需要输入信息，创建一个扫描器
             Scanner scanner = new Scanner(System.in);

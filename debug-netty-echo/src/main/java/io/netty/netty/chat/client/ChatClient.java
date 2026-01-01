@@ -64,7 +64,7 @@ public class ChatClient {
         new ChatClient("Cover").connect("127.0.0.1", 8080);
 
         String url = "http://localhost:8080/images/a.png";
-        System.out.println(url.toLowerCase().matches(".*\\.(gif|png|jpg)$"));
+        log.info("{}", url.toLowerCase().matches(".*\\.(gif|png|jpg)$"));
 
     }
 

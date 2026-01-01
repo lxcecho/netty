@@ -2,11 +2,13 @@ package io.netty.netty.buf;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author lxcecho lxcecho@gmail.com
  * @since 10.10.2021
  */
+@Slf4j
 public class NettyBufDemo01 {
 
     public static void main(String[] args) {
@@ -23,12 +25,12 @@ public class NettyBufDemo01 {
             buffer.writeByte(i);
         }
 
-        System.out.println("capacity=" + buffer.capacity()); // 10
+        log.info("capacity= {}", buffer.capacity()); // 10
 
         // 输出
         for (int i = 0; i < buffer.capacity(); i++) {
-//            System.out.println(buffer.getByte(i)); // 不会造成 readIndex 的变化，因为这是靠索引读取的
-            System.out.println(buffer.readByte());
+//            log.info("{}", buffer.getByte(i)); // 不会造成 readIndex 的变化，因为这是靠索引读取的
+            log.info("{}", buffer.readByte());
         }
     }
 

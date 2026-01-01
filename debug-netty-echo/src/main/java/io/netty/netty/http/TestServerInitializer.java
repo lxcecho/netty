@@ -4,11 +4,13 @@ import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.handler.codec.http.HttpServerCodec;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author lxcecho lxcecho@gmail.com
  * @since 08.10.2021
  */
+@Slf4j
 public class TestServerInitializer extends ChannelInitializer<SocketChannel> {
 
     @Override
@@ -24,6 +26,6 @@ public class TestServerInitializer extends ChannelInitializer<SocketChannel> {
         // 2 增加一个自定义的 handler
         pipeline.addLast("MyTestHttpServerHandler", new TestHttpServerHandler());
 
-        System.out.println("ok...");
+        log.info("ok...");
     }
 }

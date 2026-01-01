@@ -8,6 +8,7 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.DelimiterBasedFrameDecoder;
+import lombok.extern.slf4j.Slf4j;
 
 import java.nio.charset.StandardCharsets;
 
@@ -15,6 +16,7 @@ import java.nio.charset.StandardCharsets;
  * @author lxcecho lxcecho@gmail.com
  * @since 10:49 06-08-2022
  */
+@Slf4j
 public class DecoderTest {
 
     public static void main(String[] args) throws Exception {
@@ -70,7 +72,7 @@ public class DecoderTest {
                                      *              如果 failFast=false，那么会等到解码出一个完整的消息后才会抛出 TooLongFrameException。
                                      *  delimiter   指定特殊分隔符，通过写入 ByteBuf 作为参数传入。
                                      */
-                                    .addLast(new DelimiterBasedFrameDecoder(10,true, true, delimiter))
+                                    .addLast(new DelimiterBasedFrameDecoder(10, true, true, delimiter))
                                     .addLast(new EchoServer());
                         }
                     });
@@ -86,7 +88,7 @@ public class DecoderTest {
     public static class EchoServer extends ChannelInboundHandlerAdapter {
         @Override
         public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-            System.out.println("Receive client: [" + ((ByteBuf) msg).toString(StandardCharsets.UTF_8) + "]");
+            log.info("Receive client: [{}]", ((ByteBuf) msg).toString(StandardCharsets.UTF_8));
         }
     }
 
