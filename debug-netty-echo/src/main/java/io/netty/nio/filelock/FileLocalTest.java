@@ -1,5 +1,6 @@
 package io.netty.nio.filelock;
 
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 
 import java.io.BufferedReader;
@@ -15,6 +16,7 @@ import java.nio.file.StandardOpenOption;
  * @author lxcecho lxcecho@gmail.com
  * @since 15.09.2021
  */
+@Slf4j
 public class FileLocalTest {
 
     @Test
@@ -34,7 +36,7 @@ public class FileLocalTest {
          */
 
         String input = "lxcecho";
-        System.out.println("input : " + input);
+        log.info("input : {}", input);
         ByteBuffer buffer = ByteBuffer.wrap(input.getBytes());
 
         String filePath = "D:\\file01.txt";
@@ -46,12 +48,12 @@ public class FileLocalTest {
 
         // lock
         FileLock lock = fileChannel.lock(0L, Long.MAX_VALUE, false);
-        System.out.println("是否共享锁 ： " + lock.isShared());
+        log.info("是否共享锁 ： {}", lock.isShared());
 
         fileChannel.write(buffer);
         fileChannel.close();
 
-        System.out.println("写操作完成");
+        log.info("写操作完成");
 
         // read file
         readFile(filePath);
@@ -63,9 +65,9 @@ public class FileLocalTest {
         BufferedReader bufferedReader = new BufferedReader(fileReader);
 
         String str = bufferedReader.readLine();
-        System.out.println("读出的内容是:");
+        log.info("读出的内容是: ");
         while(str != null){
-            System.out.println(str);
+            log.info("{}", str);
             str = bufferedReader.readLine();
         }
 

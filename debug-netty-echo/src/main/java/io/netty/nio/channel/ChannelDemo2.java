@@ -1,5 +1,7 @@
 package io.netty.nio.channel;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -12,9 +14,10 @@ import java.nio.channels.FileChannel;
  * @author lxcecho lxcecho@gmail.com
  * @since 2021/2/20
  */
+@Slf4j
 public class ChannelDemo2 {
     public static void main(String[] args) {
-        FileInputStream fileInputStream =null;
+        FileInputStream fileInputStream = null;
 
         try {
             // 创建文件的输入流
@@ -31,11 +34,11 @@ public class ChannelDemo2 {
             fileChannel.read(byteBuffer);
 
             // 将 ByteBuffer 的字节数据转成 String
-            System.out.println(new String(byteBuffer.array()));
+            log.info("{}", new String(byteBuffer.array()));
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
-            if(fileInputStream != null){
+            if (fileInputStream != null) {
                 try {
                     fileInputStream.close();
                 } catch (IOException e) {

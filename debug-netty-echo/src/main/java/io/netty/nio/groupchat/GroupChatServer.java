@@ -1,5 +1,7 @@
 package io.netty.nio.groupchat;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
@@ -13,6 +15,7 @@ import java.util.Iterator;
  * @author lxcecho lxcecho@gmail.com
  * @since 29.05.2021
  */
+@Slf4j
 public class GroupChatServer {
 
     // 定义属性
@@ -47,7 +50,7 @@ public class GroupChatServer {
      * 监听
      */
     public void listen() {
-        System.out.println("监听线程：" + Thread.currentThread().getName());
+        log.info("监听线程：{}", Thread.currentThread().getName());
         try {
             while (true) {
                 int count = selector.select();
@@ -68,7 +71,7 @@ public class GroupChatServer {
                             sc.register(selector, SelectionKey.OP_READ);
 
                             // 提示上线
-                            System.out.println(sc.getRemoteAddress() + " 上线...");
+                            log.info("{} 上线...", sc.getRemoteAddress());
                         }
 
                         // 通道发送 read 事件，即通道是可读的
@@ -80,7 +83,7 @@ public class GroupChatServer {
                         iterator.remove();
                     }
                 } else {
-                    System.out.println("waiting...");
+                    log.info("waiting...");
                 }
             }
         } catch (IOException e) {
@@ -111,14 +114,14 @@ public class GroupChatServer {
                 // 把缓存区的数据转成字符串
                 String msg = new String(buffer.array());
                 // 输出该消息
-                System.out.println("from 客户端 : " + msg);
+                log.info("from 客户端 : {}", msg);
 
                 // 向其他客户端转发消息（去掉自己），专门写一个方法来处理
                 sendInfoToOtherClients(msg, channel);
             }
         } catch (IOException e) {
             try {
-                System.out.println(channel.getRemoteAddress() + " 下线 ...");
+                log.info("{} 下线 ...", channel.getRemoteAddress());
                 // 取消注册
                 key.cancel();
                 // 关闭通道
@@ -139,8 +142,8 @@ public class GroupChatServer {
      * @param self
      */
     private void sendInfoToOtherClients(String msg, SocketChannel self) throws Exception {
-        System.out.println("服务器转发消息中...");
-        System.out.println("服务器转发数据给客户端线程：" + Thread.currentThread().getName());
+        log.info("服务器转发消息中...");
+        log.info("服务器转发数据给客户端线程：{}", Thread.currentThread().getName());
 
         // 遍历 所有注册到 selector 上的 SocketChannel 并排除 self
         for (SelectionKey key : selector.keys()) {

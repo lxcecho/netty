@@ -1,5 +1,7 @@
 package io.netty.nio.buffer;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.nio.ByteBuffer;
 
 /**
@@ -9,6 +11,7 @@ import java.nio.ByteBuffer;
  * @author lxcecho lxcecho@gmail.com
  * @since 2021/2/20
  */
+@Slf4j
 public class ByteBufferPutGet {
     public static void main(String[] args) {
         // 创建一个 Buffer
@@ -18,15 +21,13 @@ public class ByteBufferPutGet {
         byteBuffer.putInt(100);
         byteBuffer.putLong(9);
         byteBuffer.putChar('X');
-        byteBuffer.putShort((short)4);
+        byteBuffer.putShort((short) 4);
 
         // 取出
         byteBuffer.flip();
 
-        System.out.println(byteBuffer.getInt());
-        System.out.println(byteBuffer.getLong());
-        System.out.println(byteBuffer.getChar());
-        System.out.println(byteBuffer.getShort());
+        log.info("int={}, long={}, char={}, short={}",
+                byteBuffer.getInt(), byteBuffer.getLong(), byteBuffer.getChar(), byteBuffer.getShort());
 
     }
 }

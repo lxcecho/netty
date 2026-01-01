@@ -1,5 +1,7 @@
 package io.netty.nio.selector;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.SelectionKey;
@@ -15,6 +17,7 @@ import java.util.Set;
  * @author lxcecho lxcecho@gmail.com
  * @since 2021/2/21
  */
+@Slf4j
 public class NIOServer {
     public static void main(String[] args) throws Exception {
         // 创建 ServerSocketChannel --> ServerSocket
@@ -36,7 +39,7 @@ public class NIOServer {
         while (true) {
             // 这里等待 1秒 ，如果没有事件发生，返回
             if (selector.select(1000) == 0) {// 没有时间发生
-                System.out.println("服务器等待了1秒，无连接");
+                log.info("服务器等待了1秒，无连接");
                 continue;
             }
             // 如果返回的 >0 ，就获取到相关的 selectionKey 集合
@@ -54,7 +57,7 @@ public class NIOServer {
                 if (selectionKey.isAcceptable()) {// 如果是 OP_ACCEPT，有新的客户端连接
                     // 该客户端生成一个 SocketChannel
                     SocketChannel socketChannel = serverSocketChannel.accept();
-                    System.out.println("客户端连接成功，生成了一个 socketChannel " + socketChannel.hashCode());
+                    log.info("客户端连接成功，生成了一个 socketChannel {}", socketChannel.hashCode());
                     // 将 SocketChannel 设置为非阻塞
                     socketChannel.configureBlocking(false);
                     // 将 socketChannel 注册到 Selector，关注事件为 OP_READ，同时给 socketChannel
@@ -67,7 +70,7 @@ public class NIOServer {
                     // 获取到该 Channel 关联的 buffer
                     ByteBuffer byteBuffer = (ByteBuffer) selectionKey.attachment();
                     socketChannel.read(byteBuffer);
-                    System.out.println("from 客户端 " + new String(byteBuffer.array()));
+                    log.info("from 客户端 {}", new String(byteBuffer.array()));
                 }
                 // 手动从集合中移动当前的 selectionKey，防止重复操作
                 keyIterator.remove();

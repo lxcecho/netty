@@ -1,5 +1,7 @@
 package io.netty.nio.file;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.nio.ByteBuffer;
@@ -9,6 +11,7 @@ import java.nio.channels.FileChannel;
  * @author lxcecho lxcecho@gmail.com
  * @since 22:15 24-11-2022
  */
+@Slf4j
 public class NIOFileChannel02 {
     public static void main(String[] args) throws Exception {
 
@@ -26,7 +29,7 @@ public class NIOFileChannel02 {
         fileChannel.read(byteBuffer);
 
         // 将 byteBuffer 的 字节数据 转成 String
-        System.out.println(new String(byteBuffer.array()));
+        log.info("{}", new String(byteBuffer.array()));
         fileInputStream.close();
 
     }

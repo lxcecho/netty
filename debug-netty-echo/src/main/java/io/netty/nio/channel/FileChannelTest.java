@@ -1,5 +1,6 @@
 package io.netty.nio.channel;
 
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 
 import java.io.RandomAccessFile;
@@ -10,6 +11,7 @@ import java.nio.channels.FileChannel;
  * @author lxcecho lxcecho@gmail.com
  * @since 11.09.2021
  */
+@Slf4j
 public class FileChannelTest {
 
     /**
@@ -32,7 +34,7 @@ public class FileChannelTest {
 
         fromFile.close();
         toFile.close();
-        System.out.println("over ...");
+        log.info("over ...");
 
     }
 
@@ -61,7 +63,7 @@ public class FileChannelTest {
 
         formFile.close();
         toFile.close();
-        System.out.println("file copy over...");
+        log.info("file copy over...");
 
     }
 
@@ -111,12 +113,12 @@ public class FileChannelTest {
         int read = channel.read(buffer);
 
         while (read != -1) {
-            System.out.println("read : " + read);
+            log.info("read : {}", read);
             // 反转读写模式
             buffer.flip();
             while (buffer.hasRemaining()) {
                 // 从缓冲区读取数据
-                System.out.println((char) buffer.get());
+                log.info("{}", (char) buffer.get());
             }
             // 清除缓冲区内容
 //            buffer.compact();
@@ -124,7 +126,7 @@ public class FileChannelTest {
             read = channel.read(buffer);
         }
         file.close();
-        System.out.println("handle over...");
+        log.info("handle over...");
     }
 
 }

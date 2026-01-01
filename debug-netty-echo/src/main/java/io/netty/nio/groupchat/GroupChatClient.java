@@ -1,5 +1,7 @@
 package io.netty.nio.groupchat;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
@@ -17,6 +19,7 @@ import java.util.Scanner;
  * @author lxcecho lxcecho@gmail.com
  * @since 29.05.2021
  */
+@Slf4j
 public class GroupChatClient {
 
     // 定义相关属性
@@ -49,7 +52,7 @@ public class GroupChatClient {
             socketChannel.register(selector, SelectionKey.OP_READ);
             // 得到 username
             username = socketChannel.getLocalAddress().toString().substring(1);
-            System.out.println(username + " is ok ...");
+            log.info("{} is ok ...", username);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -89,13 +92,13 @@ public class GroupChatClient {
                         sc.read(buffer);
                         // 把读到的缓冲区的数据转成字符串
                         String msg = new String(buffer.array());
-                        System.out.println(msg.trim());
+                        log.info("{}", msg.trim());
                     }
                 }
                 // 删除当前的 selectionKey ，防止重复操作
                 iterator.remove();
             } else {
-                // System.out.println("没有可以用的通道。。。");
+                // log.info("没有可以用的通道。。。");
             }
         } catch (IOException e) {
             e.printStackTrace();

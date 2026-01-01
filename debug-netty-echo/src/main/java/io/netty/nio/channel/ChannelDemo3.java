@@ -1,5 +1,7 @@
 package io.netty.nio.channel;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -12,6 +14,7 @@ import java.nio.channels.FileChannel;
  * @author lxcecho lxcecho@gmail.com
  * @since 2021/2/20
  */
+@Slf4j
 public class ChannelDemo3 {
     public static void main(String[] args) {
         FileInputStream fileInputStream = null;
@@ -37,7 +40,7 @@ public class ChannelDemo3 {
                 byteBuffer.clear();// 清空 buffer，重置/复位
                 // 把数据从 fileChannel01 读到 buffer 缓冲区
                 int read = fileChannel01.read(byteBuffer);
-                System.out.println("read = " + read);
+                log.info("read = {}", read);
                 if (read == -1) {// 表示读完
                     break;
                 }

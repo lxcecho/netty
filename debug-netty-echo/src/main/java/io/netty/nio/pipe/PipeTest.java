@@ -1,5 +1,6 @@
 package io.netty.nio.pipe;
 
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 
 import java.nio.ByteBuffer;
@@ -9,6 +10,7 @@ import java.nio.channels.Pipe;
  * @author lxcecho lxcecho@gmail.com
  * @since 15.09.2021
  */
+@Slf4j
 public class PipeTest {
 
     @Test
@@ -39,7 +41,7 @@ public class PipeTest {
         ByteBuffer buffer2 = ByteBuffer.allocate(1024);
 
         int length = sourceChannel.read(buffer2);
-        System.out.println(new String(buffer2.array(), 0, length));
+        log.info("content={}", new String(buffer2.array(), 0, length));
 
         // 关闭通道
         sourceChannel.close();

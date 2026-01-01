@@ -1,5 +1,7 @@
 package io.netty.aio;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
@@ -13,6 +15,7 @@ import java.util.concurrent.TimeUnit;
  * @author lxcecho lxcecho@gmail.com
  * @since 23:28 27-10-2022
  */
+@Slf4j
 public class AIOClient {
 
     private final AsynchronousSocketChannel socketChannel;
@@ -35,7 +38,7 @@ public class AIOClient {
             public void completed(Void result, Void attachment) {
                 try {
                     socketChannel.write(ByteBuffer.wrap("这是一条测试数据".getBytes(StandardCharsets.UTF_8))).get();
-                    System.out.println("已发送至服务器");
+                    log.info("已发送至服务器");
                 } catch (InterruptedException | ExecutionException e) {
                     e.printStackTrace();
                 }
@@ -52,8 +55,7 @@ public class AIOClient {
         socketChannel.read(bb, null, new CompletionHandler<Integer, Object>() {
             @Override
             public void completed(Integer result, Object attachment) {
-                System.out.println("IO 操作完成：" + result);
-                System.out.println("获取反馈结果：" + new String(bb.array()));
+                log.info("IO 操作完成：{}, 获取反馈结果：{}", result, new String(bb.array()));
             }
 
             @Override

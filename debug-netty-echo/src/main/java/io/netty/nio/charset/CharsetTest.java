@@ -1,5 +1,6 @@
 package io.netty.nio.charset;
 
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 
 import java.io.File;
@@ -19,6 +20,7 @@ import java.util.Set;
  * @author lxcecho lxcecho@gmail.com
  * @since 15.09.2021
  */
+@Slf4j
 public class CharsetTest {
 
     @Test
@@ -36,9 +38,9 @@ public class CharsetTest {
 
         // 编码
         ByteBuffer byteBuffer = encoder.encode(charBuffer);
-        System.out.println("编码之后结果:");
+        log.info("编码之后结果: ");
         for (int i = 0; i < byteBuffer.limit(); i++) {
-            System.out.println(byteBuffer.get());
+            log.info("{}", byteBuffer.get());
         }
 
         // 获取解码器对象
@@ -47,29 +49,27 @@ public class CharsetTest {
 
         //解码
         CharBuffer charBuffer1 = decoder.decode(byteBuffer);
-        System.out.println("解码之后结果:");
-        System.out.println(charBuffer1);
+        log.info("解码之后结果: {}", charBuffer1);
 
         // 使用 GBK 解码
         Charset gbk = Charset.forName("GBK");
         byteBuffer.flip();
         CharBuffer decode = gbk.decode(byteBuffer);
-        System.out.println("使用GBK进行解码:");
-        System.out.println(decode);
+        log.info("使用GBK进行解码: {}", decode);
 
         // 获取虚拟机默认的编码方式
         Charset defaultCharset = Charset.defaultCharset();
-        System.out.println(defaultCharset);
+        log.info("{}", defaultCharset);
 
         // 判断是否支持该编码类型
         boolean supported = Charset.isSupported("GBK");
-        System.out.println(supported);
+        log.info("{}", supported);
 
         // 获取系统所支持所有编码方式
         Map<String, Charset> map = Charset.availableCharsets();
         Set<Map.Entry<String, Charset>> set = map.entrySet();
         for (Map.Entry<String, Charset> entry : set) {
-            System.out.println(entry.getKey() + " = " + entry.getValue());
+            log.info("{} = {}", entry.getKey(), entry.getValue());
         }
     }
 
@@ -88,11 +88,11 @@ public class CharsetTest {
 
         MappedByteBuffer inputData = inputFileChannel.map(FileChannel.MapMode.READ_ONLY, 0, inputLength);
 
-        /*System.out.println("=======================");
+        /*log.info("=======================");
         Charset.availableCharsets().forEach((k, v) -> {
-            System.out.println(k + ": " + v);
+            log.info("{} : {}", k, v);
         });
-        System.out.println("=======================");*/
+        log.info("=======================");*/
 
         Charset charset = StandardCharsets.UTF_8;
         CharsetDecoder charsetDecoder = charset.newDecoder();

@@ -1,5 +1,7 @@
 package io.netty.nio.buffer;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.ServerSocketChannel;
@@ -9,12 +11,13 @@ import java.util.Arrays;
 /**
  * 前面我们讲的读写操作，都是通过一个 Buffer 完成的，NIO 还支持 通过多个 Buffer (即 Buffer 数组) 完成读写操作，
  * 即
- *  Scattering：将数据写入到 Buffer 时，可以采用 Buffer 数组，依次写入【分散】；
- *  Gathering：从 Buffer 读取数据时，可以采用 Buffer 数组，依次读。
+ * Scattering：将数据写入到 Buffer 时，可以采用 Buffer 数组，依次写入【分散】；
+ * Gathering：从 Buffer 读取数据时，可以采用 Buffer 数组，依次读。
  *
  * @author lxcecho lxcecho@gmail.com
  * @since 2021/2/20
  */
+@Slf4j
 public class ScatteringAndGatheringDemo {
     public static void main(String[] args) throws Exception {
         // 使用 ServerSocketChannel 和 SocketChannel 网络
@@ -38,7 +41,7 @@ public class ScatteringAndGatheringDemo {
             while (byteRead < messageLength) {
                 long l = socketChannel.read(byteBuffers);
                 byteRead += l;// 累计读取的字节数
-                System.out.println("byteRead = " + byteRead);
+                log.info("byteRead = {}", byteRead);
                 // 使用流打印，看看当前的这个 buffer 的 position 和 limit
                 Arrays.asList(byteBuffers).stream().map(byteBuffer -> "position=" + byteBuffer.position()
                         + ",limit=" + byteBuffer.limit()).forEach(System.out::println);
@@ -56,8 +59,7 @@ public class ScatteringAndGatheringDemo {
 
             // 将所有的 buffer 进行 clear
             Arrays.asList(byteBuffers).forEach(ByteBuffer::clear);
-            System.out.println("byteRead=" + byteRead + " byteWrite="
-                    + byteWrite + " messageLength=" + messageLength);
+            log.info("byteRead={}, byteWrite={}, messageLength={}", byteRead, byteWrite, messageLength);
         }
     }
 }

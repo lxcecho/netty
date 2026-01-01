@@ -108,7 +108,7 @@ public class ChatServer {
         // 5 把客户端发送的消息，广播到其他客户端
         if (!message.isEmpty()) {
             // 广播其他客户端
-            System.out.println(message);
+            log.info("{}", message);
             castOtherClient(message, selector, socketChannel);
         }
 

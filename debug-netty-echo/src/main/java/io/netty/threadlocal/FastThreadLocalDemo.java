@@ -1,6 +1,7 @@
 package io.netty.threadlocal;
 
 import io.netty.util.concurrent.FastThreadLocal;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.concurrent.TimeUnit;
 
@@ -8,6 +9,7 @@ import java.util.concurrent.TimeUnit;
  * @author lxcecho lxcecho@gmail.com
  * @since 21:58 01-11-2022
  */
+@Slf4j
 public class FastThreadLocalDemo {
 
     static final class FastThreadLocalTest extends FastThreadLocal<Object> {
@@ -42,7 +44,7 @@ public class FastThreadLocalDemo {
             try {
                 for (int i = 0; i < 10; i++) {
                     // 输出结果都是 true：说明其他线程虽然不断修改共享对象的值，但都不影响当前线程共享对象的值，即实现了线程共享对象功能
-                    System.out.println(obj == fastThreadLocalDemo.fastThreadLocalTest.get());
+                    log.info("{}", obj == fastThreadLocalDemo.fastThreadLocalTest.get());
                     TimeUnit.SECONDS.sleep(1);
                 }
             } catch (Exception e) {

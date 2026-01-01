@@ -1,5 +1,7 @@
 package io.netty.nio.buffer;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.nio.ByteBuffer;
 
 /**
@@ -9,12 +11,13 @@ import java.nio.ByteBuffer;
  * @author lxcecho lxcecho@gmail.com
  * @since 22:45 28-10-2022
  */
+@Slf4j
 public class ReadOnlyBuffer {
 
     public static void main(String[] args) {
         ByteBuffer buffer = ByteBuffer.allocate(10);
 
-        System.out.println(buffer.getClass());
+        log.info("{}", buffer.getClass());
 
         for (int i = 0; i < buffer.capacity(); i++) {
             buffer.put((byte) i);
@@ -23,7 +26,7 @@ public class ReadOnlyBuffer {
         // create read only buffer
         ByteBuffer readOnlyBuffer = buffer.asReadOnlyBuffer();
 
-        System.out.println(readOnlyBuffer.getClass());
+        log.info("{}", readOnlyBuffer.getClass());
 
         // change the source buffer
         for (int i = 0; i < buffer.capacity(); i++) {
@@ -37,7 +40,7 @@ public class ReadOnlyBuffer {
 
         // 只读缓冲区的内容也随之改变
         while (readOnlyBuffer.remaining() > 0) {
-            System.out.println(readOnlyBuffer.get());
+            log.info("{}", readOnlyBuffer.get());
         }
 
     }
@@ -54,13 +57,12 @@ public class ReadOnlyBuffer {
 
         // 得到一个只读 Buffer
         ByteBuffer readOnlyBuffer = byteBuffer.asReadOnlyBuffer();
-        System.out.println(readOnlyBuffer.getClass());
+        log.info("{}", readOnlyBuffer.getClass());
 
         // 读取
-        while (readOnlyBuffer.hasRemaining()){
-            System.out.print(readOnlyBuffer.get()+" ");
+        while (readOnlyBuffer.hasRemaining()) {
+            log.info("{}", readOnlyBuffer.get());
         }
-        System.out.println();
 
         readOnlyBuffer.put((byte) 100);// 抛出 ReadOnlyBufferException 异常
     }

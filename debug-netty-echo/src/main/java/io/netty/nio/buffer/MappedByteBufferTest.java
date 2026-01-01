@@ -1,5 +1,7 @@
 package io.netty.nio.buffer;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.RandomAccessFile;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
@@ -12,6 +14,7 @@ import java.nio.channels.FileChannel;
  * @author lxcecho lxcecho@gmail.com
  * @since 23:10 28-10-2022
  */
+@Slf4j
 public class MappedByteBufferTest {
 
     public static void main(String[] args) throws Exception {
@@ -38,7 +41,7 @@ public class MappedByteBufferTest {
 //        mappedByteBuffer.put(5,(byte) 'Y');// IndexOutOfBoundsException
 
         randomAccessFile.close();
-        System.out.println("修改成功...");// 修改成功之后去到磁盘打开文件，发现修改成功！
+        log.info("修改成功...");// 修改成功之后去到磁盘打开文件，发现修改成功！
     }
 
 }

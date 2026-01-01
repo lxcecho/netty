@@ -1,5 +1,7 @@
 package io.netty.nio.chat;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.nio.ByteBuffer;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
@@ -13,6 +15,7 @@ import java.util.Set;
  * @author lxcecho lxcecho@gmail.com
  * @since 17.09.2021
  */
+@Slf4j
 public class ClientThread implements Runnable {
 
     private Selector selector;
@@ -84,7 +87,7 @@ public class ClientThread implements Runnable {
         // 5 把客户端发送的消息，广播到其他客户端
         if (!message.isEmpty()) {
             // 广播给其他客户端
-            System.out.println(message);
+            log.info("{}", message);
         }
 
     }

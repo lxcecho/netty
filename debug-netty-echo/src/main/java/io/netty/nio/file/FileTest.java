@@ -1,5 +1,6 @@
 package io.netty.nio.file;
 
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 
 import java.io.File;
@@ -11,6 +12,7 @@ import java.nio.file.attribute.BasicFileAttributes;
  * @author lxcecho lxcecho@gmail.com
  * @since 15.09.2021
  */
+@Slf4j
 public class FileTest {
 
     @Test
@@ -65,7 +67,7 @@ public class FileTest {
                     String fileString = file.toAbsolutePath().toString();
 
                     if(fileString.endsWith(fileToFind)){
-                        System.out.println("file found at path : "+ file.toAbsolutePath());
+                        log.info("file found at path : {}", file.toAbsolutePath());
                         return FileVisitResult.TERMINATE;
                     }
                     return FileVisitResult.CONTINUE;

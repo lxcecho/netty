@@ -1,5 +1,7 @@
 package io.netty.aio;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousChannelGroup;
@@ -15,6 +17,7 @@ import java.util.concurrent.TimeUnit;
  * @author lxcecho lxcecho@gmail.com
  * @since 23:15 27-10-2022
  */
+@Slf4j
 public class AIOServer {
 
     private final int port;
@@ -30,7 +33,7 @@ public class AIOServer {
             AsynchronousChannelGroup threadGroup = AsynchronousChannelGroup.withCachedThreadPool(executorService, 1);
             final AsynchronousServerSocketChannel serverSocketChannel = AsynchronousServerSocketChannel.open(threadGroup);
             serverSocketChannel.bind(new InetSocketAddress(port));
-            System.out.println("服务端已启动，监听端口：" + port);
+            log.info("服务端已启动，监听端口：{}", port);
 
             serverSocketChannel.accept(null, new CompletionHandler<AsynchronousSocketChannel, Object>() {
                 final ByteBuffer buffer = ByteBuffer.allocateDirect(1024);
@@ -45,7 +48,7 @@ public class AIOServer {
                  */
                 @Override
                 public void completed(AsynchronousSocketChannel result, Object attachment) {
-                    System.out.println("IO 操作成功，开始获取数据");
+                    log.info("IO 操作成功，开始获取数据");
                     try {
                         buffer.clear();
                         result.read(buffer).get();
@@ -53,28 +56,28 @@ public class AIOServer {
                         result.write(buffer);
                         buffer.flip();
                     } catch (InterruptedException | ExecutionException e) {
-                        System.out.println(e.getMessage());
+                        log.error(e.getMessage());
                     } finally {
                         try {
                             result.close();
                             serverSocketChannel.accept(null, this);
                         } catch (Exception e) {
-                            System.out.println(e.getMessage());
+                            log.error(e.getMessage());
                         }
                     }
-                    System.out.println("操作完成");
+                    log.info("操作完成");
                 }
 
                 @Override
                 public void failed(Throwable exc, Object attachment) {
-                    System.out.println("IO 操作失败：" + exc);
+                    log.info("IO操作失败：{}", exc.getMessage());
                 }
             });
 
             try {
                 TimeUnit.MILLISECONDS.sleep(Integer.MAX_VALUE);
             } catch (Exception e) {
-                System.out.println(e.getMessage());
+                log.error(e.getMessage());
             }
 
         } catch (Exception e) {

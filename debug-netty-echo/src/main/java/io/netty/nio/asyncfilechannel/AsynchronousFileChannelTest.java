@@ -1,5 +1,6 @@
 package io.netty.nio.asyncfilechannel;
 
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -15,6 +16,7 @@ import java.util.concurrent.Future;
  * @author lxcecho lxcecho@gmail.com
  * @since 15.09.2021
  */
+@Slf4j
 public class AsynchronousFileChannelTest {
 
     @Test
@@ -32,7 +34,7 @@ public class AsynchronousFileChannelTest {
         asynchronousFileChannel.write(buffer, position, buffer, new CompletionHandler<Integer, ByteBuffer>() {
             @Override
             public void completed(Integer result, ByteBuffer attachment) {
-                System.out.println("bytes written : " + result);
+                log.info("bytes written : {}", result);
             }
 
             @Override
@@ -41,7 +43,7 @@ public class AsynchronousFileChannelTest {
             }
         });
 
-        System.out.println("Write over!");
+        log.info("Write over!");
 
     }
 
@@ -62,9 +64,9 @@ public class AsynchronousFileChannelTest {
         Future<Integer> future = asynchronousFileChannel.write(buffer, position);
         buffer.clear();
 
-        while (!future.isDone());
+        while (!future.isDone()) ;
 
-        System.out.println("Write over!");
+        log.info("Write over!");
     }
 
     @Test
@@ -85,12 +87,12 @@ public class AsynchronousFileChannelTest {
              */
             @Override
             public void completed(Integer result, ByteBuffer attachment) {
-                System.out.println("result: " + result);
+                log.info("result: {}", result);
 
                 attachment.flip();
                 byte[] data = new byte[attachment.limit()];
                 attachment.get(data);
-                System.out.println(new String(data));
+                log.info("{}", new String(data));
                 attachment.clear();
             }
 
@@ -129,7 +131,7 @@ public class AsynchronousFileChannelTest {
         buffer.flip();
         byte[] bytes = new byte[buffer.limit()];
         buffer.get(bytes);
-        System.out.println(new String(bytes));
+        log.info("{}", new String(bytes));
         buffer.clear();
 
     }

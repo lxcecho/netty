@@ -1,9 +1,12 @@
 package io.netty.threadlocal;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * @author lxcecho lxcecho@gmail.com
  * @since 22:01 06-08-2022
  */
+@Slf4j
 public class ThreadLocalTest {
 
     private static final ThreadLocal<String> THREAD_NAME_LOCAL = ThreadLocal.withInitial(() -> Thread.currentThread().getName());
@@ -16,8 +19,8 @@ public class ThreadLocalTest {
             new Thread(() -> {
                 TradeOrder tradeOrder = new TradeOrder(tradeId, tradeId % 2 == 0 ? "已支付" : "未支付");
                 TRADE_THREAD_LOCAL.set(tradeOrder);
-                System.out.println("threadName: "+ THREAD_NAME_LOCAL.get());
-                System.out.println("tradeOrder info: "+ TRADE_THREAD_LOCAL.get());
+                log.info("threadName: {}", THREAD_NAME_LOCAL.get());
+                log.info("tradeOrder info: {}", TRADE_THREAD_LOCAL.get());
             }, "thread-" + i).start();
         }
     }

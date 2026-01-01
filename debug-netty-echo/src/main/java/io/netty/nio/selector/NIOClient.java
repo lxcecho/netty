@@ -1,5 +1,7 @@
 package io.netty.nio.selector;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
@@ -8,6 +10,7 @@ import java.nio.channels.SocketChannel;
  * @author lxcecho lxcecho@gmail.com
  * @since 2021/2/21
  */
+@Slf4j
 public class NIOClient {
     public static void main(String[] args) throws Exception {
         // 得到一个网络通道
@@ -19,7 +22,7 @@ public class NIOClient {
         // 连接服务器
         if (!socketChannel.connect(inetSocketAddress)) {
             while (!socketChannel.finishConnect()) {
-                System.out.println("因为链接需要事件，客户端不会阻塞，可以做其他工作！");
+                log.info("因为链接需要事件，客户端不会阻塞，可以做其他工作！");
             }
         }
 

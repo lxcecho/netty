@@ -1,5 +1,7 @@
 package io.netty.nio.selector;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.nio.ByteBuffer;
@@ -17,6 +19,7 @@ import java.util.Set;
  * @author lxcecho lxcecho@gmail.com
  * @since 23:21 28-10-2022
  */
+@Slf4j
 public class SelectorDemo {
 
     private static final int port = 8090;
@@ -49,7 +52,7 @@ public class SelectorDemo {
      * 开始监听
      */
     public void listen() {
-        System.out.println("listen on " + port);
+        log.info("listen on {}", port);
         try {
             while (true) {
                 // 该调用会阻塞，知道至少有一个事件发生

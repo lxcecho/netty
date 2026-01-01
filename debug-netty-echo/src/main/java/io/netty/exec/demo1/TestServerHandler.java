@@ -6,6 +6,7 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.*;
 import io.netty.util.CharsetUtil;
+import lombok.extern.slf4j.Slf4j;
 
 import java.net.URI;
 
@@ -15,15 +16,16 @@ import java.net.URI;
  * @author lxcecho lxcecho@gmail.com
  * @since 28.02.2022
  */
+@Slf4j
 public class TestServerHandler extends SimpleChannelInboundHandler<HttpObject> {
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, HttpObject msg) throws Exception {
         HttpRequest request = (HttpRequest) msg;
-        System.out.println(request.getMethod());
+        log.info("{}", request.getMethod());
 
         URI uri = new URI(request.getUri());
         if ("/favicon/ico".equals(uri.getPath())) {
-            System.out.println("请求 favicon.ico");
+            log.info("请求 favicon.ico");
             return;
         }
         // 向客户端返回的内容
@@ -45,13 +47,13 @@ public class TestServerHandler extends SimpleChannelInboundHandler<HttpObject> {
      */
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        System.out.println("channel active...");
+        log.info("channel active...");
         super.channelActive(ctx);
     }
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
-        System.out.println("channel inactive...");
+        log.info("channel inactive...");
         super.channelInactive(ctx);
     }
 
@@ -63,7 +65,7 @@ public class TestServerHandler extends SimpleChannelInboundHandler<HttpObject> {
      */
     @Override
     public void handlerAdded(ChannelHandlerContext ctx) throws Exception {
-        System.out.println("handler added...");
+        log.info("handler added...");
         super.handlerAdded(ctx);
     }
 
@@ -75,13 +77,13 @@ public class TestServerHandler extends SimpleChannelInboundHandler<HttpObject> {
      */
     @Override
     public void channelRegistered(ChannelHandlerContext ctx) throws Exception {
-        System.out.println("channel registered...");
+        log.info("channel registered...");
         super.channelRegistered(ctx);
     }
 
     @Override
     public void channelUnregistered(ChannelHandlerContext ctx) throws Exception {
-        System.out.println("channel unregistered...");
+        log.info("channel unregistered...");
         super.channelUnregistered(ctx);
     }
 

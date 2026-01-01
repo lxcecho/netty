@@ -1,5 +1,6 @@
 package io.netty.nio.channel;
 
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 
 import java.net.InetSocketAddress;
@@ -10,6 +11,7 @@ import java.nio.channels.SocketChannel;
  * @author lxcecho lxcecho@gmail.com
  * @since 10.09.2021
  */
+@Slf4j
 public class SocketChannelTest {
 
     @Test
@@ -43,7 +45,7 @@ public class SocketChannelTest {
         // 非阻塞式读，控制台会打印 read over...
         socketChannel.read(buffer);
         socketChannel.close();
-        System.out.println("read over...");
+        log.info("read over...");
 
     }
 

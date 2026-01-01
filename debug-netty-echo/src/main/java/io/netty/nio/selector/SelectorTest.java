@@ -1,5 +1,6 @@
 package io.netty.nio.selector;
 
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 
 import javax.sound.midi.Track;
@@ -24,6 +25,7 @@ import java.util.concurrent.Executors;
  * @author lxcecho lxcecho@gmail.com
  * @since 10.09.2021
  */
+@Slf4j
 public class SelectorTest {
     @Test
     public void server() throws Exception {
@@ -59,7 +61,7 @@ public class SelectorTest {
                     socketChannel.read(readBuffer);
 
                     readBuffer.flip();
-                    System.out.println("received : " + new String(readBuffer.array()));
+                    log.info("received : {}", new String(readBuffer.array()));
                     selectionKey.interestOps(SelectionKey.OP_WRITE);
                 } else if (selectionKey.isWritable()) {
                     writeBuffer.rewind();
@@ -115,7 +117,7 @@ public class SelectorTest {
          * 一个通道，并没有一定要支持所有的四种操作。比如服务器通道 ServerSocketChannel 支持 Accept 接收操作，而 SocketChannel 客户端则不支持。
          * 可以通过通道上的 validOps() 方法，来获取特定通道下所有支持的操作集合。
          */
-        System.out.println(serverSocketChannel.validOps());
+        log.info("{}", serverSocketChannel.validOps());
 
         // 5 将通道注册到选择器上，并制定监听事件为 接收事件
         serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT);
@@ -142,7 +144,7 @@ public class SelectorTest {
 
         Selector selector = Selector.open();
 
-//        System.out.println(SelectorProvider.provider().openSelector().getClass());
+//        log.info("{}", SelectorProvider.provider().openSelector().getClass());
 
         for (int i = 0; i < ports.length; i++) {
             ServerSocketChannel serverSocketChannel = ServerSocketChannel.open();
@@ -153,14 +155,14 @@ public class SelectorTest {
 
             // A selection key is created each time a channel is registered with a selector.
             SelectionKey selectionKey = serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT);
-            System.out.println("Listening port： " + ports[i]);
+            log.info("Listening port： {}", ports[i]);
         }
 
         while (true) {
             // 返回的 SelectionKey 数量
             int numbers = selector.select();
 
-            System.out.println("numbers: " + numbers);
+            log.info("numbers: {}", numbers);
 
             // 获取所有连接键值 Set 集合
             Set<SelectionKey> selectionKeys = selector.selectedKeys();
@@ -174,7 +176,7 @@ public class SelectorTest {
                     socketChannel.configureBlocking(false);
                     socketChannel.register(selector, SelectionKey.OP_READ);
                     selectionKeyIterator.remove();
-                    System.out.println("Get the client connection： " + socketChannel);
+                    log.info("Get the client connection： {}", socketChannel);
                 } else if (key.isReadable()) { // 处理客户端 读事件
                     SocketChannel socketChannel = (SocketChannel) key.channel();
                     int byteRead = 0;
@@ -190,7 +192,7 @@ public class SelectorTest {
                         socketChannel.write(buffer);
                         byteRead += read;
                     }
-                    System.out.println("Read: " + byteRead + ", from: " + socketChannel);
+                    log.info("Read: {}, from: {}", byteRead, socketChannel);
                     selectionKeyIterator.remove();
                 }
             }
@@ -236,7 +238,7 @@ public class SelectorTest {
                                 readBuffer.flip();
                                 Charset charset = Charset.forName("utf-8");
                                 String receiveMsg = String.valueOf(charset.decode(readBuffer).array());
-                                System.out.println(client + ": " + receiveMsg);
+                                log.info("{}: {}", client, receiveMsg);
 
                                 String sendKey = null;
                                 for (Map.Entry<String, SocketChannel> entry : clientMap.entrySet()) {
@@ -312,7 +314,7 @@ public class SelectorTest {
                     int read = client.read(readBuffer);
                     if (read > 0) {
                         String receivedMsg = new String(readBuffer.array(), 0, read);
-                        System.out.println(receivedMsg);
+                        log.info(receivedMsg);
                     }
                 }
                 iterator.remove();

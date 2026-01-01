@@ -6,11 +6,13 @@ import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.group.ChannelGroup;
 import io.netty.channel.group.DefaultChannelGroup;
 import io.netty.util.concurrent.GlobalEventExecutor;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author lxcecho lxcecho@gmail.com
  * @since 30.03.2022
  */
+@Slf4j
 public class MyChatServerHandler extends SimpleChannelInboundHandler<String> {
 
     private static ChannelGroup channelGroup = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
@@ -53,19 +55,19 @@ public class MyChatServerHandler extends SimpleChannelInboundHandler<String> {
         channelGroup.writeAndFlush("[server]" + channel.remoteAddress() + " is leaving.\n");
         // netty 会自动调用这句代码，无需手动移除 channel
 //        channelGroup.remove(channel);
-        System.out.println(channelGroup.size());
+        log.info("{}", channelGroup.size());
     }
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         Channel channel = ctx.channel();
-        System.out.println(channel.remoteAddress() + " is online...\n");
+        log.info("{} is online...\n", channel.remoteAddress());
     }
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
         Channel channel = ctx.channel();
-        System.out.println(channel.remoteAddress() + " is offline...\n");
+        log.info("{} is offline...\n", channel.remoteAddress());
     }
 
     /**

@@ -52,7 +52,7 @@ public class BufferTest {
         while (buffer.hasRemaining()) {
             // 读取此缓冲区当前位置的整数，然后当前位置递增
             int j = buffer.get();
-            System.out.print(j + " ");
+            log.info("{}", j);
         }
     }
 
@@ -282,7 +282,7 @@ public class BufferTest {
             // read 模式
             byteBuffer.flip();
             while (byteBuffer.hasRemaining()) {
-                System.out.println((char) byteBuffer.get());
+                log.info("{}", (char) byteBuffer.get());
             }
             byteBuffer.clear();
             byteRead = channel.read(byteBuffer);

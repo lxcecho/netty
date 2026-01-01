@@ -1,5 +1,7 @@
 package io.netty.nio.buffer;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.nio.ByteBuffer;
 
 /**
@@ -8,6 +10,7 @@ import java.nio.ByteBuffer;
  * @author lxcecho lxcecho@gmail.com
  * @since 22:29 28-10-2022
  */
+@Slf4j
 public class BufferSlice {
 
     public static void main(String[] args) {
@@ -34,7 +37,7 @@ public class BufferSlice {
         buffer.limit(buffer.capacity());
 
         while (buffer.remaining() > 0) {
-            System.out.println(buffer.get());
+            log.info("{}", buffer.get());
         }
     }
 

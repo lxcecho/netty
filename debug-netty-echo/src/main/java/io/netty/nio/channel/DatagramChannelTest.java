@@ -1,5 +1,6 @@
 package io.netty.nio.channel;
 
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -14,6 +15,7 @@ import java.nio.charset.StandardCharsets;
  * @author lxcecho lxcecho@gmail.com
  * @since 11.09.2021
  */
+@Slf4j
 public class DatagramChannelTest {
 
     public void channel() throws Exception {
@@ -51,7 +53,7 @@ public class DatagramChannelTest {
         InetSocketAddress sendAddress = new InetSocketAddress("127.0.0.1", 10086);
         while (true) {
             sendChannel.send(ByteBuffer.wrap("send datagram".getBytes("UTF-8")), sendAddress);
-            System.out.println("client send datagram ...");
+            log.info("client send datagram ...");
             Thread.sleep(1000);
         }
     }
@@ -74,8 +76,7 @@ public class DatagramChannelTest {
             receiveBuffer.clear();
             SocketAddress sendAddress = receiveChannel.receive(receiveBuffer);
             receiveBuffer.flip();
-            System.out.println(sendAddress.toString());
-            System.out.println(StandardCharsets.UTF_8.decode(receiveBuffer));
+            log.info("sendAddress= {}, receiveBuffer={}", sendAddress.toString(), StandardCharsets.UTF_8.decode(receiveBuffer));
         }
     }
 
@@ -99,7 +100,7 @@ public class DatagramChannelTest {
                 readBuffer.clear();
                 connChannel.read(readBuffer);
                 readBuffer.flip();
-                System.out.println(StandardCharsets.UTF_8.decode(readBuffer));
+                log.info("{}", StandardCharsets.UTF_8.decode(readBuffer));
             } catch (IOException e) {
                 e.printStackTrace();
             }

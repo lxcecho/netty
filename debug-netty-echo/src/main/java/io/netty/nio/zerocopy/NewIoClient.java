@@ -31,7 +31,7 @@ public class NewIoClient {
         // transferTo 底层使用到 零拷贝
         long transferCount = fileChannel.transferTo(0, fileChannel.size(), socketChannel);
 
-        System.out.println("发送总字节数 " + transferCount + "，耗时 " + (System.currentTimeMillis() - startTime));
+        log.info("发送总字节数 {}，耗时 {}", transferCount, (System.currentTimeMillis() - startTime));
 
         // close
         fileChannel.close();

@@ -2,6 +2,7 @@ package io.netty.exec.demo2;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
+import lombok.extern.slf4j.Slf4j;
 
 import java.time.LocalDateTime;
 
@@ -9,16 +10,17 @@ import java.time.LocalDateTime;
  * @author lxcecho lxcecho@gmail.com
  * @since 27.03.2022
  */
+@Slf4j
 public class MyClientHandler extends SimpleChannelInboundHandler<String> {
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, String msg) throws Exception {
-        System.out.println(ctx.channel().remoteAddress());
-        System.out.println("client output: " + msg);
+        log.info("{} client output: {}", ctx.channel().remoteAddress(), msg);
         ctx.channel().writeAndFlush("from client: " + LocalDateTime.now());
     }
 
     /**
      * 导火索
+     *
      * @param ctx
      * @throws Exception
      */

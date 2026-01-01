@@ -1,5 +1,7 @@
 package io.netty.nio.channel;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.FileInputStream;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
@@ -13,6 +15,7 @@ import java.nio.channels.FileChannel;
  * @author lxcecho lxcecho@gmail.com
  * @since 0:01 29-10-2022
  */
+@Slf4j
 public class FileInputDemo {
 
     public static void main(String[] args) throws Exception {
@@ -28,7 +31,7 @@ public class FileInputDemo {
 
         while (buffer.remaining() > 0) {
             byte b = buffer.get();
-            System.out.print((char) b);
+            log.info("{}", (char) b);
         }
         fis.close();
     }
