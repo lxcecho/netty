@@ -1,4 +1,4 @@
-package io.netty.serial;
+package io.netty.serialize;
 
 import lombok.extern.slf4j.Slf4j;
 

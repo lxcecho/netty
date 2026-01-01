@@ -1,7 +1,8 @@
-package io.netty.serial;
+package io.netty.serialize.hessian;
 
 import com.caucho.hessian.io.HessianInput;
 import com.caucho.hessian.io.HessianOutput;
+import io.netty.serialize.java.ISerializer;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;

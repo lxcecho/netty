@@ -1,4 +1,4 @@
-package io.netty.serial;
+package io.netty.serialize;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;

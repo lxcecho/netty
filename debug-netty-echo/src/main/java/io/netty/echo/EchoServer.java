@@ -11,6 +11,9 @@ import io.netty.handler.codec.FixedLengthFrameDecoder;
 import io.netty.handler.codec.MessageToByteEncoder;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.nio.charset.StandardCharsets;
 
@@ -33,13 +36,13 @@ public class EchoServer {
 
             serverBootstrap.group(boss, worker)
                     .channel(NioServerSocketChannel.class)
-                    .handler(new LoggingHandler(LogLevel.INFO)) // 设置ServerSocketChannel 对应的 Handler
+                    .handler(new LoggingHandler(LogLevel.INFO)) // 设置 ServerSocketChannel 对应的 Handler
                     .childHandler(new ChannelInitializer<SocketChannel>() {
                         @Override
                         protected void initChannel(SocketChannel ch) throws Exception { // 设置 SocketChannel 对应的 Handler
                             ByteBuf delimiter = Unpooled.copiedBuffer("&".getBytes());
                             ch.pipeline()
-                                    .addLast(new FixedLengthFrameDecoder(10))
+                                    .addLast(new FixedLengthFrameDecoder(10)) // 定长
                                     .addLast(new ResponseSampleEncoder())
                                     .addLast(new RequestSampleHandler());
 
@@ -75,6 +78,9 @@ public class EchoServer {
         }
     }
 
+    @Setter
+    @Getter
+    @NoArgsConstructor
     public static class ResponseSample {
 
         private String code;
@@ -89,29 +95,6 @@ public class EchoServer {
             this.timestamp = timestamp;
         }
 
-        public String getCode() {
-            return code;
-        }
-
-        public void setCode(String code) {
-            this.code = code;
-        }
-
-        public String getData() {
-            return data;
-        }
-
-        public void setData(String data) {
-            this.data = data;
-        }
-
-        public long getTimestamp() {
-            return timestamp;
-        }
-
-        public void setTimestamp(long timestamp) {
-            this.timestamp = timestamp;
-        }
     }
 
 }

@@ -1,5 +1,7 @@
-package io.netty.serial;
+package io.netty.serialize;
 
+import io.netty.serialize.hessian.HessianSerializer;
+import io.netty.serialize.java.ISerializer;
 import lombok.extern.slf4j.Slf4j;
 
 /**

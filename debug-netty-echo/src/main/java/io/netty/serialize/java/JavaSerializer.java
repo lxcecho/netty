@@ -1,4 +1,4 @@
-package io.netty.serial;
+package io.netty.serialize.java;
 
 import java.io.*;
 

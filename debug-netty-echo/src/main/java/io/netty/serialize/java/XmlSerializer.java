@@ -1,4 +1,4 @@
-package io.netty.serial;
+package io.netty.serialize.java;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
