@@ -6,6 +6,8 @@ import org.jboss.marshalling.Marshalling;
 import org.jboss.marshalling.MarshallingConfiguration;
 
 /**
+ * <a href="https://jbossmarshalling.jboss.org/docs">...</a>
+ *
  * @author lxcecho lxcecho@gmail.com
  * @since 2026/1/1
  */
