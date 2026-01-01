@@ -33,7 +33,7 @@ public class NettyServer {
                     .option(ChannelOption.SO_BACKLOG, 128) // 设置线程队列得到连接个数
                     .childOption(ChannelOption.SO_KEEPALIVE, true) // 设置保持活动连接状态
 //                    .handler(null) // 该 handler对应 bossGroup , childHandler 对应 workerGroup
-                    .childHandler(new ChannelInitializer<SocketChannel>() {// 创建一个通道初始化对象(匿名对象)
+                    .childHandler(new ChannelInitializer<SocketChannel>() { // 创建一个通道初始化对象(匿名对象)
                         // 给pipeline 设置处理器
                         @Override
                         protected void initChannel(SocketChannel ch) throws Exception {

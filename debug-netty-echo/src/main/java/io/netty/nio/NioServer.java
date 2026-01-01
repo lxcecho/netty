@@ -35,7 +35,14 @@ public class NioServer {
 
             while (true) {
                 // 等待需要处理的新事件；阻塞将一直持续到下一个传入事件
-                selector.select(); // 阻塞机制
+                // selecto.select() 方法返回的是客户端的通道数，如果为 0，则说明没有客户端连接。
+                int select = selector.select();// 阻塞机制
+
+                if (select == 0) { // nio 非阻塞式的优势
+                    log.info("Server：Nothing to do, and I am going to sleeping~");
+                    continue;
+                }
+
                 // 获取所有接收事件的 SelectionKey
                 Set<SelectionKey> selectionKeys = selector.selectedKeys();
                 Iterator<SelectionKey> iterator = selectionKeys.iterator();
@@ -44,6 +51,7 @@ public class NioServer {
                     // 把对应事件移除掉，避免重复处理
                     iterator.remove();
                     // 检查事件是否是一个新的已经就绪可以被接受的连接
+                    // 客户端先连接上，处理连接事件，然后客户端会向服务端发信息，再处理读取客户端数据事件。
                     if (next.isAcceptable()) {
                         // 连接事件
                         handleAccept(next);

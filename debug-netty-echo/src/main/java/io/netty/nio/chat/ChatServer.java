@@ -48,8 +48,9 @@ public class ChatServer {
             // 获取 channel 数量
             int readChannels = selector.select();
 
-            // 如果为0，阻塞
+            // 如果为 0，阻塞
             if (readChannels == 0) {
+                // 没有客户端连接，我去搞点兼职
                 continue;
             }
 

@@ -27,8 +27,6 @@ public class GroupChatClient {
         EventLoopGroup group = new NioEventLoopGroup();
 
         try {
-
-
             Bootstrap bootstrap = new Bootstrap()
                     .group(group)
                     .channel(NioSocketChannel.class)
@@ -40,9 +38,9 @@ public class GroupChatClient {
                             // 得到 pipeline
                             ChannelPipeline pipeline = ch.pipeline();
                             // 加入相关 handler
-                            pipeline.addLast("decoder", new StringDecoder());
-                            pipeline.addLast("encoder", new StringEncoder());
-                            // 加入自定义的 handler
+                            pipeline.addLast("decoder", new StringDecoder()); // 往 pipeline 链中添加一个解码器
+                            pipeline.addLast("encoder", new StringEncoder()); // 往 pipeline 链中添加一个编码器
+                            // 加入自定义的 handler 业务处理类
                             pipeline.addLast(new GroupChatClientHandler());
                         }
                     });

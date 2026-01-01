@@ -1,6 +1,7 @@
 package io.netty.nio.chat;
 
 import java.net.InetSocketAddress;
+import java.nio.ByteBuffer;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
@@ -38,8 +39,10 @@ public class ChatClient {
         Scanner scanner = new Scanner(System.in);
         while (scanner.hasNextLine()) {
             String msg = scanner.nextLine();
-            if(!msg.isEmpty()) {
-                socketChannel.write(StandardCharsets.UTF_8.encode(name +" : " +msg));
+            if (!msg.isEmpty()) {
+                // ByteBuffer buffer = ByteBuffer.wrap(msg.getBytes()); // todo 和下面一行代码区别？？？
+                ByteBuffer buffer = StandardCharsets.UTF_8.encode(name + " : " + msg);
+                socketChannel.write(buffer);
             }
         }
     }

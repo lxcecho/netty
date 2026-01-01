@@ -22,7 +22,7 @@ public class GroupChatServerHandler extends SimpleChannelInboundHandler<String> 
     // 使用一个 hashmap 管理
     //public static Map<String, Channel> channels = new HashMap<String,Channel>();
 
-    // 定义一个 channle 组，管理所有的 channel
+    // 定义一个 channel 组，管理所有的 channel
     // GlobalEventExecutor.INSTANCE) 是全局的事件执行器，是一个单例
     private static ChannelGroup channelGroup = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -70,7 +70,6 @@ public class GroupChatServerHandler extends SimpleChannelInboundHandler<String> 
     // 读取数据
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, String msg) throws Exception {
-
         // 获取到当前 channel
         Channel channel = ctx.channel();
         // 这时我们遍历 channelGroup, 根据不同的情况，回送不同的消息
