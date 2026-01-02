@@ -1,4 +1,4 @@
-package io.netty.netty.protocaltcp;
+package io.netty.netty.protocoltcp;
 
 /**
  * 协议包

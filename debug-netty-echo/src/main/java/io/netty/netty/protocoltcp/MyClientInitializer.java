@@ -1,4 +1,4 @@
-package io.netty.netty.protocaltcp;
+package io.netty.netty.protocoltcp;
 
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
@@ -8,13 +8,12 @@ import io.netty.channel.socket.SocketChannel;
  * @author lxcecho lxcecho@gmail.com
  * @since 11.12.2021
  */
-public class MyServerInitializer extends ChannelInitializer<SocketChannel> {
+public class MyClientInitializer extends ChannelInitializer<SocketChannel> {
     @Override
     protected void initChannel(SocketChannel ch) throws Exception {
         ChannelPipeline pipeline = ch.pipeline();
-
-        pipeline.addLast(new MyMessageDecoder()); // 解码器
-        pipeline.addLast(new MyMessageEncoder()); // 编码器
-        pipeline.addLast(new MyServerHandler());
+        pipeline.addLast(new MyMessageEncoder()); // 加入编码器
+        pipeline.addLast(new MyMessageDecoder()); // 加入解码器
+        pipeline.addLast(new MyClientHandler());
     }
 }

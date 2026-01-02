@@ -1,5 +1,7 @@
 package io.netty.serialize.marshalling;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -12,6 +14,7 @@ import java.util.zip.GZIPOutputStream;
  * @author lxcecho lxcecho@gmail.com
  * @since 2026/1/1
  */
+@Slf4j
 public class GzipUtils {
     public static byte[] gzip(byte[] data) throws Exception {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
@@ -51,14 +54,14 @@ public class GzipUtils {
         in.read(data);
         in.close();
 
-        System.out.println("文件原始大小:" + data.length);
+        log.info("文件原始大小: {}", data.length);
         // 测试压缩
 
         byte[] ret1 = GzipUtils.gzip(data);
-        System.out.println("压缩之后大小:" + ret1.length);
+        log.info("压缩之后大小: {}", ret1.length);
 
         byte[] ret2 = GzipUtils.ungzip(ret1);
-        System.out.println("还原之后大小:" + ret2.length);
+        log.info("还原之后大小: {}", ret2.length);
 
         // 写出文件
         String writePath = System.getProperty("user.dir") + File.separatorChar + "receive" + File.separatorChar + "006.jpg";

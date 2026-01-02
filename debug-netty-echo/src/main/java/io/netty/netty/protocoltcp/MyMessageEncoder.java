@@ -1,4 +1,4 @@
-package io.netty.netty.protocaltcp;
+package io.netty.netty.protocoltcp;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;

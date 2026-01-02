@@ -1,4 +1,4 @@
-package io.netty.netty.protocaltcp;
+package io.netty.netty.protocoltcp;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
