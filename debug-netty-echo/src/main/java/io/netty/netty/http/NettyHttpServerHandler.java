@@ -1,13 +1,14 @@
 package io.netty.netty.http;
 
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.CompositeByteBuf;
 import io.netty.buffer.Unpooled;
+import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.*;
 import io.netty.util.CharsetUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 
 import java.net.URI;
 
@@ -20,7 +21,7 @@ import java.net.URI;
  * @since 08.10.2021
  */
 @Slf4j
-public class TestHttpServerHandler extends SimpleChannelInboundHandler<HttpObject> {
+public class NettyHttpServerHandler extends SimpleChannelInboundHandler<HttpObject> {
     /*@Override
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, HttpObject httpObject) throws Exception {
         // 判断 msg 是不是 httpRequest 请求
@@ -50,40 +51,95 @@ public class TestHttpServerHandler extends SimpleChannelInboundHandler<HttpObjec
      */
     @Override
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, HttpObject httpObject) throws Exception {
-        log.info("对应的 channel = {}, \npipeline = {}, \n通过pipeline获取channel = {}",
+        /*log.info("对应的 channel = {}, \npipeline = {}, \n通过 pipeline 获取 channel = {}",
                 channelHandlerContext.channel(),
                 channelHandlerContext.pipeline(),
                 channelHandlerContext.pipeline().channel());
 
-        log.info("当前ctx的handler = {}", channelHandlerContext.handler());
+        log.info("当前 ctx 的 handler = {}", channelHandlerContext.handler());
 
-        log.info("httpObject 类型：{}", httpObject.getClass());
+        log.info("httpObject 类型：{}", httpObject.getClass());*/
 
         // 判断 msg 是不是 httpRequest 请求
         if (httpObject instanceof HttpRequest) {
-            log.info("ctx 类型：{}", channelHandlerContext.getClass());
+            /*log.info("ctx 类型：{}", channelHandlerContext.getClass());
             log.info("pipeline hashCode：{}, \nTestHttpServerHandler hash: {}",
                     channelHandlerContext.pipeline().hashCode(), this.hashCode());
-            log.info("客户端地址：{}", channelHandlerContext.channel().remoteAddress());
+            log.info("客户端地址：{}", channelHandlerContext.channel().remoteAddress());*/
 
-            HttpRequest httpRequest = (HttpRequest) httpObject;
+            HttpRequest request = (HttpRequest) httpObject;
+
             // 获取到 uri，过滤掉指定资源
-            URI uri = new URI(httpRequest.uri());
+            URI uri = new URI(request.uri());
             if ("/favicon.ico".equals(uri.getPath())) {
                 log.info("请求了 favicon.ico，不做响应");
                 return;
             }
-            // 回复信息给浏览器，【http协议】
-            ByteBuf context = Unpooled.copiedBuffer("Hello, I'm Server.", CharsetUtil.UTF_8);
-            // 构建一个 http 的响应，即 httpResponse
-            DefaultFullHttpResponse response = new DefaultFullHttpResponse(
-                    HttpVersion.HTTP_1_1, HttpResponseStatus.OK, context);
 
-            response.headers().set(HttpHeaderNames.CONTENT_TYPE, "text/plain");
-            response.headers().set(HttpHeaderNames.CONTENT_LENGTH, context.readableBytes());
+            HttpMethod method = request.method();
+            HttpHeaders headers = request.headers();
 
+            //	判断请求类型 get/post 做不同的逻辑处理
+            if (HttpMethod.GET.equals(method)) {
+                log.error("doGet ..");
+            } else if (HttpMethod.POST.equals(method)) {
+                log.error("doPost ..");
+                //	post 请求得到 fullRequest 可以进行解析处理
+                FullHttpRequest fullRequest = (FullHttpRequest) httpObject;
+                String contentType = headers.get(HttpHeaderNames.CONTENT_TYPE);
+                contentTypeConverter(contentType);
+            }
+
+            sendResponse(channelHandlerContext, request);
+        }
+    }
+
+    /**
+     * 写出响应信息
+     *
+     * @param channelHandlerContext
+     * @param request
+     */
+    private static void sendResponse(ChannelHandlerContext channelHandlerContext, HttpRequest request) {
+        // 回复信息给浏览器，【http 协议】
+        String responseBody = "Hello, I'm Server.";
+        ByteBuf context = Unpooled.copiedBuffer(responseBody, CharsetUtil.UTF_8);
+        // 构建一个 http 的响应，即 httpResponse
+        DefaultFullHttpResponse response = new DefaultFullHttpResponse(
+                HttpVersion.HTTP_1_1,
+                HttpResponseStatus.OK,
+                context);
+
+        response.headers().set(HttpHeaderNames.CONTENT_TYPE, "text/plain");
+        response.headers().set(HttpHeaderNames.CONTENT_LENGTH, response.content().readableBytes());
+
+        // 如果 keepAlive 是 true， 则保持练级金额，否则关闭连接
+        boolean keepAlive = HttpUtil.isKeepAlive(request);
+        if (!keepAlive) {
             // 将都建好 response 返回
+            channelHandlerContext.writeAndFlush(response).addListener(ChannelFutureListener.CLOSE);
+        } else {
+            request.headers().set(HttpHeaderNames.CONNECTION, HttpHeaderValues.KEEP_ALIVE);
             channelHandlerContext.writeAndFlush(response);
+        }
+    }
+
+    /**
+     * 根据不同的 contentType 可以做不同的数据转换
+     *
+     * @param contentType
+     */
+    private void contentTypeConverter(String contentType) {
+        if (StringUtils.isNoneBlank(contentType)) {
+            // 可以根据不同类型的 contentType 做相应处理
+            if (HttpHeaderValues.APPLICATION_JSON.toString().equals(contentType)) {
+                log.error("contentType is application/json");
+            } else if (HttpHeaderValues.APPLICATION_X_WWW_FORM_URLENCODED.toString().equals(contentType)) {
+                log.error("contentType is application/x-www-form-urlencoded");
+            }
+            // else if (...)
+        } else {
+            log.warn("NettyHttpServerHandler#channelRead0: message contentType is null, contentType: {}", contentType);
         }
     }
 
