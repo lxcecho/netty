@@ -1,4 +1,5 @@
 syntax = "proto3"; // 版本
+option java_package = "io.netty.netty.codec.demo1";
 option java_outer_classname = "StudentPOJO"; // 生成的外部类名，同时也是文件名
 
 // protobuf 使用 message 管理数据

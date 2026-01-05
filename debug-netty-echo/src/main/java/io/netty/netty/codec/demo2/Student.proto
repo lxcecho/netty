@@ -1,6 +1,6 @@
 syntax = "proto3";
 option optimize_for = SPEED; // 加快解析
-option java_package = "com.xc.joy.netty";   // 指定生成到哪个包下
+option java_package = "io.netty.netty.codec.demo2";   // 指定生成到哪个包下
 option java_outer_classname = "MyDataInfo"; // 外部类名, 文件名
 
 // protobuf 可以使用 message 管理其他的 message
@@ -8,7 +8,7 @@ message MyMessage {
 
   // 定义一个枚举类型
   enum DataType {
-    StudentType = 0; // 在 proto3 要求enum的编号从0开始
+    StudentType = 0; // 在 proto3 要求 enum 的编号从 0 开始
     WorkerType = 1;
   }
 
@@ -22,7 +22,6 @@ message MyMessage {
   }
 
 }
-
 
 message Student {
   int32 id = 1; // Student类的属性
