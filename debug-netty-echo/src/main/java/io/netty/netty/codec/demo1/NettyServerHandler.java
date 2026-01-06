@@ -24,27 +24,32 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<StudentPOJO.
     @Override
     public void channelRead0(ChannelHandlerContext ctx, StudentPOJO.Student msg) throws Exception {
 
-        // 读取从客户端发送的StudentPojo.Student
-        log.info("客户端发送的数据 id={} 名字={}", msg.getId(), msg.getName());
+        // 读取从客户端发送的 StudentPojo.Student
+        log.info("客户端发送的数据 id= {} 名字= {}", msg.getId(), msg.getName());
     }
 
 
 //    // 读取数据实际(这里我们可以读取客户端发送的消息)
 //    /*
-//    1. ChannelHandlerContext ctx:上下文对象, 含有 管道pipeline , 通道channel, 地址
-//    2. Object msg: 就是客户端发送的数据 默认Object
+//    1. ChannelHandlerContext ctx:上下文对象, 含有 管道 pipeline , 通道 channel, 地址
+//    2. Object msg: 就是客户端发送的数据 默认 Object
 //     */
 //    @Override
 //    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
 //
-//        // 读取从客户端发送的StudentPojo.Student
+//        // 读取从客户端发送的 StudentPojo.Student
 //
 //        StudentPOJO.Student student = (StudentPOJO.Student) msg;
 //
 //        log.info("客户端发送的数据 id={} 名字={}", student.getId(), student.getName());
 //    }
 
-    // 数据读取完毕
+    /**
+     * 数据读取完毕
+     *
+     * @param ctx
+     * @throws Exception
+     */
     @Override
     public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
 
@@ -54,8 +59,13 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<StudentPOJO.
         ctx.writeAndFlush(Unpooled.copiedBuffer("hello, 客户端~(>^ω^<)喵1", CharsetUtil.UTF_8));
     }
 
-    // 处理异常, 一般是需要关闭通道
-
+    /**
+     * 处理异常, 一般是需要关闭通道
+     *
+     * @param ctx
+     * @param cause
+     * @throws Exception
+     */
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
         ctx.close();
