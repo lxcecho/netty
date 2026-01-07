@@ -1,0 +1,32 @@
+package io.serialize;
+
+import lombok.extern.slf4j.Slf4j;
+
+import java.io.ObjectInputStream;
+import java.net.ServerSocket;
+import java.net.Socket;
+
+/**
+ * @author lxcecho lxcecho@gmail.com
+ * @since 14:23 23-10-2022
+ */
+@Slf4j
+public class ServerSocketDemo {
+
+    public static void main(String[] args) {
+        ServerSocket serverSocket = null;
+        try {
+            serverSocket = new ServerSocket(9090);
+            Socket socket = serverSocket.accept();
+            ObjectInputStream objectInputStream = new ObjectInputStream(socket.getInputStream());
+            // 如何转化成一个 User 对象？？
+            User user = (User) objectInputStream.readObject();
+            log.info("{}", user);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            // TODO
+        }
+    }
+
+}

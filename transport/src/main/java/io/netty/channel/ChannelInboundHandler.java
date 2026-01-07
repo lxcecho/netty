@@ -53,15 +53,14 @@ public interface ChannelInboundHandler extends ChannelHandler {
     void channelInactive(ChannelHandlerContext ctx) throws Exception;
 
     /**
-     * Channel 可以从远端读取到数据，对于每个传入的消息都要调用
-     * 将负责显式地释放与池化的 ByteBuf 实例相关的内存
+     * Channel 可以从远端读取到数据，对于每个传入的消息都要调用，将负责显式地释放与池化的 ByteBuff 实例相关的内存
      *
      * Invoked when the current {@link Channel} has read a message from the peer.
      */
     void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception;
 
     /**
-     * Channel 读取数据完成，通知 ChannelInboudHandler 最后一次对 channel-read 的调用是当前批量读取中的最后一条消息
+     * Channel 读取数据完成，通知 ChannelInboundHandler 最后一次对 channel-read 的调用是当前批量读取中的最后一条消息
      *
      * Invoked when the last message read by the current read operation has been consumed by
      * {@link #channelRead(ChannelHandlerContext, Object)}.  If {@link ChannelOption#AUTO_READ} is off, no further
@@ -79,7 +78,7 @@ public interface ChannelInboundHandler extends ChannelHandler {
 
     /**
      * 当 Channel 的可写状态发生改变时被调用。用户可以确保写操作不会完成得太快（以避免发生 OutOfMemoryError）或者可以在 Channel 变为再次可写时恢复写入。
-     * 可以通过调用 Channel 的isWritable() 方法来检测 Channel 的可写性。与可写性相关的阈值可以通过 Channel.config().setWriteHighWaterMark()
+     * 可以通过调用 Channel 的 isWritable() 方法来检测 Channel 的可写性。与可写性相关的阈值可以通过 Channel.config().setWriteHighWaterMark()
      * 和 Channel.config().setWriteLowWater-Mark() 方法来设置
      *
      * Gets called once the writable state of a {@link Channel} changed. You can check the state with

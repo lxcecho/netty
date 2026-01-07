@@ -18,7 +18,7 @@ package io.netty.channel;
 import java.net.SocketAddress;
 
 /**
- * Ountbound 类似主动触发，即发起请求的事件
+ * Outbound 类似主动触发，即发起请求的事件
  *
  * {@link ChannelHandler} which will get notified for IO-outbound-operations.
  */
@@ -82,9 +82,7 @@ public interface ChannelOutboundHandler extends ChannelHandler {
     /**
      * Called once a write operation is made. The write operation will write the messages through the
      * {@link ChannelPipeline}. Those are then ready to be flushed to the actual {@link Channel} once
-     * {@link Channel#flush()} is called
-     *
-     * 当请求通过 Channel 将数据写到远程节点时被调用
+     * {@link Channel#flush()} is called 当请求通过 Channel 将数据写到远程节点时被调用
      *
      * @param ctx               the {@link ChannelHandlerContext} for which the write operation is made
      * @param msg               the message to write
