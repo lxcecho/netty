@@ -9,6 +9,7 @@ import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -22,9 +23,9 @@ public class RegistryHandler extends ChannelInboundHandlerAdapter {
     /**
      * 保存所有可用的服务
      */
-    private static ConcurrentHashMap<String, Object> registryMap = new ConcurrentHashMap<>();
+    private static final ConcurrentHashMap<String, Object> registryMap = new ConcurrentHashMap<>();
 
-    private List<String> classNames = new ArrayList<>();
+    private final List<String> classNames = new ArrayList<>();
 
     public RegistryHandler() {
         // finish recursive scanning
@@ -39,8 +40,9 @@ public class RegistryHandler extends ChannelInboundHandlerAdapter {
      */
     private void scannerClass(String packageName) {
         URL url = this.getClass().getClassLoader().getResource(packageName.replaceAll("\\.", "/"));
+        assert url != null;
         File dir = new File(url.getFile());
-        for (File file : dir.listFiles()) {
+        for (File file : Objects.requireNonNull(dir.listFiles())) {
             // 如果是一个文件夹，继续递归
             if (file.isDirectory()) {
                 scannerClass(packageName + "." + file.getName());
@@ -54,7 +56,7 @@ public class RegistryHandler extends ChannelInboundHandlerAdapter {
      * 完成注册
      */
     private void doRegister() {
-        if (classNames.size() == 0) {
+        if (classNames.isEmpty()) {
             return;
         }
         for (String className : classNames) {
@@ -68,6 +70,13 @@ public class RegistryHandler extends ChannelInboundHandlerAdapter {
         }
     }
 
+    /**
+     * 获取客户端发送消息，并调用服务
+     *
+     * @param ctx
+     * @param msg
+     * @throws Exception
+     */
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         Object result = new Object();

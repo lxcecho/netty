@@ -10,7 +10,12 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class RpcHelloServiceImpl implements IRpcHelloService {
     @Override
-    public String hello(String name) {
-        return "Hello, " + name + "!";
+    public String hello(String msg) {
+        log.info("收到客户端消息：{}", msg);
+        if (msg != null) {
+            return "你好，客户端，我已经收到你发的消息 [" + msg + "] 了";
+        } else {
+            return "Hello, " + msg + "!";
+        }
     }
 }

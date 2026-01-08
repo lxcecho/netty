@@ -8,8 +8,8 @@ public interface IRpcHelloService {
     /**
      * 确认服务可用
      *
-     * @param name
+     * @param msg
      * @return
      */
-    String hello(String name);
+    String hello(String msg);
 }

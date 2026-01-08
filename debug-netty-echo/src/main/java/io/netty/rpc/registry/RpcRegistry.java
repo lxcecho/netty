@@ -22,7 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class RpcRegistry {
 
-    private int port;
+    private final int port;
 
     public RpcRegistry(int port) {
         this.port = port;
@@ -65,6 +65,9 @@ public class RpcRegistry {
             future.channel().closeFuture().sync();
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            bossGroup.shutdownGracefully();
+            workerGroup.shutdownGracefully();
         }
     }
 

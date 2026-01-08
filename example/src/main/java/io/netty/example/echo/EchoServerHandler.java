@@ -24,6 +24,9 @@ import io.netty.util.CharsetUtil;
 import io.netty.util.concurrent.DefaultEventExecutorGroup;
 import io.netty.util.concurrent.EventExecutorGroup;
 
+import java.nio.charset.StandardCharsets;
+import java.util.concurrent.Callable;
+
 /**
  * Handler implementation for the echo server.
  */
@@ -40,10 +43,9 @@ public class EchoServerHandler extends ChannelInboundHandlerAdapter {
         System.out.println("EchoServer Handler 的线程是=" + Thread.currentThread().getName());
 
         // 按照原来的方法处理耗时任务
-        /*
-        // 解决方案1 用户程序自定义的普通任务
 
-        ctx.channel().eventLoop().execute(new Runnable() {
+        // 解决方案1 用户程序自定义的普通任务
+        /*ctx.channel().eventLoop().execute(new Runnable() {
             @Override
             public void run() {
 
@@ -75,72 +77,55 @@ public class EchoServerHandler extends ChannelInboundHandlerAdapter {
             }
         });*/
 
-        /*
-        // 将任务提交到 group线程池
-        group.submit(new Callable<Object>() {
-            @Override
-            public Object call() throws Exception {
 
-                // 接收客户端信息
-                ByteBuf buf = (ByteBuf) msg;
-                byte[] bytes = new byte[buf.readableBytes()];
-                buf.readBytes(bytes);
-                String body = new String(bytes, "UTF-8");
-                // 休眠10秒
-                Thread.sleep(10 * 1000);
-                System.out.println("group.submit 的  call 线程是=" + Thread.currentThread().getName());
-                ctx.writeAndFlush(Unpooled.copiedBuffer("hello, 客户端~(>^ω^<)喵2", CharsetUtil.UTF_8));
-                return null;
-
-            }
+        // 将任务提交到 group 线程池
+        /*group.submit(() -> {
+            // 接收客户端信息
+            ByteBuf buf = (ByteBuf) msg;
+            byte[] bytes = new byte[buf.readableBytes()];
+            buf.readBytes(bytes);
+            String body = new String(bytes, StandardCharsets.UTF_8);
+            // 休眠 10 秒
+            Thread.sleep(10 * 1000);
+            System.out.println("group.submit 的  call 线程是=" + Thread.currentThread().getName());
+            ctx.writeAndFlush(Unpooled.copiedBuffer("hello, 客户端~(>^ω^<)喵2", CharsetUtil.UTF_8));
+            return null;
         });
 
-        // 将任务提交到 group线程池
-        group.submit(new Callable<Object>() {
-            @Override
-            public Object call() throws Exception {
-
-                // 接收客户端信息
-                ByteBuf buf = (ByteBuf) msg;
-                byte[] bytes = new byte[buf.readableBytes()];
-                buf.readBytes(bytes);
-                String body = new String(bytes, "UTF-8");
-                // 休眠10秒
-                Thread.sleep(10 * 1000);
-                System.out.println("group.submit 的  call 线程是=" + Thread.currentThread().getName());
-                ctx.writeAndFlush(Unpooled.copiedBuffer("hello, 客户端~(>^ω^<)喵2", CharsetUtil.UTF_8));
-                return null;
-
-            }
+        // 将任务提交到 group 线程池
+        group.submit(() -> {
+            // 接收客户端信息
+            ByteBuf buf = (ByteBuf) msg;
+            byte[] bytes = new byte[buf.readableBytes()];
+            buf.readBytes(bytes);
+            String body = new String(bytes, StandardCharsets.UTF_8);
+            // 休眠 10 秒
+            Thread.sleep(10 * 1000);
+            System.out.println("group.submit 的  call 线程是=" + Thread.currentThread().getName());
+            ctx.writeAndFlush(Unpooled.copiedBuffer("hello, 客户端~(>^ω^<)喵2", CharsetUtil.UTF_8));
+            return null;
         });
 
-
-        // 将任务提交到 group线程池
-        group.submit(new Callable<Object>() {
-            @Override
-            public Object call() throws Exception {
-
-                // 接收客户端信息
-                ByteBuf buf = (ByteBuf) msg;
-                byte[] bytes = new byte[buf.readableBytes()];
-                buf.readBytes(bytes);
-                String body = new String(bytes, "UTF-8");
-                // 休眠10秒
-                Thread.sleep(10 * 1000);
-                System.out.println("group.submit 的  call 线程是=" + Thread.currentThread().getName());
-                ctx.writeAndFlush(Unpooled.copiedBuffer("hello, 客户端~(>^ω^<)喵2", CharsetUtil.UTF_8));
-                return null;
-
-            }
+        // 将任务提交到 group 线程池
+        group.submit(() -> {
+            // 接收客户端信息
+            ByteBuf buf = (ByteBuf) msg;
+            byte[] bytes = new byte[buf.readableBytes()];
+            buf.readBytes(bytes);
+            String body = new String(bytes, StandardCharsets.UTF_8);
+            // 休眠 10 秒
+            Thread.sleep(10 * 1000);
+            System.out.println("group.submit 的  call 线程是=" + Thread.currentThread().getName());
+            ctx.writeAndFlush(Unpooled.copiedBuffer("hello, 客户端~(>^ω^<)喵2", CharsetUtil.UTF_8));
+            return null;
         });*/
-
 
         // 普通方式
         // 接收客户端信息
         ByteBuf buf = (ByteBuf) msg;
         byte[] bytes = new byte[buf.readableBytes()];
         buf.readBytes(bytes);
-        String body = new String(bytes, "UTF-8");
+        String body = new String(bytes, StandardCharsets.UTF_8);
         // 休眠 10 秒
         Thread.sleep(10 * 1000);
         System.out.println("普通调用方式的 线程是=" + Thread.currentThread().getName());
