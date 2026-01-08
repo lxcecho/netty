@@ -93,6 +93,9 @@ import java.util.concurrent.TimeUnit;
  * ...
  * </pre>
  *
+ * IdleStateHandler 是 netty 提供的处理空闲状态的处理器
+ * 当 IdleStateEvent 触发后，就会传递给管道的下一个 handler 去处理，通过调用（触发）下一个 handler 的 userEventTriggered，在该方法中去处理 IdleStateEvent（读空闲，写空闲，读写空闲）
+ *
  * @see ReadTimeoutHandler
  * @see WriteTimeoutHandler
  */
@@ -108,9 +111,27 @@ public class IdleStateHandler extends ChannelDuplexHandler {
         }
     };
 
+    /**
+     * 是否考虑出站时较慢的亲口光，默认值是 false；
+     */
     private final boolean observeOutput;
+
+    /**
+     * 读事件空闲时间，0 则禁用事件；
+     * 表示多长时间没有读，就会发送一个心跳检测包检测是否连接
+     */
     private final long readerIdleTimeNanos;
+
+    /**
+     * 写事件空闲事件，0 则禁用事件；
+     * 表示多长时间没有写，就会发送一个心跳检测包检测是否连接
+     */
     private final long writerIdleTimeNanos;
+
+    /**
+     * 读或写空闲时间，0 则禁用事件；
+     * 表示多长时间没有读写，就会发送要给心跳检测包检测是否连接
+     */
     private final long allIdleTimeNanos;
 
     private Future<?> readerIdleTimeout;
@@ -239,6 +260,12 @@ public class IdleStateHandler extends ChannelDuplexHandler {
         return TimeUnit.NANOSECONDS.toMillis(allIdleTimeNanos);
     }
 
+    /**
+     * 当 handler 被添加到 pipeline 时，则调用 initialize 方法
+     *
+     * @param ctx
+     * @throws Exception
+     */
     @Override
     public void handlerAdded(ChannelHandlerContext ctx) throws Exception {
         if (ctx.channel().isActive() && ctx.channel().isRegistered()) {
@@ -343,6 +370,7 @@ public class IdleStateHandler extends ChannelDuplexHandler {
 
         lastReadTime = lastWriteTime = ticksInNanos();
         if (readerIdleTimeNanos > 0) {
+            // 这里的 schedule 方法会调用 eventLoop 的 schedule 方法，将定时任务添加进队列中
             readerIdleTimeout = schedule(ctx, new ReaderIdleTimeoutTask(ctx),
                     readerIdleTimeNanos, TimeUnit.NANOSECONDS);
         }

@@ -96,6 +96,7 @@ public class DefaultChannelPipeline implements ChannelPipeline {
         tail = new TailContext(this);
         head = new HeadContext(this);
 
+        // 初始化 Handler 的双向链表
         head.next = tail;
         tail.prev = head;
     }

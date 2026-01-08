@@ -352,6 +352,7 @@ public abstract class SingleThreadEventExecutor extends AbstractScheduledEventEx
         if (isShutdown()) {
             reject();
         }
+        // 将任务加入到队列中
         return taskQueue.offer(task);
     }
 
@@ -950,15 +951,18 @@ public abstract class SingleThreadEventExecutor extends AbstractScheduledEventEx
 
     private static final long SCHEDULE_PURGE_INTERVAL = TimeUnit.SECONDS.toNanos(1);
 
+    /**
+     * 先判断是否启动过了，保证 EventLoop 只有一个线程
+     */
     private void startThread() {
-        if (state == ST_NOT_STARTED) {
+        if (state == ST_NOT_STARTED) { // 如果没有启动过，尝试使用 CAS 将 state 改为 ST_STARTED
             if (STATE_UPDATER.compareAndSet(this, ST_NOT_STARTED, ST_STARTED)) {
                 boolean success = false;
                 try {
                     doStartThread();
                     success = true;
                 } finally {
-                    if (!success) {
+                    if (!success) { // 如果启动失败，会进行回滚操作
                         STATE_UPDATER.compareAndSet(this, ST_STARTED, ST_NOT_STARTED);
                     }
                 }
@@ -998,6 +1002,7 @@ public abstract class SingleThreadEventExecutor extends AbstractScheduledEventEx
                 Throwable unexpectedException = null;
                 updateLastExecutionTime();
                 try {
+                    // 真正启动 NioEventLoop 的循环：整个 EventLoop 的核心【死循环】
                     SingleThreadEventExecutor.this.run();
                     success = true;
                 } catch (Throwable t) {

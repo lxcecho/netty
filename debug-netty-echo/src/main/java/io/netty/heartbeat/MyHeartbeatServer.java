@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit;
  * @author lxcecho lxcecho@gmail.com
  * @since 12.12.2021
  */
-public class MyServer {
+public class MyHeartbeatServer {
 
     public void run() {
         EventLoopGroup bossGroup = new NioEventLoopGroup(1);
@@ -45,7 +45,7 @@ public class MyServer {
 //                            pipeline.addLast(new IdleStateHandler(3, 5, 7, TimeUnit.SECONDS));
                             pipeline.addLast(new IdleStateHandler(13, 5, 2, TimeUnit.SECONDS));
                             // 加入一个对空闲检测进一步处理的 handler（自定义）
-                            pipeline.addLast(new MyServerHandler());
+                            pipeline.addLast(new MyHeartbeatServerHandler());
                         }
                     });
 
@@ -61,7 +61,7 @@ public class MyServer {
     }
 
     public static void main(String[] args) {
-        new MyServer().run();
+        new MyHeartbeatServer().run();
     }
 
 }

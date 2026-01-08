@@ -10,7 +10,7 @@ import lombok.extern.slf4j.Slf4j;
  * @since 12.12.2021
  */
 @Slf4j
-public class MyServerHandler extends ChannelInboundHandlerAdapter {
+public class MyHeartbeatServerHandler extends ChannelInboundHandlerAdapter {
     /**
      * 用户事件触发
      *

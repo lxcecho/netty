@@ -24,7 +24,7 @@ public class PipelineServer {
                     .childHandler(new ChannelInitializer<SocketChannel>() {
                         @Override
                         protected void initChannel(SocketChannel ch) throws Exception {
-                            ch.pipeline()
+                            ch.pipeline() // TODO handler debug 断点：io.netty.channel.DefaultChannelPipeline#fireChannelRead。追踪其执行过程
                                     // InboundHandler 的执行顺序注册顺序，应该是 A-B-C
                                     .addLast(new InboundHandlerA())
                                     .addLast(new InboundHandlerB())
