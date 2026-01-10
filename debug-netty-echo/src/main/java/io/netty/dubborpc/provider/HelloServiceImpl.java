@@ -3,6 +3,10 @@ package io.netty.dubborpc.provider;
 import io.netty.dubborpc.publicinterface.HelloService;
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * @author lxcecho@gmail.com
+ * @since 2026/1/10
+ */
 @Slf4j
 public class HelloServiceImpl implements HelloService {
 
