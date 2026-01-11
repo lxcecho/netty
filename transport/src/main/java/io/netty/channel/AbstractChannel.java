@@ -584,7 +584,7 @@ public abstract class AbstractChannel extends DefaultAttributeMap implements Cha
                 invokeLater(new Runnable() {
                     @Override
                     public void run() {
-                        pipeline.fireChannelActive();
+                        pipeline.fireChannelActive(); // 端口绑定成功之后发布 ChannelActive 事件
                     }
                 });
             }

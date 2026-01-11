@@ -308,7 +308,7 @@ public abstract class AbstractBootstrap<B extends AbstractBootstrap<B, C>, C ext
         } else {
             // Registration future is almost always fulfilled already, but just in case it's not.
             final PendingRegistrationPromise promise = new PendingRegistrationPromise(channel);
-            // 如果 initAndRegister(); 还没有i结束，添加一个 ChannelFuture 回调监听
+            // 如果 initAndRegister(); 还没有结束，添加一个 ChannelFuture 回调监听
             regFuture.addListener(new ChannelFutureListener() {
                 // 当 initAndRegister(); 执行结束后会调用 operationComplete，同样会通过 doBind0() 进行端口绑定
                 @Override
@@ -351,11 +351,16 @@ public abstract class AbstractBootstrap<B extends AbstractBootstrap<B, C>, C ext
     final ChannelFuture initAndRegister() {
         Channel channel = null;
         try {
-            // 创建 Channel，通过 ServerBootStrap 的通道工厂反射创建一个 NioServerSocketChannel
+            /**
+             * 创建 Channel，通过 ServerBootStrap 的通道工厂反射创建一个 NioServerSocketChannel，可以得到以下结论：
+             * 1. 通过 NIO 的 SelectorProvider 的 openServerSocketChannel 方法得到 JDK 的 channel，目的是让 Netty 包装 JDK 的 channel；
+             * 2. 创建一个唯一的 ChannelId，创建了一个 NioMessageUnsafe，用于操作消息，创建了一个 DefaultChannelPipeline 管道，是个双向链表结构，用于过滤所有的进出的消息；
+             * 3. 创建了一个 NioServerSocketChannelConfig 对象，用于对外展示一些配置；
+             */
             channel = channelFactory.newChannel();
             /**
              * 初始化 NioServerSocketChannel：
-             * 0. init 是个抽象方法（AbstractBootStrap 类的），由 ServerBootstrap 实现
+             * 0. init 是个抽象方法（AbstractBootStrap 类的），由 ServerBootstrap 实现；
              * 1. 设置 NioServerSocketChannel 的 TCP 属性；
              * 2. 由于 LinkedHashMap 是非线程安全的，使用同步进行处理；
              * 3. 对 NioServerSocketChannel 的 ChannelPipeline 添加 ChannelInitializer 处理器；
@@ -375,7 +380,7 @@ public abstract class AbstractBootstrap<B extends AbstractBootstrap<B, C>, C ext
             return new DefaultChannelPromise(new FailedChannel(), GlobalEventExecutor.INSTANCE).setFailure(t);
         }
 
-        // 通过 ServerBootstrap 的 bossFroup 注册 Channel，MultithreadEventLoopGroup#register
+        // 通过 ServerBootstrap 的 bossGroup 注册 Channel，MultithreadEventLoopGroup#register
         ChannelFuture regFuture = config().group().register(channel);
         if (regFuture.cause() != null) {
             if (channel.isRegistered()) {
@@ -420,8 +425,7 @@ public abstract class AbstractBootstrap<B extends AbstractBootstrap<B, C>, C ext
                 if (regFuture.isSuccess()) {
                     // 这里下断点，来玩
                     // 将调用 LoggingHandler 的 invokeBind 方法，最后会追到 DefaultChannelPipeline 类的 bind，
-                    // 然后进入到 unsafe.bind 方法 debug，
-                    // 注意要追踪到 unsafe.bind，要 debug 第二圈的时候，才能看到
+                    // 然后进入到 unsafe.bind 方法 debug，注意要追踪到 unsafe.bind，要 debug 第二圈的时候，才能看到
                     channel.bind(localAddress, promise).addListener(ChannelFutureListener.CLOSE_ON_FAILURE);
                 } else {
                     promise.setFailure(regFuture.cause());

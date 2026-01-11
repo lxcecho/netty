@@ -238,7 +238,7 @@ public class DefaultChannelPipeline implements ChannelPipeline {
         return internalAdd(group, name, handler, null, AddStrategy.ADD_LAST);
     }
 
-    private void addLast0(AbstractChannelHandlerContext newCtx) {
+    private void addLast0(AbstractChannelHandlerContext newCtx) { // 双向链表尾插法插入节点
         AbstractChannelHandlerContext prev = tail.prev;
         newCtx.prev = prev;
         newCtx.next = tail;

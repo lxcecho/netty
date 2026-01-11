@@ -259,6 +259,7 @@ abstract class AbstractChannelHandlerContext implements ChannelHandlerContext, R
                 } else if (handler instanceof ChannelInboundHandlerAdapter) {
                     ((ChannelInboundHandlerAdapter) handler).channelActive(this);
                 } else {
+                    // 通道激活
                     ((ChannelInboundHandler) handler).channelActive(this);
                 }
             } catch (Throwable t) {

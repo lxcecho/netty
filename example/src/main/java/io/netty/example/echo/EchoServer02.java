@@ -59,21 +59,21 @@ public final class EchoServer02 {
 
         // Configure the server. 重点分析：创建了两个 EventLoopGroup 对象，可以说，整个 Netty 的运作都依赖他们。
         /**
-         * 1. 用于接受 TCP 请求，他会将请求交给 workerGroup，workerGroup 会获取到真正的连接，然后和连接进行通信，比如读写解码编码等操作。
-         * 2. EventLoopGroup 是事件循环组（线程组），含有多个 EventLoop，可以注册 channel，用于在事件循环中去进行选择（和选择器相关）。
+         * 1. bossGroup 用于接受 TCP 请求，他会将请求交给 workerGroup，workerGroup 会获取到真正的连接，然后和连接进行通信，比如读写解码编码等操作。
+         * 2. EventLoopGroup 是事件循环组（线程组），含有多个 EventLoop，可以注册 channel，用于在事件循环中去进行选择（和选择器相关）。==>DEBUG
          * 3. new NioEventLoopGroup(1); 这个 1 表示 bossGroup 事件组有一个线程你可以指定，如果 new NioEventLoopGroup(); 会含有默认个线程【cpu 核数*2】，即可以充分的利用多核的优势。
          *  io.netty.channel.MultithreadEventLoopGroup#DEFAULT_EVENT_LOOP_THREADS
          *  DEFAULT_EVENT_LOOP_THREADS = Math.max(1, SystemPropertyUtil.getInt(
          *                  "io.netty.eventLoopThreads", NettyRuntime.availableProcessors() * 2));
          * 4. 会创建 EventExecutor 数组：children = new EventExecutor[nThreads];
-         * 5. 每个元素类型就是 NioEventLoop，NioEventLoop 实现了 EventLoop 接口和 Executor 接口，try 块中
+         * 5. 每个元素类型就是 NioEventLoop，NioEventLoop 实现了 EventLoop 接口和 Executor 接口；
          */
         EventLoopGroup bossGroup = new NioEventLoopGroup(1);
         EventLoopGroup workerGroup = new NioEventLoopGroup();
         final EchoServerHandler serverHandler = new EchoServerHandler();
         try {
             /**
-             * 6. 创建了一个 ServerBootStrap 对象，它是一个引导类，用于启动服务器和引导整个程序的初始化。他和 ServerChannel 关联，而 ServerChannel 继承了 Channel，有一些方法 remoteAddress 等。
+             * 6. try 块中创建了一个 ServerBootStrap 对象，它是一个引导类，用于启动服务器和引导整个程序的初始化。他和 ServerChannel 关联，而 ServerChannel 继承了 Channel，有一些方法 remoteAddress 等。
              * 7. 然后添加了一个 Channel，其中参数是一个 Class 对象，引导类将通过这个 Class 对象反射创建 ChannelFactory，然后添加了一些 TCP 的参数。【说明：Channel 的创建在 bind 方法，可以 debug
              *  该方法，会找到 channel = channelFactory.newChannel();】
              * 8. 再添加了一个服务器专属的日志处理器 handler；
