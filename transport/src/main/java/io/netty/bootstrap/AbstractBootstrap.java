@@ -291,7 +291,7 @@ public abstract class AbstractBootstrap<B extends AbstractBootstrap<B, C>, C ext
     }
 
     private ChannelFuture doBind(final SocketAddress localAddress) {
-        // 初始化并注册 Channel，同时返回一个 ChannelFuture 实例，猜测此过程为一个异步过程。
+        // 【核心方法】初始化并注册 Channel，同时返回一个 ChannelFuture 实例，猜测此过程为一个异步过程。
         final ChannelFuture regFuture = initAndRegister();
         final Channel channel = regFuture.channel();
         // 判断 initAndRegister(); 是否发生异常，如果发生了一茶匙那个，直接返回
@@ -303,6 +303,7 @@ public abstract class AbstractBootstrap<B extends AbstractBootstrap<B, C>, C ext
         if (regFuture.isDone()) {
             // At this point we know that the registration was complete and successful.
             ChannelPromise promise = channel.newPromise();
+            // 【核心方法】完成对端口的绑定
             doBind0(regFuture, channel, localAddress, promise);
             return promise;
         } else {

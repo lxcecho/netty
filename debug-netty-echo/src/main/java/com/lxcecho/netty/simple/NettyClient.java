@@ -1,4 +1,4 @@
-package com.lxcecho.netty.simple.demo2;
+package com.lxcecho.netty.simple;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;

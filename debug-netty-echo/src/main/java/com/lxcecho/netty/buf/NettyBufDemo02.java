@@ -24,7 +24,7 @@ public class NettyBufDemo02 {
             // 将 content 转成字符
             log.info("{}", new String(content, utf8));
 
-            log.info("byteBuf={}", byteBuf);
+            log.info("byteBuf= {}", byteBuf);
 
             log.info("{}", byteBuf.arrayOffset()); // 0
             log.info("{}", byteBuf.readerIndex()); // 0

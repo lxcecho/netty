@@ -51,9 +51,7 @@ public class ServerBootstrap extends AbstractBootstrap<ServerBootstrap, ServerCh
     // purposes.
     private final Map<ChannelOption<?>, Object> childOptions = new LinkedHashMap<ChannelOption<?>, Object>();
     private final Map<AttributeKey<?>, Object> childAttrs = new ConcurrentHashMap<AttributeKey<?>, Object>();
-    /**
-     * Config 对象，会在后面起很大作用
-     */
+    /*Config 对象，会在后面起很大作用*/
     private final ServerBootstrapConfig config = new ServerBootstrapConfig(this);
     private volatile EventLoopGroup childGroup;
     private volatile ChannelHandler childHandler;

@@ -48,7 +48,7 @@ public final class EchoServer {
             b.group(group)
              .channel(NioServerSocketChannel.class)
              .option(ChannelOption.SO_BACKLOG, 100)
-             .handler(new LoggingHandler(LogLevel.INFO))
+             .handler(new LoggingHandler(LogLevel.INFO)) // 设置 ServerSocketChannel 对应的 Handler
              .childHandler(new ChannelInitializer<SocketChannel>() {
                  @Override
                  public void initChannel(SocketChannel ch) throws Exception {
@@ -62,6 +62,7 @@ public final class EchoServer {
              });
 
             // Start the server.
+            // bind() 才是真正进行服务器端口绑定和启动的入口，sync() 表示阻塞等待服务器启动完成。
             ChannelFuture f = b.bind(PORT).sync();
 
             // Wait until the server socket is closed.

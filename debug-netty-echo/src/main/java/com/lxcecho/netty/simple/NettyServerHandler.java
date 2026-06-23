@@ -1,4 +1,4 @@
-package com.lxcecho.netty.simple.demo2;
+package com.lxcecho.netty.simple;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -8,8 +8,6 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.channel.ChannelPipeline;
 import io.netty.util.CharsetUtil;
 import lombok.extern.slf4j.Slf4j;
-
-import java.util.concurrent.TimeUnit;
 
 /**
  * 1.自定义一个 Handler 需要继承 netty 规定好的某个 HandlerAdapter（规范）

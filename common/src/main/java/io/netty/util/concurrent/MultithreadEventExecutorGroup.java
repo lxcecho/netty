@@ -63,16 +63,20 @@ public abstract class MultithreadEventExecutorGroup extends AbstractEventExecuto
     /**
      * Create a new instance.
      *
-     * @param nThreads          the number of threads that will be used by this instance. 使用的线程数，默认为 core*2 【可追踪源码】
-     * @param executor          the Executor to use, or {@code null} if the default should be used. 执行器：如果传入 null，则采用 Netty 默认的线程工厂和默认的执行器 ThreadPerTaskExecutor
-     * @param chooserFactory    the {@link EventExecutorChooserFactory} to use. 单例 new DefaultEventExecutorChooseFactory();
-     * @param args              arguments which will passed to each {@link #newChild(Executor, Object...)} call 在创建执行器的时候传入的固定参数
+     * @param nThreads          the number of threads that will be used by this instance.
+     *                          使用的线程数，默认为 core*2 【可追踪源码】
+     * @param executor          the Executor to use, or {@code null} if the default should be used.
+     *                          执行器：如果传入 null，则采用 Netty 默认的线程工厂和默认的执行器 ThreadPerTaskExecutor
+     * @param chooserFactory    the {@link EventExecutorChooserFactory} to use.
+     *                          单例 new DefaultEventExecutorChooseFactory();
+     * @param args              arguments which will passed to each {@link #newChild(Executor, Object...)} call
+     *                          在创建执行器的时候传入的固定参数
      */
     protected MultithreadEventExecutorGroup(int nThreads, Executor executor,
                                             EventExecutorChooserFactory chooserFactory, Object... args) {
         checkPositive(nThreads, "nThreads");
 
-        // 如果传入的执行器是空的，则采用默认的线程工厂和默认的执行器
+        // 如果传入的执行器是空的，则采用默认的线程工厂和默认的执行器：ThreadPerTaskExecutor，使用 Netty 默认的线程工厂；
         if (executor == null) {
             executor = new ThreadPerTaskExecutor(newDefaultThreadFactory());
         }

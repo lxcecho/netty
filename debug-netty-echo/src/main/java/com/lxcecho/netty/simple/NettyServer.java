@@ -1,4 +1,4 @@
-package com.lxcecho.netty.simple.demo2;
+package com.lxcecho.netty.simple;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
@@ -49,7 +49,7 @@ public class NettyServer {
 
             log.info("....server is ready....");
 
-            // 绑定一个端口并且同步，生成了一个 ChannelFuture 对象
+            // 绑定是异步操作，生成了一个 ChannelFuture 对象
             // 异步地绑定服务器（并绑定端口）；调用 sync() 方法阻塞等待直到绑定完成
             ChannelFuture channelFuture = bootstrap.bind(6668).sync();
 

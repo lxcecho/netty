@@ -16,7 +16,12 @@ public class MyClientHandler extends SimpleChannelInboundHandler<Long> {
         log.info("收到服务器消息={}", msg);
     }
 
-    // 重写channelActive 发送数据
+    /**
+     * 重写 channelActive 发送数据
+     *
+     * @param ctx
+     * @throws Exception
+     */
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         log.info("MyClientHandler 发送数据");
@@ -29,7 +34,6 @@ public class MyClientHandler extends SimpleChannelInboundHandler<Long> {
         // 3. MyLongToByteEncoder 父类  MessageToByteEncoder
         // 4. 父类  MessageToByteEncoder
         /*
-
          public void write(ChannelHandlerContext ctx, Object msg, ChannelPromise promise) throws Exception {
         ByteBuf buf = null;
         try {

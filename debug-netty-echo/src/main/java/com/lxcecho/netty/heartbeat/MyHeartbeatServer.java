@@ -11,6 +11,11 @@ import io.netty.handler.timeout.IdleStateHandler;
 import java.util.concurrent.TimeUnit;
 
 /**
+ * 编写一个 Netty 心跳检测机制案例：
+ * - 当服务器超过 3秒 没有读时，就提示读空闲；
+ * - 当服务器超过 5秒 没有写操作时，就提示写空闲；
+ * - 当服务器超过 7秒 没有读或者写操作时，就提示读写空闲
+ *
  * @author lxcecho lxcecho@gmail.com
  * @since 12.12.2021
  */

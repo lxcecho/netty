@@ -65,6 +65,7 @@ public final class EchoServer02 {
          *  io.netty.channel.MultithreadEventLoopGroup#DEFAULT_EVENT_LOOP_THREADS
          *  DEFAULT_EVENT_LOOP_THREADS = Math.max(1, SystemPropertyUtil.getInt(
          *                  "io.netty.eventLoopThreads", NettyRuntime.availableProcessors() * 2));
+         *
          * 4. 会创建 EventExecutor 数组：children = new EventExecutor[nThreads];
          * 5. 每个元素类型就是 NioEventLoop，NioEventLoop 实现了 EventLoop 接口和 Executor 接口；
          */

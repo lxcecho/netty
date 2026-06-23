@@ -93,7 +93,7 @@ public class GroupChatServerHandler extends SimpleChannelInboundHandler<String> 
         Channel channel = channelHandlerContext.channel();
         // 这时我们遍历 channelGroup，根据不同的情况，回送不同的消息
         channelGroup.forEach(ch -> {
-            if(channel != ch) { // 不是当前的 channel，转发消息
+            if (channel != ch) { // 不是当前的 channel，转发消息
                 ch.writeAndFlush("[客户]" + channel.remoteAddress() + " 发送了消息" + s + "\n");
             } else { // 回显自己发送的消息给自己
                 ch.writeAndFlush("[自己]发送了消息" + s + "\n");
