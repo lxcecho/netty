@@ -26,8 +26,7 @@ public class MyServerHandler extends SimpleChannelInboundHandler<ByteBuf> {
         // 将 buffer 转成字符串
         String message = new String(buffer, StandardCharsets.UTF_8);
 
-        log.info("服务器接收到数据 {}", message);
-        log.info("服务器接收到消息量= {}", (++this.count));
+        log.info("服务器接收到数据 {}， 服务器接收到消息量= {}", message, (++this.count));
 
         // 服务器回送数据给客户端, 回送一个随机 id ,
         ByteBuf responseByteBuf = Unpooled.copiedBuffer(UUID.randomUUID().toString() + " ", StandardCharsets.UTF_8);
