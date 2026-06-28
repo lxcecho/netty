@@ -27,7 +27,7 @@
   <groupId>io.netty</groupId>
   <artifactId>netty-parent</artifactId>
   <packaging>pom</packaging>
-  <version>4.1.132.Final-SNAPSHOT</version>
+  <version>4.1.136.Final-SNAPSHOT</version>
 
   <name>Netty</name>
   <url>https://netty.io/</url>
@@ -681,7 +681,7 @@
       <id>boringssl-snapshot</id>
       <properties>
         <tcnative.artifactId>netty-tcnative-boringssl-static</tcnative.artifactId>
-        <tcnative.version>2.0.76.Final-SNAPSHOT</tcnative.version>
+        <tcnative.version>2.0.79.Final-SNAPSHOT</tcnative.version>
         <tcnative.classifier>${os.detected.classifier}</tcnative.classifier>
       </properties>
 
@@ -708,6 +708,9 @@
     </profile>
     <profile>
       <id>noPrintGC</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
       <properties>
         <argLine.printGC>-D_</argLine.printGC>
       </properties>
@@ -831,7 +834,7 @@
     <os.detection.classifierWithLikes>fedora,suse,arch</os.detection.classifierWithLikes>
     <tcnative.artifactId>netty-tcnative</tcnative.artifactId>
     <!-- Keep in sync with bom/pom.xml -->
-    <tcnative.version>2.0.75.Final</tcnative.version>
+    <tcnative.version>2.0.78.Final</tcnative.version>
     <tcnative.classifier>${os.detected.classifier}</tcnative.classifier>
     <conscrypt.groupId>org.conscrypt</conscrypt.groupId>
     <conscrypt.artifactId>conscrypt-openjdk-uber</conscrypt.artifactId>
@@ -850,6 +853,7 @@
     <log4j2.version>2.25.3</log4j2.version>
     <enforcer.plugin.version>3.0.0</enforcer.plugin.version>
     <junit.version>5.12.1</junit.version>
+    <jazzer.version>0.30.0</jazzer.version>
     <skipTests>false</skipTests>
     <testJavaHome>${java.home}</testJavaHome>
     <testJvm>${testJavaHome}/bin/java</testJvm>
@@ -857,7 +861,7 @@
     <skipAutobahnTestsuite>false</skipAutobahnTestsuite>
     <skipHttp2Testsuite>false</skipHttp2Testsuite>
     <graalvm.version>19.3.6</graalvm.version>
-    <brotli4j.version>1.16.0</brotli4j.version>
+    <brotli4j.version>1.23.0</brotli4j.version>
     <!-- By default skip native testsuite as it requires a custom environment with graalvm installed -->
     <skipNativeImageTestsuite>true</skipNativeImageTestsuite>
     <skipShadingTestsuite>false</skipShadingTestsuite>
@@ -1225,6 +1229,12 @@
         <groupId>org.junit.jupiter</groupId>
         <artifactId>junit-jupiter-params</artifactId>
         <version>${junit.version}</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>com.code-intelligence</groupId>
+        <artifactId>jazzer-junit</artifactId>
+        <version>${jazzer.version}</version>
         <scope>test</scope>
       </dependency>
       <dependency>
@@ -1689,6 +1699,22 @@
                   <newValue>7</newValue>
                   <justification>SETTINGS_ENABLE_CONNECT_PROTOCOL was added to the standard HTTP/2 settings.
                   </justification>
+                </item>
+                <item>
+                  <ignore>true</ignore>
+                  <code>java.annotation.removed</code>
+                  <old>method void io.netty.channel.ChannelInboundHandlerAdapter::channelInactive(io.netty.channel.ChannelHandlerContext) throws java.lang.Exception @ io.netty.handler.codec.redis.RedisArrayAggregator</old>
+                  <new>method void io.netty.handler.codec.redis.RedisArrayAggregator::channelInactive(io.netty.channel.ChannelHandlerContext) throws java.lang.Exception</new>
+                  <annotation>@io.netty.channel.ChannelHandlerMask.Skip</annotation>
+                  <justification>Change is harmless for compatibility. Needed for a security fix.</justification>
+                </item>
+                <item>
+                  <ignore>true</ignore>
+                  <code>java.annotation.removed</code>
+                  <old>method void io.netty.channel.ChannelInboundHandlerAdapter::exceptionCaught(io.netty.channel.ChannelHandlerContext, java.lang.Throwable) throws java.lang.Exception @ io.netty.handler.codec.sctp.SctpMessageCompletionHandler</old>
+                  <new>method void io.netty.handler.codec.sctp.SctpMessageCompletionHandler::exceptionCaught(io.netty.channel.ChannelHandlerContext, java.lang.Throwable) throws java.lang.Exception</new>
+                  <annotation>@io.netty.channel.ChannelHandlerMask.Skip</annotation>
+                  <justification>Change is harmless for compatibility. Needed for a security fix.</justification>
                 </item>
               </differences>
             </revapi.differences>

@@ -59,6 +59,9 @@ public class JdkZlibDecoder extends ZlibDecoder {
     private int xlen = -1;
     private boolean needsRead;
 
+    private static final int DEFAULT_MAX_FORWARD_BYTES = CompressionUtil.DEFAULT_MAX_FORWARD_BYTES;
+    private final int maxForwardBytes;
+
     private volatile boolean finished;
 
     private boolean decideZlibOrNone;
@@ -161,6 +164,7 @@ public class JdkZlibDecoder extends ZlibDecoder {
 
     private JdkZlibDecoder(ZlibWrapper wrapper, byte[] dictionary, boolean decompressConcatenated, int maxAllocation) {
         super(maxAllocation);
+        this.maxForwardBytes = maxAllocation > 0 ? maxAllocation : DEFAULT_MAX_FORWARD_BYTES;
 
         ObjectUtil.checkNotNull(wrapper, "wrapper");
 
@@ -265,9 +269,9 @@ public class JdkZlibDecoder extends ZlibDecoder {
                     if (crc != null) {
                         crc.update(outArray, outIndex, outputLength);
                     }
-                    if (maxAllocation == 0) {
-                        // If we don't limit the maximum allocations we should just
-                        // forward the buffer directly.
+                    if (maxAllocation == 0 && decompressed.readableBytes() >= maxForwardBytes) {
+                        // Forward the buffer once it exceeds the threshold to bound memory
+                        // while avoiding excessive fireChannelRead calls.
                         ByteBuf buffer = decompressed;
                         decompressed = null;
                         needsRead = false;
@@ -320,6 +324,7 @@ public class JdkZlibDecoder extends ZlibDecoder {
             if (!finished) {
                 inflater.reset();
                 crc.reset();
+                xlen = -1;
                 gzipState = GzipState.HEADER_START;
                 return true;
             }
@@ -390,7 +395,11 @@ public class JdkZlibDecoder extends ZlibDecoder {
                     crc.update(xlen1);
                     crc.update(xlen2);
 
-                    xlen |= xlen1 << 8 | xlen2;
+                    // XLEN is a little-endian unsigned 16-bit value (RFC 1952), so xlen1 is the
+                    // low byte and xlen2 the high byte. This must be an assignment, not |=: xlen
+                    // starts at the -1 "no extra field" sentinel, and OR-ing into -1 (0xFFFFFFFF)
+                    // would leave it -1, so the extra field was never skipped.
+                    xlen = xlen2 << 8 | xlen1;
                 }
                 gzipState = GzipState.XLEN_READ;
                 // fall through

@@ -110,6 +110,11 @@ public class Http2FrameCodecBuilder extends
     }
 
     @Override
+    public Http2FrameCodecBuilder validateRequiredPseudoHeaders(boolean validateRequiredPseudoHeaders) {
+        return super.validateRequiredPseudoHeaders(validateRequiredPseudoHeaders);
+    }
+
+    @Override
     public Http2FrameLogger frameLogger() {
         return super.frameLogger();
     }
@@ -203,6 +208,17 @@ public class Http2FrameCodecBuilder extends
         return super.encoderEnforceMaxRstFramesPerWindow(maxRstFramesPerWindow, secondsPerWindow);
     }
 
+    @Override
+    public int decoderEnforceMaxSmallContinuationFrames() {
+        return super.decoderEnforceMaxSmallContinuationFrames();
+    }
+
+    @Override
+    public Http2FrameCodecBuilder decoderEnforceMaxSmallContinuationFrames(
+            int maxConsecutiveContinuationsFrames) {
+        return super.decoderEnforceMaxSmallContinuationFrames(maxConsecutiveContinuationsFrames);
+    }
+
     /**
      * Build a {@link Http2FrameCodec} object.
      */
@@ -216,7 +232,8 @@ public class Http2FrameCodecBuilder extends
             Long maxHeaderListSize = initialSettings().maxHeaderListSize();
             Http2FrameReader frameReader = new DefaultHttp2FrameReader(maxHeaderListSize == null ?
                     new DefaultHttp2HeadersDecoder(isValidateHeaders()) :
-                    new DefaultHttp2HeadersDecoder(isValidateHeaders(), maxHeaderListSize));
+                    new DefaultHttp2HeadersDecoder(isValidateHeaders(), maxHeaderListSize),
+                    decoderEnforceMaxSmallContinuationFrames());
 
             if (frameLogger() != null) {
                 frameWriter = new Http2OutboundFrameLogger(frameWriter, frameLogger());
@@ -227,7 +244,8 @@ public class Http2FrameCodecBuilder extends
                 encoder = new StreamBufferingEncoder(encoder);
             }
             Http2ConnectionDecoder decoder = new DefaultHttp2ConnectionDecoder(connection, encoder, frameReader,
-                    promisedRequestVerifier(), isAutoAckSettingsFrame(), isAutoAckPingFrame(), isValidateHeaders());
+                    promisedRequestVerifier(), isAutoAckSettingsFrame(), isAutoAckPingFrame(), isValidateHeaders(),
+                    isValidateRequiredPseudoHeaders());
             int maxConsecutiveEmptyDataFrames = decoderEnforceMaxConsecutiveEmptyDataFrames();
             if (maxConsecutiveEmptyDataFrames > 0) {
                 decoder = new Http2EmptyDataFrameConnectionDecoder(decoder, maxConsecutiveEmptyDataFrames);
