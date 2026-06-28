@@ -68,8 +68,9 @@ public abstract class WebSocketClientHandshaker {
 
     private volatile long forceCloseTimeoutMillis = DEFAULT_FORCE_CLOSE_TIMEOUT_MILLIS;
 
-    private volatile int forceCloseInit;
+    private volatile int forceCloseInit; // 如果是在不同类操作，变量修饰符必须要是public，但在同一个类内部操作，private 完全可行。
 
+    /*以一种线程安全的方式操作非线程安全对象的某些字段。*/
     private static final AtomicIntegerFieldUpdater<WebSocketClientHandshaker> FORCE_CLOSE_INIT_UPDATER =
             AtomicIntegerFieldUpdater.newUpdater(WebSocketClientHandshaker.class, "forceCloseInit");
 

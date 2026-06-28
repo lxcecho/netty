@@ -44,9 +44,9 @@ public class DefaultEventExecutorGroup extends MultithreadEventExecutorGroup {
     /**
      * Create a new instance.
      *
-     * @param nThreads          the number of threads that will be used by this instance.
+     * @param nThreads          the number of threads that will be used by this instance. 核心线程数，一般和 NioEventLoopGroup 分配的 worke 线程数一样
      * @param threadFactory     the ThreadFactory to use, or {@code null} if the default should be used.
-     * @param maxPendingTasks   the maximum number of pending tasks before new tasks will be rejected.
+     * @param maxPendingTasks   the maximum number of pending tasks before new tasks will be rejected. 最大核心线程数
      * @param rejectedHandler   the {@link RejectedExecutionHandler} to use.
      */
     public DefaultEventExecutorGroup(int nThreads, ThreadFactory threadFactory, int maxPendingTasks,
