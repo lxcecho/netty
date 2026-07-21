@@ -442,7 +442,8 @@ abstract class AbstractChannelHandlerContext implements ChannelHandlerContext, R
                 } else if (handler instanceof ChannelDuplexHandler) {
                     ((ChannelDuplexHandler) handler).channelRead(this, msg);
                 } else {
-                    // 这里真正调用 InboundHandler 接口方法                    ((ChannelInboundHandler) handler).channelRead(this, msg);
+                    // 这里真正调用 InboundHandler 接口方法
+                    ((ChannelInboundHandler) handler).channelRead(this, msg);
                 }
             } catch (Throwable t) {
                 invokeExceptionCaught(t);

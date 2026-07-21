@@ -503,7 +503,7 @@ public final class NioEventLoop extends SingleThreadEventLoop {
     @Override
     protected void run() {
         int selectCnt = 0;
-        for (;;) {
+        for (;;) { // 死循环
             try {
                 int strategy;
                 try {
@@ -523,6 +523,7 @@ public final class NioEventLoop extends SingleThreadEventLoop {
                         nextWakeupNanos.set(curDeadlineNanos);
                         try {
                             if (!hasTasks()) {
+                                // 循环监听 IO 事件
                                 strategy = select(curDeadlineNanos);
                             }
                         } finally {
@@ -554,7 +555,7 @@ public final class NioEventLoop extends SingleThreadEventLoop {
                             processSelectedKeys();
                         }
                     } finally {
-                        // Ensure we always run tasks. 处理所有任务
+                        // Ensure we always run tasks. 处理 TaskQueue异步队列所有任务
                         ranTasks = runAllTasks();
                     }
                 } else if (strategy > 0) {
@@ -656,6 +657,7 @@ public final class NioEventLoop extends SingleThreadEventLoop {
 
     private void processSelectedKeys() {
         if (selectedKeys != null) {
+            // for 循环处理 selectKeys 里所有事件
             processSelectedKeysOptimized();
         } else {
             processSelectedKeysPlain(selector.selectedKeys());
@@ -721,6 +723,7 @@ public final class NioEventLoop extends SingleThreadEventLoop {
     }
 
     private void processSelectedKeysOptimized() {
+        // 遍历处理所有 SelectKeys 事件
         for (int i = 0; i < selectedKeys.size; ++i) {
             final SelectionKey k = selectedKeys.keys[i];
             // null out entry in the array to allow to have it GC'ed once the Channel close
@@ -800,7 +803,7 @@ public final class NioEventLoop extends SingleThreadEventLoop {
             // Also check for readOps of 0 to workaround possible JDK bug which may otherwise lead
             // to a spin loop
             if ((readyOps & (SelectionKey.OP_READ | SelectionKey.OP_ACCEPT)) != 0 || readyOps == 0) {
-                // ！！！断点位置
+                // TODO：【关键】！！！断点位置
                 // 这个 unsafe 是 boss 线程中 NioServerSocketChannel 的 AbstractNioMessageChannel$NioMessageUnsafe 对象
                 unsafe.read();
             }

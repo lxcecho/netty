@@ -382,7 +382,9 @@ public abstract class AbstractBootstrap<B extends AbstractBootstrap<B, C>, C ext
         }
 
         // 通过 ServerBootstrap 的 bossGroup 注册 Channel，MultithreadEventLoopGroup#register
+        // 从 bossGroup 里哪一个线程来处理 channel 的注册，将其注册到线程自己的 selector 上
         ChannelFuture regFuture = config().group().register(channel);
+
         if (regFuture.cause() != null) {
             if (channel.isRegistered()) {
                 channel.close();

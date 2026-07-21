@@ -1,4 +1,4 @@
-package com.lxcecho.netty.inoroutboundhandler;
+package com.lxcecho.netty.ioboundhandler;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;

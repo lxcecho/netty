@@ -98,7 +98,7 @@ public class NioServerSocketChannel extends AbstractNioMessageChannel
      */
     public NioServerSocketChannel(ServerSocketChannel channel) {
         // 调用父类方法
-        super(null, channel, SelectionKey.OP_ACCEPT);
+        super(null, channel, SelectionKey.OP_ACCEPT); // 对于服务端，注册的是 OP_ACCEPT 事件
         config = new NioServerSocketChannelConfig(this, javaChannel().socket());
     }
 
@@ -163,6 +163,7 @@ public class NioServerSocketChannel extends AbstractNioMessageChannel
 
         try {
             if (ch != null) {
+                // buf 里放的就是前面注册的 OP_ACCEPT 事件过来的所有 SocketChannel
                 buf.add(new NioSocketChannel(this, ch));
                 return 1;
             }

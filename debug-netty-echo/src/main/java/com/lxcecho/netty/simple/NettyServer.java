@@ -15,12 +15,13 @@ import lombok.extern.slf4j.Slf4j;
 public class NettyServer {
 
     public static void main(String[] ars) {
-        // 创建 BossGroup 和 WorkerGroup
-        // 1 创建两个线程组 bossGroup 和 workerGroup
-        // 2 bossGroup 只是处理连接的请求，真正和客户端业务处理，会交给 workerGroup 完成
-        // 3 两个都是无限循环
-        // 4 boosGroup 和 workerGroup 含有的子线程（NioEventLoop）的个数
-        // 默认实际 cpu 核数*2
+        /**
+         * 创建 BossGroup 和 WorkerGroup
+         * 1、创建两个线程组 bossGroup 和 workerGroup；
+         * 2、bossGroup 只是处理连接的请求，真正和客户端业务处理，会交给 workerGroup 完成；
+         * 3、两个都是无限循环；
+         * 4、boosGroup 和 workerGroup 含有的子线程（NioEventLoop）的个数：默认实际 cpu 核数*2
+         */
         EventLoopGroup bossGroup = new NioEventLoopGroup(1);
         EventLoopGroup workerGroup = new NioEventLoopGroup();
 

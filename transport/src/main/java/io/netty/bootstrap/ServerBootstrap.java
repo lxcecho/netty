@@ -148,7 +148,9 @@ public class ServerBootstrap extends AbstractBootstrap<ServerBootstrap, ServerCh
         final Entry<AttributeKey<?>, Object>[] currentChildAttrs = newAttributesArray(childAttrs);
         final Collection<ChannelInitializerExtension> extensions = getInitializerExtensions();
 
-        // 添加特殊的 Handler 处理器
+        // 添加特殊的 Handler 处理器：ChannelInitializer
+        // 此时 pipeline：HeadContext <==> ChannelInitializer <==> TailContext
+        // 当 channel 注册时会调用 initChannel(ctx) 方法，这个是一个回调方法，TODO：这里可以继续先往回上一层看 register 方法过程
         p.addLast(new ChannelInitializer<Channel>() {
             @Override
             public void initChannel(final Channel ch) {
@@ -234,7 +236,7 @@ public class ServerBootstrap extends AbstractBootstrap<ServerBootstrap, ServerCh
             // 1. msg 强转成 Channel，实际上是 NioSocketChannel
             final Channel child = (Channel) msg;
 
-            // 2. 添加 NioSocketChannel 的 pipeline 的 handler，就是 main 方法中设置的 childHandler 方法里的
+            // 2. 添加 NioSocketChannel 的 pipeline 的 handler，就是 main 方法中设置的 childHandler 方法里的 ChannelInitializer
             child.pipeline().addLast(childHandler);
 
             try {
@@ -258,7 +260,7 @@ public class ServerBootstrap extends AbstractBootstrap<ServerBootstrap, ServerCh
 
             try {
                 // 将客户端连接注册到 worker 线程池
-                // 将 NioSocketChannel 注册到 childGroup 中的一个 EventLoop 上，并添加一个监听器，这个 childGroup 就是 main 方法中创建的 workerGroup
+                // 将 NioSocketChannel 注册到 workerGroup 中的一个 EventLoop 上，并添加一个 Selector 监听器
                 childGroup.register(child).addListener(new ChannelFutureListener() {
                     @Override
                     public void operationComplete(ChannelFuture future) throws Exception {

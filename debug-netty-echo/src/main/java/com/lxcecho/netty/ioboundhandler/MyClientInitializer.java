@@ -1,4 +1,4 @@
-package com.lxcecho.netty.protocoltcp;
+package com.lxcecho.netty.ioboundhandler;
 
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
@@ -6,14 +6,21 @@ import io.netty.channel.socket.SocketChannel;
 
 /**
  * @author lxcecho lxcecho@gmail.com
- * @since 11.12.2021
+ * @since 12.12.2021
  */
 public class MyClientInitializer extends ChannelInitializer<SocketChannel> {
     @Override
     protected void initChannel(SocketChannel ch) throws Exception {
         ChannelPipeline pipeline = ch.pipeline();
-        pipeline.addLast(new MyMessageEncoder()); // 加入编码器
-        pipeline.addLast(new MyMessageDecoder()); // 加入解码器
+
+        // 加入一个出站的 handler 对数据进行一个编码
+        pipeline.addLast(new MyLongToByteEncoder());
+
+        // 这时一个入站的解码器(入站 handler )
+        pipeline.addLast(new MyByteToLongDecoder());
+//        pipeline.addLast(new MyByteToLongDecoder2());
+
+        // 加入一个自定义的 handler ， 处理业务
         pipeline.addLast(new MyClientHandler());
     }
 }

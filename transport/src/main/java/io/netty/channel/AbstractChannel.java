@@ -71,6 +71,7 @@ public abstract class AbstractChannel extends DefaultAttributeMap implements Cha
         this.parent = parent;
         id = newId(); // 全局唯一的 ChannelId
         unsafe = newUnsafe(); // 用于操作底层数据的读写操作
+        // 初始化 Server Channel 的 pipeline
         pipeline = newChannelPipeline(); // 负责业务处理器的编排
     }
 
@@ -463,6 +464,7 @@ public abstract class AbstractChannel extends DefaultAttributeMap implements Cha
         /**
          * Netty 会在线程池 EventLoopGroup 中选择一个 EventLoop 与当前 Channel 进行绑定，之后 Channel 生命周期内的
          * 所有 I/O 事件都由这个 EventLoop 负责处理，如 accept、connect、read、write 等 I/O 事件。
+         * 即：将 Channel 注册到线程自己的 Selector 上。
          *
          * @param eventLoop
          * @param promise
@@ -487,6 +489,7 @@ public abstract class AbstractChannel extends DefaultAttributeMap implements Cha
                 register0(promise);
             } else { // 外部线程调用
                 try {
+                    // 将任务线程交给 TaskQueue 异步执行
                     eventLoop.execute(new Runnable() {
                         @Override
                         public void run() {
@@ -523,8 +526,10 @@ public abstract class AbstractChannel extends DefaultAttributeMap implements Cha
                 pipeline.invokeHandlerAddedIfNeeded();
 
                 safeSetSuccess(promise);
+
                 // 触发 channelRegistered 事件
                 pipeline.fireChannelRegistered();
+
                 // Only fire a channelActive if the channel has never been registered. This prevents firing
                 // multiple channel actives if the channel is deregistered and re-registered.
                 // 此时 Channel 还未注册绑定地址，所以处于非活跃状态

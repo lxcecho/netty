@@ -845,7 +845,9 @@ public abstract class SingleThreadEventExecutor extends AbstractScheduledEventEx
     }
 
     private void execute(Runnable task, boolean immediate) {
+        // 判断当前线程是不是在跑事件循环
         boolean inEventLoop = inEventLoop();
+        // 把 task 线程放入 TaskQueue 异步执行
         addTask(task);
         if (!inEventLoop) {
             startThread();
@@ -1011,7 +1013,8 @@ public abstract class SingleThreadEventExecutor extends AbstractScheduledEventEx
                 Throwable unexpectedException = null;
                 updateLastExecutionTime();
                 try {
-                    // 真正启动 NioEventLoop 的循环：整个 EventLoop 的核心【死循环】
+                    // 【死循环】整个 EventLoop 的核心：真正启动 NioEventLoop 的循环
+                    // io.netty.channel.nio.NioEventLoop.run
                     SingleThreadEventExecutor.this.run();
                     success = true;
                 } catch (Throwable t) {

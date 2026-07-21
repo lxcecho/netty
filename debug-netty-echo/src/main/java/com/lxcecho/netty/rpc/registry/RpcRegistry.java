@@ -40,7 +40,7 @@ public class RpcRegistry {
                         protected void initChannel(SocketChannel ch) throws Exception {
                             ch.pipeline()
                                     /**
-                                     * 自定义协议解码器， 入参有 5 个
+                                     * 自定义协议解码器，入参有 5 个
                                      *  int maxFrameLength, 框架的最大长度，如果帧的长度大于此值，则将抛出 TooLongFrameException
                                      *  int lengthFieldOffset, 长度属性的偏移量，即对应的长度属性在整个消息数据中的位置
                                      *  int lengthFieldLength, 长度字段的长度，如果长度属性是 int 类型，那么这个值就是 4（long 就是8（
